@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Application extends Model
 {
-    protected $fillable = ['fullname', 'status', 'type_of_payment'];
+    protected $fillable = ['fullname', 'status_id', 'type_of_payment'];
 
     use HasFactory;
 
@@ -19,5 +19,10 @@ class Application extends Model
     public function metrologs()
     {
         return $this->hasMany(applicationMetrolog::class, 'application_id', 'id');
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Statuses::class, 'status_id');
     }
 }

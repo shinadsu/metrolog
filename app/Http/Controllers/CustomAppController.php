@@ -14,6 +14,7 @@ use App\Models\GrsiNumberGuide;
 use App\Models\addressPayer;
 use App\Models\addressApplication;
 use App\Models\applicationMetrolog;
+use App\Models\Statuses;
 use App\Models\User;
 use App\Models\addressPhone;
 use Carbon\Carbon;
@@ -31,8 +32,9 @@ class CustomAppController extends Controller
         $deviceTypes = DeviceTypeGuide::all();
         $grsiNumbers = GrsiNumberGuide::all();
         $Users = User::where('role_id', 2)->get();
+        $status = Statuses::all();
         $brands = BrandGuide::all();
-        return view('create', compact('brands', 'deviceTypes', 'grsiNumbers', 'Users'));
+        return view('create', compact('brands', 'status', 'deviceTypes', 'grsiNumbers', 'Users'));
     }
 
 
@@ -41,7 +43,7 @@ class CustomAppController extends Controller
         $validator = Validator::make($request->all(), [
             // поля валидации
             'fullname' => 'required|string',
-            'status' => 'required|string',
+            // 'status' => 'required|string',
             'type_of_payment' => 'required|string',
             'address' => 'required|string',
             'district' => 'required|string',
@@ -77,7 +79,7 @@ class CustomAppController extends Controller
     {   
         DB::beginTransaction();
 
-        $application = Application::create($request->only('fullname', 'status', 'type_of_payment'));
+        $application = Application::create($request->only('fullname', 'status_id', 'type_of_payment'));
 
         // заполнение адреса
         $addressData = $request->only('address', 'district', 'logistic_area', 'logistic_floor', 'floor', 'intercom', 'entrance', 'guid_c');

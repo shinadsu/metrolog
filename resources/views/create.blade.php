@@ -248,7 +248,11 @@
                         <div class="form-group row">
                           <label for="status" class="col-sm-3 col-form-label">Статус</label>
                           <div class="col-sm-9">
-                            <input type="text" id="status" name="status" value="не завершена" class="form-control" readonly/>
+                            <select class="form-control" id="status_id" name="status_id" required>
+                                      @foreach($status as $statuses)
+                                          <option value="{{ $statuses->id }}">{{ $statuses->name }}</option>
+                                      @endforeach
+                            </select>
                           </div>
                         </div>
                       </div>

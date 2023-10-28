@@ -21,6 +21,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Statuses;
 
 
 class Metrlog extends Controller
@@ -28,17 +29,19 @@ class Metrlog extends Controller
    public function index()
    {
        $user = Auth::user(); // Получаем текущего авторизованного пользователя (метролога)
-       $applications = $user->applications;
+       $applications = $user->applications->load('status');
+       
 
        return view('metrlog', compact('applications'));
    }
 
    public function show($id)
    {  
+      
       $brandsguide = BrandGuide::all();
       $deviceGuide = DeviceTypeGuide::all();
       $GRSIGuide = GrsiNumberGuide::all();
-
+      $status = Statuses::all();
       $application = Application::find($id);
 
       if (!$application) {
@@ -58,7 +61,7 @@ class Metrlog extends Controller
       $deviceIds = $addresses->pluck('id')->toArray();
       $devices = Device::whereIn('id', addressDevice::whereIn('address_id', $deviceIds)->pluck('device_id'))->get();
 
-      return view('metrologshow', compact('application', 'phones', 'payers', 'devices', 'addresses', 'brandsguide', 'deviceGuide', 'GRSIGuide'));
+      return view('metrologshow', compact('application','status', 'phones', 'payers', 'devices', 'addresses', 'brandsguide', 'deviceGuide', 'GRSIGuide'));
    }
 
 

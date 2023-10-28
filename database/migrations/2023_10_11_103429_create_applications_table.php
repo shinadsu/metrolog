@@ -11,9 +11,11 @@ class CreateApplicationsTable extends Migration
         Schema::create('applications', function (Blueprint $table) {
             $table->id();
             $table->string('fullname', 128);
-            $table->string('status')->default('не завершена');
+            $table->unsignedBigInteger('status_id'); // Внешний ключ
             $table->string('type_of_payment')->default('наличный');
             $table->timestamps();
+        
+            $table->foreign('status_id')->references('id')->on('statuses');
         });
     }
 

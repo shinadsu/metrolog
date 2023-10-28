@@ -192,7 +192,7 @@
                             @elseif ($application->status === 'завершена')
                                 <span class="badge badge-success">Завершена</span>
                             @else
-                                <span class="badge badge-info">{{ $application->status }}</span>
+                                <label class="badge badge-info">{{ $application->status->name }}</label>
                             @endif
                         </h4>
                         <h4 class="card-title">Дата создания: {{ $application->created_at }}</h4>

@@ -259,7 +259,7 @@
                                                 @elseif ($application->status === 'завершена')
                                                     <label class="badge badge-success">Завершена</label>
                                                 @else
-                                                    <label class="badge badge-info">{{ $application->status }}</label>
+                                                    <label class="badge badge-info">{{ $application->status->name }}</label>
                                                 @endif
                                             </td>
                                             <td>

@@ -13,9 +13,9 @@ class statustransitionsController extends Controller
     public function index()
     {   
         $roles = Role::all();
-        $status = Statuses::all();
+        $statuses = Statuses::all();
         $statustransitions = statustransitions::with('role', 'status')->get();
-        return view('statustransitions', compact('roles', 'status', 'statustransitions'));
+        return view('statustransitions', compact('roles', 'statuses', 'statustransitions'));
        
     }
 

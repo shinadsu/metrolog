@@ -252,23 +252,23 @@
                         <form action="{{ route('statustransitionsController.post') }}" class="form-sample" method="POST">
                             @csrf
                             <div class="form-group">
-                                <label for="base_status_id">Base Status ID</label>
+                                <label for="base_status_id">Изначальный статус</label>
                                 <select class="form-control" id="base_status_id" name="base_status_id" required>
-                                                @foreach($status as $statuses)
-                                                    <option value="{{ $statuses->id }}">{{ $statuses->name }}</option>
+                                                @foreach($statuses as $status)
+                                                    <option value="{{ $status->id }}">{{ $status->name }}</option>
                                                 @endforeach
                                             </select>
                             </div>
                             <div class="form-group">
-                                <label for="new_status_id">New Status ID</label>
+                                <label for="new_status_id">Позволенный статус</label>
                                 <select class="form-control" id="new_status_id" name="new_status_id" required>
-                                                @foreach($status as $statuses)
-                                                    <option value="{{ $statuses->id }}">{{ $statuses->name }}</option>
+                                                @foreach($statuses as $status)
+                                                    <option value="{{ $status->id }}">{{ $status->name }}</option>
                                                 @endforeach
                                             </select>
                             </div>
                             <div class="form-group">
-                                <label for="role_id">Role Group ID</label>
+                                <label for="role_id">Группы Пользователей</label>
                                 <select class="form-control" id="role_id" name="role_id" required>
                                                 @foreach($roles as $role)
                                                     <option value="{{ $role->id }}">{{ $role->name }}</option>
@@ -276,12 +276,18 @@
                                             </select>
                             </div>
                             <div class="form-group">
-                                <label for="own_requests_allowed">Own Requests Allowed</label>
-                                <input type="text" class="form-control" id="own_requests_allowed" name="own_requests_allowed" required>
+                                <label for="own_requests_allowed">Свои заявки</label>
+                                <select class="form-control" id="own_requests_allowed" name="own_requests_allowed" required>
+                                                <option value="1" @if(old('setting_enabled') == '1') selected @endif>Да</option>
+                                                <option value="0" @if(old('setting_enabled') == '0') selected @endif>Нет</option>
+                                            </select>
                             </div>
                             <div class="form-group">
-                                <label for="others_requests_allowed">Others Requests Allowed</label>
-                                <input type="text" class="form-control" id="others_requests_allowed" name="others_requests_allowed" required>
+                                <label for="others_requests_allowed">Чужие Заявки</label>
+                                <select class="form-control" id="others_requests_allowed" name="others_requests_allowed" required>
+                                                <option value="1" @if(old('setting_enabled') == '1') selected @endif>Да</option>
+                                                <option value="0" @if(old('setting_enabled') == '0') selected @endif>Нет</option>
+                                            </select>
                             </div>
                             <button type="submit" class="btn btn-primary mr-2">Сохранить настройки</button>
                         </form>

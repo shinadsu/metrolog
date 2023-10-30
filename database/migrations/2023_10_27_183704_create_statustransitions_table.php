@@ -15,14 +15,14 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('base_status_id');
             $table->unsignedBigInteger('new_status_id');
-            $table->unsignedBigInteger('user_group_id');
+            $table->unsignedBigInteger('role_id');
             $table->boolean('own_requests_allowed');
             $table->boolean('others_requests_allowed');
             $table->timestamps();
     
             $table->foreign('base_status_id')->references('id')->on('statuses');
             $table->foreign('new_status_id')->references('id')->on('statuses');
-            $table->foreign('user_group_id')->references('id')->on('users');
+            $table->foreign('role_id')->references('id')->on('roles');
         });
     }
 

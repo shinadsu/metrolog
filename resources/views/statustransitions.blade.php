@@ -5,13 +5,15 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Skydash Admin</title>
+  <title>METROLOG</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="{{ 'assets/vendors/feather/feather.css' }}">
   <link rel="stylesheet" href="{{ 'assets/vendors/ti-icons/css/themify-icons.css' }}">
   <link rel="stylesheet" href="{{ 'assets/vendors/css/vendor.bundle.base.css' }}">
   <!-- endinject -->
   <!-- Plugin css for this page -->
+  <link rel="stylesheet" href="{{ 'assets/vendors/select2/select2.min.css' }}">
+  <link rel="stylesheet" href="{{ 'assets/vendors/select2-bootstrap-theme/select2-bootstrap.min.css' }}">
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="{{ 'assets/css/vertical-layout-light/style.css' }}">
@@ -27,7 +29,7 @@
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
           <span class="icon-menu"></span>
         </button>
-        <ul class="navbar-nav mr-lg-2">
+        <ul class="navbar-nav mr-lg-2"> 
           <li class="nav-item nav-search d-none d-lg-block">
             <div class="input-group">
               <div class="input-group-prepend hover-cursor" id="navbar-search-icon">
@@ -54,7 +56,7 @@
                   </div>
                 </div>
                 <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">applications Error</h6>
+                  <h6 class="preview-subject font-weight-normal">Application Error</h6>
                   <p class="font-weight-light small-text mb-0 text-muted">
                     Just now
                   </p>
@@ -240,57 +242,82 @@
           </li>
       </nav>
       <!-- partial -->
-      <div class="main-panel">
+<div class="main-panel">
     <div class="content-wrapper">
         <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Заявки</h4>
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Заявка №</th>
-                                        <th>ФИО</th>
-                                        <th>Адрес</th>
-                                        <th>Дата создания</th>
-                                        <th>Статус</th>
-                                        <th>Полная информация</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($applications as $application)
-                                        <tr>
-                                            <td>{{ $application->id }}</td>
-                                            <td>{{ $application->fullname }}</td>
-                                            <td>
-                                                <ul>
-                                                    @foreach ($application->addresses as $address)
-                                                        <li>{{ $address->address }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </td>
-                                            <td>{{ $application->created_at }}</td>
-                                            <td>
-                                                @if ($application->status === 'не завершена')
-                                                    <label class="badge badge-danger">Не завершена</label>
-                                                @elseif ($application->status === 'в процессе')
-                                                    <label class="badge badge-warning">В процессе</label>
-                                                @elseif ($application->status === 'завершена')
-                                                    <label class="badge badge-success">Завершена</label>
-                                                @else
-                                                    <label class="badge badge-info">{{ $application->status->name }}</label>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <a href="{{ route('applications.show', ['id' => $application->id]) }}" class="btn btn-primary">Посмотреть</a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                        <h4 class="card-title">Очередность статусов заявок</h4>
+                        <form action="{{ route('statustransitionsController.post') }}" class="form-sample" method="POST">
+                            @csrf
+                            <div class="form-group">
+                                <label for="base_status_id">Base Status ID</label>
+                                <select class="form-control" id="base_status_id" name="base_status_id" required>
+                                                @foreach($status as $statuses)
+                                                    <option value="{{ $statuses->id }}">{{ $statuses->name }}</option>
+                                                @endforeach
+                                            </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="new_status_id">New Status ID</label>
+                                <select class="form-control" id="new_status_id" name="new_status_id" required>
+                                                @foreach($status as $statuses)
+                                                    <option value="{{ $statuses->id }}">{{ $statuses->name }}</option>
+                                                @endforeach
+                                            </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="role_id">Role Group ID</label>
+                                <select class="form-control" id="role_id" name="role_id" required>
+                                                @foreach($roles as $role)
+                                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                                @endforeach
+                                            </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="own_requests_allowed">Own Requests Allowed</label>
+                                <input type="text" class="form-control" id="own_requests_allowed" name="own_requests_allowed" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="others_requests_allowed">Others Requests Allowed</label>
+                                <input type="text" class="form-control" id="others_requests_allowed" name="others_requests_allowed" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary mr-2">Сохранить настройки</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Данные о реквизитах -->
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">данные Очередность статусов заявок</h4>
+                    <div class="table-responsive pt-3">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Base Status ID</th>
+                                    <th>New Status ID</th>
+                                    <th>Role Group ID</th>
+                                    <th>Own Requests Allowed</th>
+                                    <th>Others Requests Allowed</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($statustransitions as $transition)
+                                <tr>
+                                    <td>{{ $transition->base_status_id }}</td>
+                                    <td>{{ $transition->new_status_id }}</td>
+                                    <td>{{ $transition->role->name }}</td>
+                                    <td>{{ $transition->own_requests_allowed }}</td>
+                                    <td>{{ $transition->others_requests_allowed }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -299,23 +326,34 @@
 </div>
 
 
+        
+        <!-- partial:../../partials/_footer.html -->
 
-
-
+        <!-- partial -->
+      </div>
+      <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
   <!-- container-scroller -->
   <!-- plugins:js -->
-  <script src="{{ 'assets/vendors/js/vendor.bundle.base.js' }}"></script>
+  <script src="{{ 'assets/vendors/js/vendor.bundle.base.js' }} "></script>
   <!-- endinject -->
   <!-- Plugin js for this page -->
+  <script src="{{ 'assets/vendors/typeahead.js/typeahead.bundle.min.js' }} "></script>
+  <script src="{{ 'assets/vendors/select2/select2.min.js' }} "></script>
   <!-- End plugin js for this page -->
   <!-- inject:js -->
-  <script src="{{ 'assets/js/off-canvas.js' }}"></script>
-  <script src="{{ 'assets/js/hoverable-collapse.js' }}"></script>
-  <script src="{{ 'assets/js/template.js' }}"></script>
-  <script src="{{ 'assets/js/settings.js' }}"></script>
-  <script src="{{ 'assets/js/todolist.js' }}"></script>
+  <script src="{{ 'assets/js/off-canvas.js' }} "></script>
+  <script src="{{ 'assets/js/hoverable-collapse.js' }} "></script>
+  <script src="{{ 'assets/js/template.js' }} "></script>
+  <script src="{{ 'assets/js/settings.js' }} "></script>
+  <script src="{{ 'assets/js/todolist.js' }} "></script>
   <!-- endinject -->
   <!-- Custom js for this page-->
+  <script src="{{ 'assets/js/file-upload.js' }} "></script>
+  <script src="{{ 'assets/js/typeahead.js' }} "></script>
+  <script src="{{ 'assets/js/select2.js' }} "></script>
   <!-- End custom js for this page-->
 </body>
 

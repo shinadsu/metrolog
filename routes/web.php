@@ -28,6 +28,10 @@ Route::get('/contacts', 'App\Http\Controllers\ShowContactsController@index')->na
 Route::get('/applicationsandaddresses', 'App\Http\Controllers\ShowApplicationAndAddressesController@index')->name('applicationsandaddresses.index');
 Route::get('/applications/{id}', 'App\Http\Controllers\Metrlog@show')->name('applications.show');
 Route::post('/devices', 'App\Http\Controllers\DeviceController@store')->name('devices.store');
+Route::get('/userrequisitessettings', 'App\Http\Controllers\UserRequisitesSettings@index')->name('userrequisitessettings.index');
+Route::post('/userrequisitessettings', 'App\Http\Controllers\UserRequisitesSettings@store')->name('userrequisitessettings.store');
+Route::get('/statustransition', 'App\Http\Controllers\statustransitionsController@index')->name('statustransitionsController.index');
+Route::post('/statustransition', 'App\Http\Controllers\statustransitionsController@store')->name('statustransitionsController.post');
 
 Auth::routes();
 

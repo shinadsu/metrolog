@@ -265,9 +265,11 @@
                           <label for="status" class="col-sm-3 col-form-label">Статус</label>
                           <div class="col-sm-9">
                             <select class="form-control" id="status_id" name="status_id" required>
-                                      @foreach($status as $statuses)
-                                          <option value="{{ $statuses->id }}">{{ $statuses->name }}</option>
-                                      @endforeach
+                                @foreach($statuses as $status)
+                                    <option value="{{ $status->id }}" {{ $status->name == 'new' ? 'selected' : '' }}>
+                                        {{ $status->name }}
+                                    </option>
+                                @endforeach
                             </select>
                           </div>
                         </div>
@@ -385,107 +387,7 @@
                         </div>
                       </div>
                     </div>
-                       <!-- заканчивающиеся поля для адреса -->
-
-                     <!--  поля для устройства -->
-                     <!-- <p class="card-description">
-                      Поля устройства
-                    </p>
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label for="factory_number" class="col-sm-3 col-form-label">Заводской номер</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="factory_number" name="factory_number" required/>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                            <label for="brand" class="col-sm-3 col-form-label">Бренд</label>
-                            <div class="col-sm-9">
-                                <select class="form-control" id="brand" name="brand" required>
-                                    @foreach($brands as $brand)
-                                        <option value="{{ $brand->id }}">{{ $brand->brand_name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label for="device_type" class="col-sm-3 col-form-label">Тип устройства</label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" id="device_type" name="device_type" required>
-                                        @foreach($deviceTypes as $deviceType)
-                                            <option value="{{ $deviceType->id }}">{{ $deviceType->device_type_name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <div class="form-group row">
-                                <label for="grsi_number" class="col-sm-3 col-form-label">Grsi номер</label>
-                                <div class="col-sm-9">
-                                    <select class="form-control" id="grsi_number" name="grsi_number" required>
-                                        @foreach($grsiNumbers as $grsiNumber)
-                                            <option value="{{ $grsiNumber->id }}">{{ $grsiNumber->grsi_number_value }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label for="scheduled_verification_date" class="col-sm-3 col-form-label">Дата плановой проверки</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="scheduled_verification_date" name="scheduled_verification_date" required/>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label for="release_year" class="col-sm-3 col-form-label">Год выпуска</label>
-                          <div class="col-sm-9">
-                            <input type="number" class="form-control" id="release_year" name="release_year" required/>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="row">
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label for="modification" class="col-sm-3 col-form-label">Модификация</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="modification" name="modification" required/>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div class="col-md-6">
-                        <div class="form-group row">
-                          <label for="type" class="col-sm-3 col-form-label">Тип</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="type" name="type" required/>
-                          </div>
-                        </div>
-                      </div>
-                    </div> -->
-                     <!--  закончившиеся поля для устройства -->
-
-                     <!-- Поля для плательщика -->
+                    
                      <p class="card-description">
                       Поля плательщика
                     </p>

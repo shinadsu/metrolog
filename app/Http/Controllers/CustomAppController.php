@@ -15,6 +15,7 @@ use App\Models\addressPayer;
 use App\Models\addressApplication;
 use App\Models\applicationMetrolog;
 use App\Models\Statuses;
+use App\Models\statustransitions;
 use App\Models\User;
 use App\Models\addressPhone;
 use Carbon\Carbon;
@@ -26,16 +27,21 @@ use Illuminate\Support\Facades\Validator;
 class CustomAppController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {   
         
         $deviceTypes = DeviceTypeGuide::all();
         $grsiNumbers = GrsiNumberGuide::all();
+        $roleId = $request->user()->role_id;
+        $allowedStatuses = statustransitions::where('role_id', $roleId)
+                                        ->where('base_status_id', 5)
+                                        ->pluck('new_status_id');
         $Users = User::where('role_id', 2)->get();
-        $status = Statuses::all();
+        $statuses = Statuses::whereIn('id', $allowedStatuses)->get();
         $brands = BrandGuide::all();
-        return view('create', compact('brands', 'status', 'deviceTypes', 'grsiNumbers', 'Users'));
+        return view('create', compact('brands', 'statuses', 'deviceTypes', 'grsiNumbers', 'Users', 'request', 'roleId'));
     }
+
 
 
     public function store(Request $request)
@@ -79,6 +85,9 @@ class CustomAppController extends Controller
     {   
         DB::beginTransaction();
 
+
+        $baseStatusId = 5; // Идентификатор базового статуса "new"
+        $newStatusId = $request->input('status_id');
         $application = Application::create($request->only('fullname', 'status_id', 'type_of_payment'));
 
         // заполнение адреса

@@ -53,4 +53,16 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function canSetStatus($baseStatusId, $newStatusId)
+    {
+        $transition = statustransitions::where('base_status_id', $baseStatusId)
+            ->where('new_status_id', $newStatusId)
+            ->where('role_id', $this->role_id)
+            ->where('own_requests_allowed', 1)
+            ->where('others_requests_allowed', 1)
+            ->first();
+
+        return $transition ? true : false;
+    }
 }

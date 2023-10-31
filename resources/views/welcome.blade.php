@@ -123,7 +123,8 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('applicationsandaddresses.index') }}">Заявки и Адреса</a></li>
               </ul>
             </div>
-             @if(Auth::user()->role->name === 'metrolog')
+            @if(Auth::user() && Auth::user()->role && Auth::user()->role->name === 'metrolog')
+
                 <div class="collapse" id="form-elements">
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"><a class="nav-link" href="{{ route('metrlog.index') }}">Мои Заявки</a></li>

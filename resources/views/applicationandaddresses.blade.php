@@ -272,7 +272,7 @@
 
                                     <td>{{ $application->application_id }}</td>
                                     <td>{{ $application->fullname }}</td>
-                                    <td>{{ $application->status }}</td>
+                                    <td>{{ $application->status_id }}</td>
                                     <td>{{ $application->type_of_payment }}</td>
                                     <td>{{ $application->address }}</td>
                                     <td>{{ $application->phone_number }}</td>

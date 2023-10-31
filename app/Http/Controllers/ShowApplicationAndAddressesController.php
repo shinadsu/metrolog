@@ -19,7 +19,7 @@ class ShowApplicationAndAddressesController extends Controller
             ->select(
                 'applications.id as application_id',
                 'applications.fullname',
-                'applications.status',
+                'applications.status_id',
                 'applications.type_of_payment',
                 'addresses.id as address_id',
                 'addresses.address',

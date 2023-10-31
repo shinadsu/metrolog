@@ -218,7 +218,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('applicationsandaddresses.index') }}">Заявки и Адреса</a></li>
               </ul>
             </div>
-             @if(Auth::user()->role->name === 'metrolog')
+            @if(Auth::user() && Auth::user()->role && Auth::user()->role->name === 'metrolog')
                 <div class="collapse" id="form-elements">
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"><a class="nav-link" href="{{ route('metrlog.index') }}">Мои Заявки</a></li>
@@ -275,35 +275,34 @@
                         </div>
                       </div>
                      </div>
-                    <div class="row">
+
+                     <div class="row">
                       <div class="col-md-6">
                         <div class="form-group row">
                           <label for="type_of_payment" class="col-sm-3 col-form-label">Тип оплаты</label>
                           <div class="col-sm-9">
-                            <select id="type_of_payment" name="type_of_payment" class="form-control" required>
+                          <select id="type_of_payment" name="type_of_payment" class="form-control" required>
                               <option value="наличный">Наличный</option>
                               <option value="безналичный">Безналичный</option>
                             </select>
                           </div>
                         </div>
-                      </div> 
-                    </div>
-                    <div class="row">
+                      </div>    
                       <div class="col-md-6">
-                          <div class="form-group row">
-                              <label for="metrolog_id" class="col-sm-3 col-form-label">Метролог</label>
-                              <div class="col-sm-9">
-                                  <select class="form-control" id="metrolog_id" name="metrolog_id" required>
+                        <div class="form-group row">
+                          <label for="metrolog_id" class="col-sm-3 col-form-label">Метролог</label>
+                          <div class="col-sm-9">
+                          <select class="form-control" id="metrolog_id" name="metrolog_id" required>
                                       @foreach($Users as $user)
                                           <option value="{{ $user->id }}">{{ $user->name }}</option>
                                       @endforeach
-                                  </select>
-                              </div>
+                                </select>
                           </div>
+                        </div>
                       </div>
-                  </div>
-                   
+                     </div>
 
+                  
                      <!-- Поля для адреса -->
                     <p class="card-description">
                       Заполнение адреса

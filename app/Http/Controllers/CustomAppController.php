@@ -36,6 +36,7 @@ class CustomAppController extends Controller
         $allowedStatuses = statustransitions::where('role_id', $roleId)
                                         ->where('base_status_id', 5)
                                         ->pluck('new_status_id');
+
         $Users = User::where('role_id', 2)->get();
         $statuses = Statuses::whereIn('id', $allowedStatuses)->get();
         $brands = BrandGuide::all();
@@ -59,6 +60,7 @@ class CustomAppController extends Controller
             'intercom' => 'required|string',
             'entrance' => 'required|string',
             'guid_c' => 'required|string',
+            'author' => 'ruquired|string',
             // 'factory_number' => 'required|string',
             // 'brand' => 'required|string',
             // 'device_type' => 'required|string',
@@ -86,9 +88,10 @@ class CustomAppController extends Controller
         DB::beginTransaction();
 
 
-        $baseStatusId = 5; // Идентификатор базового статуса "new"
-        $newStatusId = $request->input('status_id');
-        $application = Application::create($request->only('fullname', 'status_id', 'type_of_payment'));
+     
+        $applicationData = $request->only('fullname', 'status_id', 'type_of_payment');
+        $applicationData['author'] = auth()->user()->name;
+        $application = Application::create($applicationData);
 
         // заполнение адреса
         $addressData = $request->only('address', 'district', 'logistic_area', 'logistic_floor', 'floor', 'intercom', 'entrance', 'guid_c');

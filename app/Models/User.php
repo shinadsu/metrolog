@@ -54,15 +54,29 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function canSetStatus($baseStatusId, $newStatusId)
-    {
-        $transition = statustransitions::where('base_status_id', $baseStatusId)
-            ->where('new_status_id', $newStatusId)
-            ->where('role_id', $this->role_id)
-            ->where('own_requests_allowed', 1)
-            ->where('others_requests_allowed', 1)
-            ->first();
+    // public function canSetStatus($baseStatusId, $newStatusId)
+    // {
+    //     $transition = statustransitions::where('base_status_id', $baseStatusId)
+    //         ->where('new_status_id', $newStatusId)
+    //         ->where('role_id', $this->role_id)
+    //         ->where('own_requests_allowed', 1)
+    //         ->where('others_requests_allowed', 1)
+    //         ->first();
 
-        return $transition ? true : false;
-    }
+    //     return $transition ? true : false;
+    // }
+
+
+    // public function canEditAddress($application)
+    // {
+    //     // Реализуйте логику проверки прав пользователя на редактирование адреса заявки
+    //     return true; // Верните true, если пользователь может редактировать адрес
+    // }
+
+    // public function canEditPhoneNumber($application)
+    // {
+    //     // Реализуйте логику проверки прав пользователя на редактирование номера телефона заявки
+    //     return true; // Верните true, если пользователь может редактировать номер телефона
+    // }
+
 }

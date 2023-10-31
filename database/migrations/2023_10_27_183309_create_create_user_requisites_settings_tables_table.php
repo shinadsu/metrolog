@@ -17,6 +17,8 @@ return new class extends Migration
             $table->unsignedBigInteger('propses_id');
             $table->unsignedBigInteger('status_id');
             $table->enum('access_type', ['required', 'disabled', 'hidden']);
+            $table->boolean('own_requests_allowed');
+            $table->boolean('others_requests_allowed');
             $table->boolean('setting_enabled');
             $table->timestamps();
 

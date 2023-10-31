@@ -261,23 +261,44 @@
                                 <th>ID заявки</th>
                                 <th>ФИО</th>
                                 <th>Статус</th>
-                                <th>Тип оплаты</th>                              
+                                <th>Тип оплаты</th>
+                                <th>Автор</th>
                                 <th>Адрес</th>
                                 <th>Номер телефона</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($applicationsWithDetails as $application)
-                                <tr>
+                        @foreach($applicationsWithDetails as $application)
+<tr>
+    <td>{{ $application->application_id }}</td>
+    <td>{{ $application->fullname }}</td>
+    <td>{{ $application->status_id }}</td>
+    <td>{{ $application->type_of_payment }}</td>
+    <td>{{ $application->user_id }}</td>
+    <td>
+        @php
+            $access = $userRequisitesSettingsService->canViewPhoneNumberAndAddress($user->role_id, $application->user_id, $application->status_id);
+        @endphp
 
-                                    <td>{{ $application->application_id }}</td>
-                                    <td>{{ $application->fullname }}</td>
-                                    <td>{{ $application->status_id }}</td>
-                                    <td>{{ $application->type_of_payment }}</td>
-                                    <td>{{ $application->address }}</td>
-                                    <td>{{ $application->phone_number }}</td>
-                                </tr>
-                            @endforeach
+        @if ($access['address'])
+            {{ $application->address }}
+        @else
+            Адрес не доступен
+        @endif
+    </td>
+    <td>
+        @if ($access['phone_number'])
+            {{ $application->phone_number }}
+        @else
+            Номер телефона не доступен
+        @endif
+    </td>
+</tr>
+@endforeach
+
+
+
+
                         </tbody>
                     </table>
                   </div>

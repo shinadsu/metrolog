@@ -60,7 +60,7 @@ class CustomAppController extends Controller
             'intercom' => 'required|string',
             'entrance' => 'required|string',
             'guid_c' => 'required|string',
-            'author' => 'ruquired|string',
+            
             // 'factory_number' => 'required|string',
             // 'brand' => 'required|string',
             // 'device_type' => 'required|string',
@@ -89,8 +89,8 @@ class CustomAppController extends Controller
 
 
      
-        $applicationData = $request->only('fullname', 'status_id', 'type_of_payment');
-        $applicationData['author'] = auth()->user()->name;
+        $applicationData = $request->only('fullname', 'user_id', 'status_id', 'type_of_payment');
+        $applicationData['user_id'] = auth()->user()->id;
         $application = Application::create($applicationData);
 
         // заполнение адреса

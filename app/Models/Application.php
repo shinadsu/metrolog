@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Application extends Model
 {
-    protected $fillable = ['fullname', 'status_id', 'type_of_payment', 'author'];
+    protected $fillable = ['fullname', 'user_id', 'status_id', 'type_of_payment'];
 
     use HasFactory;
 
@@ -29,5 +29,9 @@ class Application extends Model
         return $this->hasMany(applicationMetrolog::class, 'application_id', 'id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
    
 }

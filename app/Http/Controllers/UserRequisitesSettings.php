@@ -31,6 +31,8 @@ class UserRequisitesSettings extends Controller
             'propses_id' => 'required|integer',
             'status_id' => 'required|integer',
             'access_type' => 'required|string',
+            'own_requests_allowed' => 'required|integer',
+            'others_requests_allowed' => 'required|integer',
             'setting_enabled' => 'required|boolean',
         ]);
 
@@ -48,6 +50,8 @@ class UserRequisitesSettings extends Controller
                 'propses_id' => $request->propses_id,
                 'status_id' => $request->status_id,
                 'access_type' => $request->access_type,
+                'own_requests_allowed' => $request->own_requests_allowed,
+                'others_requests_allowed' => $request->others_requests_allowed,
                 'setting_enabled' => $request->setting_enabled,
             ]);
 

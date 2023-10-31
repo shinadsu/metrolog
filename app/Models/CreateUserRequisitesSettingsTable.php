@@ -11,7 +11,7 @@ class CreateUserRequisitesSettingsTable extends Model
 
     protected $table = 'user_requisites_settings';
 
-    protected $fillable = ['role_id', 'propses_id', 'status_id', 'access_type', 'setting_enabled'];
+    protected $fillable = ['role_id', 'propses_id', 'status_id', 'access_type', 'own_requests_allowed', 'others_requests_allowed', 'setting_enabled'];
 
     public function role()
     {

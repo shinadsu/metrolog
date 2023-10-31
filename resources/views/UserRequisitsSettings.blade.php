@@ -297,6 +297,30 @@
                                         </div>
                                     </div>
                                 </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="own_requests_allowed">Для своих заявок</label>
+                                            <select class="form-control" id="own_requests_allowed" name="own_requests_allowed" required>
+                                                <option value="1" @if(old('setting_enabled') == '1') selected @endif>Да</option>
+                                                <option value="0" @if(old('setting_enabled') == '0') selected @endif>Нет</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="others_requests_allowed">Для чужик заявок</label>
+                                            <select class="form-control" id="others_requests_allowed" name="others_requests_allowed" required>
+                                                <option value="1" @if(old('setting_enabled') == '1') selected @endif>Да</option>
+                                                <option value="0" @if(old('setting_enabled') == '0') selected @endif>Нет</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -327,6 +351,8 @@
                                     <th>Имя реквизита</th>
                                     <th>Статус</th>
                                     <th>Тип доступа</th>
+                                    <th>Свои заявки</th>
+                                    <th>Чужие заявки</th>
                                     <th>Включено</th>
                                 </tr>
                             </thead>
@@ -337,6 +363,8 @@
                                     <td>{{ $setting->prop->name }}</td>
                                     <td>{{ $setting->status->name }}</td>
                                     <td>{{ $setting->access_type }}</td>
+                                    <td>{{ $setting->own_requests_allowed }}</td>
+                                    <td>{{ $setting->others_requests_allowed }}</td>
                                     <td>{{ $setting->setting_enabled ? 'Да' : 'Нет' }}</td>
                                 </tr>
                                 @endforeach

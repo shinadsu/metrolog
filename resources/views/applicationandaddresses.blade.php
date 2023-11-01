@@ -171,20 +171,8 @@
               <span class="menu-title">Главная</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-              <i class="icon-layout menu-icon"></i>
-              <span class="menu-title">Виджеты</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="ui-basic">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{{ 'assets/pages/ui-features/buttons.html' }}">Buttons</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ 'assets/pages/ui-features/dropdowns.html' }}">Dropdowns</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ 'assets/pages/ui-features/typography.html' }}">Typography</a></li>
-              </ul>
-            </div>
-          </li>
+
+
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
               <i class="icon-columns menu-icon"></i>
@@ -216,27 +204,25 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('applicationsandaddresses.index') }}">Заявки и Адреса</a></li>
               </ul>
             </div>
-             @if(Auth::user()->role->name === 'metrolog')
+           
                 <div class="collapse" id="form-elements">
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"><a class="nav-link" href="{{ route('metrlog.index') }}">Мои Заявки</a></li>
                     </ul>
                 </div>
-            @endif
-            @if(Auth::user()->role->name === 'administrator')
+         
                 <div class="collapse" id="form-elements">
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"><a class="nav-link" href="{{ route('userrequisitessettings.index') }}">Реквезиты</a></li>
                     </ul>
                 </div>
-            @endif
-            @if(Auth::user()->role->name === 'administrator')
+        
                 <div class="collapse" id="form-elements">
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"><a class="nav-link" href="{{ route('statustransitionsController.index') }}">Статусы</a></li>
                     </ul>
                 </div>
-            @endif
+          
           </li>
       </nav>
       <!-- partial -->
@@ -269,36 +255,32 @@
                         </thead>
                         <tbody>
                         @foreach($applicationsWithDetails as $application)
-<tr>
-    <td>{{ $application->application_id }}</td>
-    <td>{{ $application->fullname }}</td>
-    <td>{{ $application->status_id }}</td>
-    <td>{{ $application->type_of_payment }}</td>
-    <td>{{ $application->user_id }}</td>
-    <td>
-        @php
-            $access = $userRequisitesSettingsService->canViewPhoneNumberAndAddress($user->role_id, $application->user_id, $application->status_id);
-        @endphp
+                          <tr>
+                              <td>{{ $application->application_id }}</td>
+                              <td>{{ $application->fullname }}</td>
+                              <td>{{ $application->status_name }}</td>
+                              <td>{{ $application->type_of_payment }}</td>
+                              <td>{{ $application->user_name }}</td>
+                              <td>
+                                  @php
+                                      $access = $userRequisitesSettingsService->canViewPhoneNumberAndAddress($user->role_id, $application->user_id, $application->status_id);
+                                  @endphp
 
-        @if ($access['address'])
-            {{ $application->address }}
-        @else
-            Адрес не доступен
-        @endif
-    </td>
-    <td>
-        @if ($access['phone_number'])
-            {{ $application->phone_number }}
-        @else
-            Номер телефона не доступен
-        @endif
-    </td>
-</tr>
-@endforeach
-
-
-
-
+                                  @if ($access['address'])
+                                      {{ $application->address }}
+                                  @else
+                                      Адрес не доступен
+                                  @endif
+                              </td>
+                              <td>
+                                  @if ($access['phone_number'])
+                                      {{ $application->phone_number }}
+                                  @else
+                                      Номер телефона не доступен
+                                  @endif
+                              </td>
+                          </tr>
+                        @endforeach
                         </tbody>
                     </table>
                   </div>

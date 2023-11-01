@@ -171,20 +171,8 @@
               <span class="menu-title">Главная</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-              <i class="icon-layout menu-icon"></i>
-              <span class="menu-title">Виджеты</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="ui-basic">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{{ 'assets/pages/ui-features/buttons.html' }}">Buttons</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ 'assets/pages/ui-features/dropdowns.html' }}">Dropdowns</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ 'assets/pages/ui-features/typography.html' }}">Typography</a></li>
-              </ul>
-            </div>
-          </li>
+
+
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
               <i class="icon-columns menu-icon"></i>
@@ -216,28 +204,26 @@
                 <li class="nav-item"><a class="nav-link" href="{{ route('applicationsandaddresses.index') }}">Заявки и Адреса</a></li>
               </ul>
             </div>
-            @if(Auth::user() && Auth::user()->role && Auth::user()->role->name === 'metrolog')
+           
 
                 <div class="collapse" id="form-elements">
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"><a class="nav-link" href="{{ route('metrlog.index') }}">Мои Заявки</a></li>
                     </ul>
                 </div>
-            @endif
-            @if(Auth::user()->role->name === 'administrator')
+          
                 <div class="collapse" id="form-elements">
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"><a class="nav-link" href="{{ route('userrequisitessettings.index') }}">Реквезиты</a></li>
                     </ul>
                 </div>
-            @endif
-            @if(Auth::user()->role->name === 'administrator')
+           
                 <div class="collapse" id="form-elements">
                     <ul class="nav flex-column sub-menu">
                         <li class="nav-item"><a class="nav-link" href="{{ route('statustransitionsController.index') }}">Статусы</a></li>
                     </ul>
                 </div>
-            @endif
+           
           </li>
       </nav>
       <!-- partial -->

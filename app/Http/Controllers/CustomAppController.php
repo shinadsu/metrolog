@@ -28,8 +28,7 @@ class CustomAppController extends Controller
 {
 
     public function index(Request $request)
-    {   
-        
+    {       
         $deviceTypes = DeviceTypeGuide::all();
         $grsiNumbers = GrsiNumberGuide::all();
         $roleId = $request->user()->role_id;
@@ -42,7 +41,6 @@ class CustomAppController extends Controller
         $brands = BrandGuide::all();
         return view('create', compact('brands', 'statuses', 'deviceTypes', 'grsiNumbers', 'Users', 'request', 'roleId'));
     }
-
 
 
     public function store(Request $request)
@@ -69,10 +67,10 @@ class CustomAppController extends Controller
             // 'release_year' => 'required|integer',
             // 'modification' => 'required|string',
             // 'type' => 'required|string',
-            'actual' => 'required|string',
             'phone_number' => 'required|string',
             'country_code' => 'required|string',
             'payer_code' => 'required|string',
+            'actual' => 'required|string',
             'city_code' => 'required|string',
             'extension_number' => 'required|string',
         ]);

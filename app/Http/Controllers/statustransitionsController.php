@@ -6,18 +6,33 @@ use Illuminate\Http\Request;
 use App\Models\statustransitions;
 use App\Models\Statuses;  
 use App\Models\Role;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class statustransitionsController extends Controller
 {
     public function index()
     {   
-        $roles = Role::all();
-        $statuses = Statuses::all();
-        $statustransitions = statustransitions::with('role', 'status')->get();
+        $roles = DB::table('roles')->get();
+        $statuses = DB::table('statuses')->get();
+        
+        $statustransitions = DB::table('statustransitions')
+            ->select(
+                'statuses_base.name as base_status_name',
+                'statuses_new.name as new_status_name',
+                'roles.name as role_name',
+                'statustransitions.own_requests_allowed',
+                'statustransitions.others_requests_allowed'
+            )
+            ->join('roles', 'statustransitions.role_id', '=', 'roles.id')
+            ->join('statuses as statuses_base', 'statustransitions.base_status_id', '=', 'statuses_base.id')
+            ->join('statuses as statuses_new', 'statustransitions.new_status_id', '=', 'statuses_new.id')
+            ->get();
+        
         return view('statustransitions', compact('roles', 'statuses', 'statustransitions'));
-       
     }
+
+
 
     public function store(Request $request)
     {

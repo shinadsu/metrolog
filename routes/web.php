@@ -18,7 +18,6 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-
 // Route::get('/order', 'App\Http\Controllers\OrderController@index')->name('order.index');
 // Route::get('/InfoAboutWorkers', 'App\Http\Controllers\InfoAboutMetrologController@index')->name('InfoAboutWorkers.index');
 // Route::get('/create', 'App\Http\Controllers\CustomAppController@index')->name('create.index');
@@ -48,16 +47,36 @@ Route::middleware(['auth.redirect'])->group(function () {
     Route::get('/statustransition', 'App\Http\Controllers\statustransitionsController@index')->name('statustransitionsController.index');
     Route::post('/statustransition', 'App\Http\Controllers\statustransitionsController@store')->name('statustransitionsController.post');
     Route::get('/devices', 'App\Http\Controllers\ShowDeviceController@index')->name('devices.index');
+    Route::get('/fiasapi', 'App\Http\Controllers\TestFiasApiController@index')->name('fiasapi.index');
+    Route::get('/applicationsandaddresses/{id}/edit', 'App\Http\Controllers\ShowApplicationAndAddressesController@edit')->name('applicationsandaddresses.edit');
+    Route::put('/applicationsandaddresses/{id}', 'App\Http\Controllers\ShowApplicationAndAddressesController@update')->name('updateappandaddress.update');
+
+
+    Route::post('/proxy/fias', function () {
+        $response = Http::withHeaders([
+            'master-token' => 'ваш-master-token',
+            'Accept' => 'application/json'
+        ])->post('https://fias-public-service.nalog.ru/api/spas/v2.0/GetAddressItems', request()->all());
+    
+        return $response->body();
+    });
 
     Route::get('/metrolog', 'App\Http\Controllers\Metrlog@index')
-        ->middleware(['auth', 'CheckRoleMiddlware:metrolog,administrator'])
+        ->middleware(['auth', 'CheckRoleMiddlware:metrolog, administrator'])
         ->name('metrlog.index');
 
-
     Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
+    Route::get('/testfias', function () {
+        return view('tesfiasapi');
+    })->name('fias');
 
-   
-    
+    // Работа с fias api
+    // Route::get('/api/getAddressHint', 'App\Http\Controllers\ApiController@getAddressHint');
+    // Route::get('/api/searchAddressHint', 'App\Http\Controllers\ApiController@searchAddressHint');
+    Route::get('/api/getAddressItems', 'App\Http\Controllers\ApiController@getAddressItems');
+    Route::post('/api/postAddress', 'App\Http\Controllers\ApiController@postAddress');
+
+
 
 });
 

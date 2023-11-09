@@ -48,13 +48,31 @@ class UserRequisitesSettingsService
             case 'hidden':
                 return false; // 'hidden' - не отображать
             case 'required':
-                // Проверяем, принадлежит ли заявка этому пользователю
-                return ($rule->own_requests_allowed && $applicationUserId == Auth::id());
+                // Показываем поле, если заявка принадлежит текущему пользователю и разрешено для своих заявок
+                if ($rule->own_requests_allowed && $applicationUserId == Auth::id()) {
+                    return true;
+                }
+                // Показываем поле, если заявка не принадлежит текущему пользователю и разрешено для чужих заявок
+                if ($rule->others_requests_allowed && $applicationUserId != Auth::id()) {
+                    return true;
+                }
+                return false;
             case 'disabled':
-                // Проверяем, доступно ли для чужих заявок
-                return ($rule->others_requests_allowed || $rule->own_requests_allowed && $applicationUserId == Auth::id());
+                // Не показываем поле, если заявка принадлежит текущему пользователю и разрешено для своих заявок
+                if ($rule->own_requests_allowed && $applicationUserId == Auth::id()) {
+                    return false;
+                }
+                // Не показываем поле, если заявка не принадлежит текущему пользователю и разрешено для чужих заявок
+                if ($rule->others_requests_allowed && $applicationUserId != Auth::id()) {
+                    return false;
+                }
+                return true;
             default:
                 return false;
         }
     }
+
+
+
+
 }

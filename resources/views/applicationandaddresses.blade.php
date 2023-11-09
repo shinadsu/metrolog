@@ -251,6 +251,7 @@
                                 <th>Автор</th>
                                 <th>Адрес</th>
                                 <th>Номер телефона</th>
+                               
                             </tr>
                         </thead>
                         <tbody>
@@ -279,8 +280,15 @@
                                       Номер телефона не доступен
                                   @endif
                               </td>
+                              <td>
+                              <td>
+                              <!-- <td>
+                                  <a href="{{ route('applicationsandaddresses.edit', ['id' => $application->application_id]) }}" class="btn btn-sm btn-primary">Ред.</a>
+                              </td> -->
+
+                              </td>
                           </tr>
-                        @endforeach
+                      @endforeach
                         </tbody>
                     </table>
                   </div>

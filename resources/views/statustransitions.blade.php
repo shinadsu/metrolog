@@ -299,15 +299,17 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($statustransitions as $transition)
-                                <tr>
-                                    <td>{{ $transition->base_status_id }}</td>
-                                    <td>{{ $transition->new_status_id }}</td>
-                                    <td>{{ $transition->role->name }}</td>
-                                    <td>{{ $transition->own_requests_allowed }}</td>
-                                    <td>{{ $transition->others_requests_allowed }}</td>
-                                </tr>
-                                @endforeach
+                            @foreach($statustransitions as $transition)
+<tr>
+    <td>{{ $transition->base_status_name }}</td>
+    <td>{{ $transition->new_status_name }}</td>
+    <td>{{ $transition->role_name }}</td>
+    <td>{{ $transition->own_requests_allowed }}</td>
+    <td>{{ $transition->others_requests_allowed }}</td>
+</tr>
+@endforeach
+
+
                             </tbody>
                         </table>
                     </div>

@@ -12,8 +12,10 @@
   <link rel="stylesheet" href="{{ 'assets/vendors/css/vendor.bundle.base.css' }}">
   <!-- endinject -->
   <!-- Plugin css for this page -->
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="{{ 'assets/vendors/select2/select2.min.css' }}">
   <link rel="stylesheet" href="{{ 'assets/vendors/select2-bootstrap-theme/select2-bootstrap.min.css' }}">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="{{ 'assets/css/vertical-layout-light/style.css' }}">
@@ -295,14 +297,14 @@
                     </p>
                     <div class="row">
                       <div class="col-md-6">
-                        <div class="form-group row">
-                          <label for="address" class="col-sm-3 col-form-label">Адрес</label>
-                          <div class="col-sm-9">
-                            <input type="text" class="form-control" id="address" name="address" required />
+                          <div class="form-group row">
+                              <label for="address" class="col-sm-3 col-form-label">Субъект РФ</label>
+                              <div class="col-sm-9">
+                                  <input type="text" class="form-control" id="addressInput" name="addressInput" required />
+                                  <select id="addressDropdown" class="form-control" name="addressDropdown"></select>
+                              </div>
                           </div>
-                        </div>
                       </div>
-
                       <div class="col-md-6">
                         <div class="form-group row">
                           <label for="district" class="col-sm-3 col-form-label">Район</label>
@@ -446,22 +448,86 @@
                 </div>
             </div>
         </div>
-    </form>
-</div>
-</div>
-</div>
-        <!-- content-wrapper ends -->
-        <!-- partial:../../partials/_footer.html -->
-
-        <!-- partial -->
+    </form>       
+            </div>
+          </div>
+        </div>
       </div>
       <!-- main-panel ends -->
     </div>
     <!-- page-body-wrapper ends -->
   </div>
   <!-- container-scroller -->
+  <script>
+    $(document).ready(function() {
+        $('#addressInput').on('input', function() {
+            var searchValue = $(this).val();
+            if (searchValue.length > 0) {
+                // Если введен текст, отправляем AJAX-запрос
+                $.ajax({
+                    url: '{{ url("/api/getAddressItems") }}', // Путь к вашему методу getAddressItems в контроллере
+                    method: 'GET',
+                    success: function(response) {
+                        var fullNames = response.addresses;
+                        updateDropdown(fullNames); // Обновляем выпадающий список с подсказками
+                    },
+                    error: function(error) {
+                        console.log(error);
+                    }
+                });
+            } else {
+                // Если поле ввода пустое, скрываем выпадающий список
+                $('#addressDropdown').hide();
+            }
+        });
+
+        // Обновление выпадающего списка
+        function updateDropdown(fullNames) {
+            var dropdown = $('#addressDropdown');
+            dropdown.empty();
+
+            fullNames.forEach(function(fullName, index) {
+                if (index % 2 === 0) {
+                    // Используем только четные индексы, которые содержат имена субъектов
+                    var option = $('<option>').val(fullName).text(fullName);
+                    var objectId = fullNames[index + 1]; // Следующий элемент - object_id
+                    option.data('object-id', objectId); // Устанавливаем атрибут data-object-id
+                    dropdown.append(option);
+                }
+            });
+
+            // Показываем выпадающий список
+            dropdown.show();
+        }
+
+        // Обработчик события выбора значения из выпадающего списка
+        $('#addressDropdown').on('change', function() {
+            var selectedObjectId = $(this).find('option:selected').data('object-id');
+            var selectedObjectName = $(this).val(); // Получаем имя субъекта
+            console.log(selectedObjectId);
+            $('#addressInput').val(selectedObjectName); // Обновляем поле адреса с именем субъекта
+
+            // Отправляем AJAX-запрос для получения object_id выбранного субъекта РФ
+            $.ajax({
+                url: '{{ url("/api/postAddress") }}', // Путь к вашему методу getAddress в контроллере
+                method: 'POST',
+                data: { selectedAddress: selectedObjectId },
+                success: function(response) {
+                    var addresses = response.addresses;
+                    // Обработка полученных адресов
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+
+            $(this).hide(); // Скрываем выпадающий список после выбора значения
+        });
+    });
+</script>
   <!-- plugins:js -->
   <script src="{{ 'assets/vendors/js/vendor.bundle.base.js' }} "></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
   <!-- endinject -->
   <!-- Plugin js for this page -->
   <script src="{{ 'assets/vendors/typeahead.js/typeahead.bundle.min.js' }} "></script>

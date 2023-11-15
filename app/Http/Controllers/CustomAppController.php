@@ -4,13 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Application;
 use App\Models\Address;
-use App\Models\Device;
 use App\Models\Phone;
 use App\Models\Payer;
-use App\Models\BrandGuide;
-use App\Models\DeviceTypeGuide;
-use App\Models\addressDevice;
-use App\Models\GrsiNumberGuide;
 use App\Models\addressPayer;
 use App\Models\addressApplication;
 use App\Models\applicationMetrolog;
@@ -18,9 +13,8 @@ use App\Models\Statuses;
 use App\Models\statustransitions;
 use App\Models\User;
 use App\Models\addressPhone;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -28,18 +22,25 @@ class CustomAppController extends Controller
 {
 
     public function index(Request $request)
-    {       
-        $deviceTypes = DeviceTypeGuide::all();
-        $grsiNumbers = GrsiNumberGuide::all();
-        $roleId = $request->user()->role_id;
+    {   
+
+        $user = auth()->user();
+        if ($user && $user->role_id !== null) 
+        {
+            $roleId = $user->role_id;
+        } 
+        else 
+        {
+           dd('пидор');
+        }
+        $Users = User::where('role_id', 2)->get();    
         $allowedStatuses = statustransitions::where('role_id', $roleId)
                                         ->where('base_status_id', 5)
                                         ->pluck('new_status_id');
 
-        $Users = User::where('role_id', 2)->get();
-        $statuses = Statuses::whereIn('id', $allowedStatuses)->get();
-        $brands = BrandGuide::all();
-        return view('create', compact('brands', 'statuses', 'deviceTypes', 'grsiNumbers', 'Users', 'request', 'roleId'));
+        $statuses = Statuses::whereIn('id', $allowedStatuses)->get(); 
+        
+        return view('create', compact('statuses', 'Users', 'request'));
     }
 
 
@@ -135,7 +136,7 @@ class CustomAppController extends Controller
         // $device = Device::firstOrCreate($deviceData);
         
         
-        // заполненые сводной таблицы
+        // // заполненые сводной таблицы
         // $addressDevicedata = $request->only('address_id', 'device_id');
         // $addressDevicedata['address_id'] = $address->id;
         // $addressDevicedata['device_id'] = $device->id;
@@ -169,7 +170,7 @@ class CustomAppController extends Controller
         $addressPhonedata = $request->only('address_id', 'phone_id');
         $addressPhonedata['address_id'] = $address->id;
         $addressPhonedata['phone_id'] = $phone->id;
-        $addressPayer = addressPhone::create($addressPhonedata);
+        $addressPhone = addressPhone::create($addressPhonedata);
 
 
 

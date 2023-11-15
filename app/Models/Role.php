@@ -12,4 +12,9 @@ class Role extends Model
     protected $table = 'roles'; // Название таблицы в базе данных
     
     public $timestamps = false; // Отключаем метки времени для этой модели
+
+    public function User()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

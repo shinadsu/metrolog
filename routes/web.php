@@ -18,21 +18,8 @@ Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-// Route::get('/order', 'App\Http\Controllers\OrderController@index')->name('order.index');
-// Route::get('/InfoAboutWorkers', 'App\Http\Controllers\InfoAboutMetrologController@index')->name('InfoAboutWorkers.index');
-// Route::get('/create', 'App\Http\Controllers\CustomAppController@index')->name('create.index');
-// Route::post('/create', 'App\Http\Controllers\CustomAppController@store')->name('create.store');
-// Route::get('/addresses', 'App\Http\Controllers\ShowAddressController@index')->name('addresses.index');
-// Route::get('/contacts', 'App\Http\Controllers\ShowContactsController@index')->name('contacts.index');
-// Route::get('/applicationsandaddresses', 'App\Http\Controllers\ShowApplicationAndAddressesController@index')->name('applicationsandaddresses.index');
-// Route::get('/applications/{id}', 'App\Http\Controllers\Metrlog@show')->name('applications.show');
-// Route::post('/devices', 'App\Http\Controllers\DeviceController@store')->name('devices.store');
-// Route::get('/userrequisitessettings', 'App\Http\Controllers\UserRequisitesSettings@index')->name('userrequisitessettings.index');
-// Route::post('/userrequisitessettings', 'App\Http\Controllers\UserRequisitesSettings@store')->name('userrequisitessettings.store');
-// Route::get('/statustransition', 'App\Http\Controllers\statustransitionsController@index')->name('statustransitionsController.index');
-// Route::post('/statustransition', 'App\Http\Controllers\statustransitionsController@store')->name('statustransitionsController.post');
 
-Route::middleware(['auth.redirect'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('/order', 'App\Http\Controllers\OrderController@index')->name('order.index');
     Route::get('/InfoAboutWorkers', 'App\Http\Controllers\InfoAboutMetrologController@index')->name('InfoAboutWorkers.index');
     Route::get('/create', 'App\Http\Controllers\CustomAppController@index')->name('create.index');
@@ -73,12 +60,12 @@ Route::middleware(['auth.redirect'])->group(function () {
     // Работа с fias api
     // Route::get('/api/getAddressHint', 'App\Http\Controllers\ApiController@getAddressHint');
     // Route::get('/api/searchAddressHint', 'App\Http\Controllers\ApiController@searchAddressHint');
-    Route::get('/api/getAddressItems', 'App\Http\Controllers\ApiController@getAddressItems');
+    Route::post('/api/getAddressItems', 'App\Http\Controllers\ApiController@getAddressItems');
     Route::post('/api/postAddress', 'App\Http\Controllers\ApiController@postAddress');
-
-
+    Route::post('/api/postNewAddress', 'App\Http\Controllers\ApiController@postNewAddress');
 
 });
+
 
 Auth::routes();
 

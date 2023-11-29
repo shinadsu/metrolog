@@ -167,11 +167,12 @@
 </nav>
 <!-- partial -->
 <!-- partial:../../partials/_sidebar.html -->
+
 <nav class="sidebar sidebar-offcanvas" id="sidebar">
 <ul class="nav">
 <li class="nav-item">
   <a class="nav-link" href="{{ url('/') }}">
-    <i class="icon-grid menu-icon"></i>
+ 
     <span class="menu-title">Главная</span>
   </a>
 </li>
@@ -179,7 +180,7 @@
 
 <li class="nav-item">
   <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
-    <i class="icon-columns menu-icon"></i>
+   
     <span class="menu-title">Заявки</span>
     <i class="menu-arrow"></i>
   </a>
@@ -188,299 +189,452 @@
       <li class="nav-item"><a class="nav-link" href="{{ route('create.index') }}">Новая Заявка</a></li>
     </ul>
   </div>
-  <div class="collapse" id="form-elements">
-    <ul class="nav flex-column sub-menu">
-      <li class="nav-item"><a class="nav-link" href="{{ route('addresses.index') }}">Адреса</a></li>
-    </ul>
-  </div>
-  <div class="collapse" id="form-elements">
-    <ul class="nav flex-column sub-menu">
-      <li class="nav-item"><a class="nav-link" href="{{ route('contacts.index') }}">Контакты</a></li>
-    </ul>
-  </div>
-  <div class="collapse" id="form-elements">
-    <ul class="nav flex-column sub-menu">
-      <li class="nav-item"><a class="nav-link" href="{{ route('devices.index') }}">Девайсы</a></li>
-    </ul>
-  </div>
-  <div class="collapse" id="form-elements">
-    <ul class="nav flex-column sub-menu">
-      <li class="nav-item"><a class="nav-link" href="{{ route('applicationsandaddresses.index') }}">Заявки и Адреса</a></li>
-    </ul>
-  </div>
-
       <div class="collapse" id="form-elements">
           <ul class="nav flex-column sub-menu">
               <li class="nav-item"><a class="nav-link" href="{{ route('metrlog.index') }}">Мои Заявки</a></li>
           </ul>
       </div>
   
-      <div class="collapse" id="form-elements">
-          <ul class="nav flex-column sub-menu">
-              <li class="nav-item"><a class="nav-link" href="{{ route('userrequisitessettings.index') }}">Реквезиты</a></li>
-          </ul>
-      </div>
-
-      <div class="collapse" id="form-elements">
-          <ul class="nav flex-column sub-menu">
-              <li class="nav-item"><a class="nav-link" href="{{ route('statustransitionsController.index') }}">Статусы</a></li>
-          </ul>
-      </div>
   
 </li>
+ </li>
+           <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+             
+              <span class="menu-title">Инфо. Устройства</span>
+              <i class="menu-arrow"></i>
+            </a>    
+            <div class="collapse" id="form-elements">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item"><a class="nav-link" href="{{ route('devices.index') }}">Девайсы</a></li>
+            </ul>
+          </div>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+              
+              <span class="menu-title">Инфо. Адреса</span>
+              <i class="menu-arrow"></i>
+            </a>    
+            <div class="collapse" id="form-elements">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"><a class="nav-link" href="{{ route('addresses.index') }}">Адреса</a></li>
+              </ul>
+            </div>
+             <div class="collapse" id="form-elements">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"><a class="nav-link" href="{{ route('applicationsandaddresses.index') }}">Заявки и Адреса</a></li>
+              </ul>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+             
+              <span class="menu-title">Котакт. Данные</span>
+              <i class="menu-arrow"></i>
+            </a>    
+             <div class="collapse" id="form-elements">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"><a class="nav-link" href="{{ route('contacts.index') }}">Контакты</a></li>
+              </ul>
+            </div>
+          </li>
+           <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+             
+              <span class="menu-title">Админ. Данные</span>
+              <i class="menu-arrow"></i>
+            </a>    
+             <div class="collapse" id="form-elements">
+               <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"><a class="nav-link" href="{{ route('userrequisitessettings.index') }}">Реквезиты</a></li>
+                </ul>
+            </div>
+
+            <div class="collapse" id="form-elements">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"><a class="nav-link" href="{{ route('statustransitionsController.index') }}">Статусы</a></li>
+                </ul>
+            </div>
+          </li>
 </nav>
 <!-- partial -->
+
 <div class="main-panel">        
-<div class="content-wrapper">
-<div class="row">
-  <div class="col-12 grid-margin">
-    <div class="card">
-      <div class="card-body">
-        <h4 class="card-title">Заполнение заявки</h4>
+    <div class="content-wrapper">
         <form action="{{ route('create.store') }}" class="form-sample" method="POST">
-          @csrf
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group row">
-                <label for="fullname" class="col-sm-3 col-form-label">ФИО</label>
-                <div class="col-sm-9">
-                  <input class="form-control" type="text" id="fullname" name="fullname" required>
-                </div>
-              </div>
-            </div>    
-            <div class="col-md-6">
-              <div class="form-group row">
-                <label for="status" class="col-sm-3 col-form-label">Статус</label>
-                <div class="col-sm-9">
-                  <select class="form-control" id="status_id" name="status_id" required>
-                      @foreach($statuses as $status)
-                          <option value="{{ $status->id }}" {{ $status->name == 'new' ? 'selected' : '' }}>
-                              {{ $status->name }}
-                          </option>
-                      @endforeach
-                  </select>
-                </div>
-              </div>
-            </div>
-            </div>
-
+            @csrf
             <div class="row">
-            <div class="col-md-6">
-              <div class="form-group row">
-                <label for="type_of_payment" class="col-sm-3 col-form-label">Тип оплаты</label>
-                <div class="col-sm-9">
-                <select id="type_of_payment" name="type_of_payment" class="form-control" required>
-                    <option value="наличный">Наличный</option>
-                    <option value="безналичный">Безналичный</option>
-                  </select>
+                <div class="col-12 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Первоначальные данные</h4>            
+                            <div class="form-group">
+                                <label for="fullname">ФИО</label>
+                                <input type="text" class="form-control form-control-lg" id="fullname" name="fullname" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="status_id">Статус</label>
+                                <select class="form-control" id="status_id" name="status_id" required>
+                                    @foreach($statuses as $status)
+                                        <option value="{{ $status->id }}" {{ $status->name == 'new' ? 'selected' : '' }}>
+                                            {{ $status->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="type_of_payment">Тип оплаты</label>
+                                <select id="type_of_payment" name="type_of_payment" class="form-control" required>
+                                    <option value="наличный">Наличный</option>
+                                    <option value="безналичный">Безналичный</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="metrolog_id">Метролог</label>
+                                <select class="form-control" id="metrolog_id" name="metrolog_id" required>
+                                    @foreach($Users as $user)
+                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </div>    
-            <div class="col-md-6">
-              <div class="form-group row">
-                <label for="metrolog_id" class="col-sm-3 col-form-label">Метролог</label>
-                <div class="col-sm-9">
-                <select class="form-control" id="metrolog_id" name="metrolog_id" required>
-                            @foreach($Users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
-                            @endforeach
-                      </select>
+
+                <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Заполнение адреса</h4>
+                        <div class="form-group">
+                            <label for="addressInput">Субъект РФ</label>
+                            <input type="text" class="form-control" id="addressInput" name="addressInput" required>
+                            <select id="address" class="form-control" name="address" style="display: none;"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="addressesArea">Административный Район</label>
+                            <select id="addressesArea" class="form-control" name="addressesArea"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="addressCity">Город</label>
+                            <select id="addressCity" class="form-control" name="addressCity"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="addressSettlement">Поселок</label>
+                            <select id="addressSettlement" class="form-control" name="addressSettlement"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="addressPlanningStructure">Элемент планировочной структуры</label>
+                            <select id="addressPlanningStructure" class="form-control" name="addressPlanningStructure"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="addressStreet">Улица</label>
+                            <select id="addressStreet" class="form-control" name="addressStreet"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="addressHouse">Дом</label>
+                            <select id="addressHouse" class="form-control" name="addressHouse"></select>
+                        </div>
+                        <div class="form-group">
+                            <label for="addressApartment">Квартира</label>
+                            <select id="addressApartment" class="form-control" name="addressApartment"></select>
+                        </div>
+                        
+                    </div>
                 </div>
-              </div>
-            </div>
-            </div>
-
-        
-            <!-- Поля для адреса -->
-          <p class="card-description">
-            Заполнение адреса
-          </p>
-
-<!-- Общие поля -->
-
-<div class="row">
-              <div class="col-md-6">
-                  <div class="form-group row">
-                      <label for="addressInput" class="col-sm-3 col-form-label">Субъект РФ</label>
-                      <div class="col-sm-9">
-                          <input type="text" class="form-control" id="addressInput" name="addressInput" required>
-                          <select id="addressDropdown" class="form-control" name="addressDropdown" style="display: none;"></select>
-                      </div>
-                  </div>
-              </div>
-
-              <div class="col-md-6">
-                  <div class="form-group row">
-                      <label for="addresses-dropdowns" class="col-sm-3 col-form-label">Административный Район</label>
-                      <div class="col-sm-9">
-                          <select id="addresses-dropdowns" class="form-control" name="addresses-dropdowns"></select>
-                      </div>
-                  </div>
-              </div>
-       
-            <div class="col-md-6">
-              <div class="form-group row">
-                  <label for="admin-district-dropdown" class="col-sm-3 col-form-label">Город</label>
-                  <div class="col-sm-9">
-                      <select id="admin-district-dropdown" class="form-control" name="admin-district-dropdown"></select>
-                  </div>
-              </div>
-          </div>
-
-              <div class="col-md-6">
-                  <div class="form-group row">
-                      <label for="settlement-dropdown" class="col-sm-3 col-form-label">Поселок</label>
-                      <div class="col-sm-9">
-                          <select id="settlement-dropdown" class="form-control" name="settelment-dropdown"></select>
-                      </div>
-                  </div>
-              </div>
-
-
-              <div class="col-md-6">
-                  <div class="form-group row">
-                      <label for="planningStructure-dropdown" class="col-sm-3 col-form-label">элемент планировочноый структуры</label>
-                      <div class="col-sm-9">
-                          <select id="planningStructure-dropdown" class="form-control" name="planningStructure-dropdown"></select>
-                      </div>
-                  </div>
-              </div>
-
-
-              
-
-
-              <div class="col-md-6">
-                  <div class="form-group row">
-                      <label for="street-dropdown" class="col-sm-3 col-form-label">Улица</label>
-                      <div class="col-sm-9">
-                          <select id="street-dropdown" class="form-control" name="street-dropdown"></select>
-                      </div>
-                  </div>
-              </div>
-
-              <div class="col-md-6">
-                  <div class="form-group row">
-                      <label for="house-dropdowns" class="col-sm-3 col-form-label">Дом</label>
-                      <div class="col-sm-9">
-                          <select id="house-dropdowns" class="form-control" name="house-dropdowns"></select>
-                      </div>
-                  </div>
-              </div>
-
-              <div class="col-md-6">
-                  <div class="form-group row">
-                      <label for="Apartment-dropdowns" class="col-sm-3 col-form-label">Квартира</label>
-                      <div class="col-sm-9">
-                          <select id="Apartment-dropdowns" class="form-control" name="Apartment-dropdowns"></select>
-                      </div>
-                  </div>
-              </div>
-
-         
-              
-             
-
-</div>
-</div>
-            <p class="card-description">
-            Поля плательщика
-          </p>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group row">
-                <label for="actual" class="col-sm-3 col-form-label">Актуальность плательщика</label>
-                <div class="col-sm-9">
-                  <select id="actual" name="actual" class="form-control" required>
-                    <option value="актуальный">Актуальный</option>
-                    <option value="не актуальный">не актуальный</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group row">
-                <label for="payer_code" class="col-sm-3 col-form-label">Код плательщика</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="payer_code" name="payer_code" required/>
-                </div>
-              </div>
-            </div>
-          </div> 
-        
-          <!-- Поля для телефона -->
-          <p class="card-description">
-            Поля телефона
-          </p>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group row">
-                <label for="phone_number" class="col-sm-3 col-form-label">Номер телефона</label>
-                <div class="col-sm-9">
-                  <input type="tel" class="form-control" id="phone_number" name="phone_number" required/>
-                </div>
-              </div>
             </div>
 
-            <div class="col-md-6">
-              <div class="form-group row">
-                <label for="country_code" class="col-sm-3 col-form-label">Код страны</label>
-                <div class="col-sm-9">
-                  <input type="number" class="form-control" id="country_code" name="country_code" required/>
-                </div>
-              </div>
-            </div>
-          </div>
+            <!-- ... Your existing code ... -->
 
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group row">
-                <label for="city_code" class="col-sm-3 col-form-label">Код города</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="city_code" name="city_code" required/>
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="dopTab" data-toggle="tab" href="#dop" role="tab" aria-controls="dop" aria-selected="true">Доп работы</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="zamenaTab" data-toggle="tab" href="#zamena" role="tab" aria-controls="zamena" aria-selected="false">Замена</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="poverkaTab" data-toggle="tab" href="#poverka" role="tab" aria-controls="poverka" aria-selected="false">Поверка</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="pretenziiTab" data-toggle="tab" href="#pretenzii" role="tab" aria-controls="pretenzii" aria-selected="false">Претензии</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="santehTab" data-toggle="tab" href="#santeh" role="tab" aria-controls="santeh" aria-selected="false">Сантех. Услуги</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="specificationsTab" data-toggle="tab" href="#specifications" role="tab" aria-controls="specifications" aria-selected="false">Спецификации</a>
+                            </li>
+                        </ul>
+                        <div id="totalPrice">
+                            <h4>Общая цена: <span id="totalPrice">0</span></h4>
+                        </div>
+
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="dop" role="tabpanel" aria-labelledby="dopTab">
+                                <div style="max-height: 400px; overflow-y: auto;">
+                                    <div class="table-responsive pt-3">
+                                        <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>Наименование</th>
+                                                <th>Цена</th>
+                                                <th>Плюс</th>
+                                                <th>Минус</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($additionalWork as $index => $additionalWor)
+                                                    <tr data-id="{{ $index }}">
+                                                        <td>{{ $additionalWor->name }}</td>
+                                                        <td class="price">{{ $additionalWor->price->price }}</td>
+                                                        <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
+                                                        <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="zamena" role="tabpanel" aria-labelledby="zamenaTab">
+                                <div style="max-height: 400px; overflow-y: auto;">
+                                    <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Наименование</th>
+                                                    <th>Цена</th>
+                                                    <th>Плюс</th>
+                                                    <th>Минус</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($replacements as $index => $replacement)
+                                                <tr data-id="{{ $index }}">
+                                                        <td>{{ $replacement->name }}</td>
+                                                        <td class="price">{{ $replacement->price->price }}</td>
+                                                        <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
+                                                        <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                               </div>
+                            <div class="tab-pane fade" id="poverka" role="tabpanel" aria-labelledby="poverkaTab">
+                                <div style="max-height: 400px; overflow-y: auto;">
+                                    <table class="table table-bordered">
+                                            <thead>
+                                                <tr> 
+                                                    <th>Наименование</th>
+                                                    <th>Цена</th>
+                                                    <th>Плюс</th>
+                                                    <th>Минус</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($verificationOfCounters as $index => $verificationOfCounter)
+                                                <tr data-id="{{ $index }}">
+                                                        <td>{{ $verificationOfCounter->name }}</td>
+                                                        <td class="price">{{ $verificationOfCounter->price->price }}</td>
+                                                        <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
+                                                        <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                               </div>
+                            <div class="tab-pane fade" id="pretenzii" role="tabpanel" aria-labelledby="pretenziiTab">
+                                <div style="max-height: 400px; overflow-y: auto;">
+                                    <table class="table table-bordered">
+                                            <thead>
+                                                <tr> 
+                                                    <th>Наименование</th>
+                                                    <th>Цена</th>
+                                                    <th>Плюс</th>
+                                                    <th>Минус</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($claims as $index => $claim)
+                                            <tr data-id="{{ $index }}">
+                                                        <td>{{ $claim->name }}</td>
+                                                        <td class="price">{{ $claim->price->price }}</td>
+                                                        <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
+                                                        <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
+                                                    </tr>
+                                            @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            <div class="tab-pane fade" id="santeh" role="tabpanel" aria-labelledby="santehTab">
+                                <div style="max-height: 400px; overflow-y: auto;">
+                                <table class="table table-bordered">
+                                        <thead>
+                                            <tr> 
+                                                <th>Наименование</th>
+                                                <th>Цена</th>
+                                                <th>Плюс</th>
+                                                <th>Минус</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($plumbingServices as $index => $plumbingService)
+                                            <tr data-id="{{ $index }}">
+                                                        <td>{{ $plumbingService->name }}</td>
+                                                        <td class="price">{{ $plumbingService->price->price }}</td>
+                                                        <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
+                                                        <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
+                                                    </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="specifications" role="tabpanel" aria-labelledby="specificationsTab">
+                                <div style="max-height: 400px; overflow-y: auto;">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr> 
+                                                <th>Наименование</th>
+                                                <th>Цена</th>
+                                                <th>Плюс</th>
+                                                <th>Минус</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($specifications as $index => $specification)
+                                            <tr data-id="{{ $index }}">
+                                                        <td>{{ $specification->name }}</td>
+                                                        <td class="price">{{ $specification->price->price }}</td>
+                                                        <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
+                                                        <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
+                                                    </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
 
-            <div class="col-md-6">
-              <div class="form-group row">
-                <label for="extension_number" class="col-sm-3 col-form-label">Номер дополнительной линии</label>
-                <div class="col-sm-9">
-                  <input type="text" class="form-control" id="extension_number" name="extension_number" required/>
+<!-- ... Continue with your existing code ... -->
+
+
+
+                <div class="col-md-6 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Заполнение информации о плательщике</h4>
+                            <div class="form-group">
+                                <label for="actual">Актуальность плательщика</label>
+                                <select id="actual" name="actual" class="form-control" required>
+                                    <option value="актуальный">Актуальный</option>
+                                    <option value="не актуальный">не актуальный</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="payer_code">Код плательщика</label>
+                                <input type="text" class="form-control" id="payer_code" name="payer_code" required/>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-              </div>
+
+                <div class="col-md-6 grid-margin stretch-card">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Контактные данные</h4>
+                            <div class="form-group">
+                                <label for="phone_number">Номер телефона</label>
+                                <input type="tel" class="form-control" id="phone_number" name="phone_number" required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="extension_number">дополнительный телефона</label>
+                                <input type="tel" class="form-control" id="extension_number" name="extension_number" required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="country_code">Код страны</label>
+                                <input type="number" class="form-control" id="country_code" name="country_code" required/>
+                            </div>
+                            <div class="form-group">
+                                <label for="city_code">Код города</label>
+                                <input type="text" class="form-control" id="city_code" name="city_code" required/> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
-          <button type="submit" class="btn btn-primary mr-2">Отправить заявку</button>    
-          </div>        
-      </div>
-  </div>
+
+            <!-- Кнопка отправки -->
+            <button type="submit" class="btn btn-primary mr-2">Отправить заявку</button>
+        </form>
+    </div>
 </div>
-</form>       
-  </div>
-</div>
-</div>
-</div>
-<!-- main-panel ends -->
-</div>
-<!-- page-body-wrapper ends -->
-</div>
-  <!-- container-scroller -->
+
+<script>
+var selectedPrices = [];
+var total = 0;
+
+function updateTotalPrice(operation, index) {
+    var priceElement = document.querySelector('tr[data-id="' + index + '"] .price');
+    var currentPrice = parseFloat(priceElement.textContent);
+
+    // Проверка, что элемент был ранее добавлен
+    if (selectedPrices.includes(index)) {
+        if (operation === 'plus') {
+            // Добавить цену к общей цене
+            total += currentPrice;
+            // Добавить индекс элемента в массив выбранных элементов
+            selectedPrices.push(index);
+        } else if (operation === 'minus') {
+            // Проверка, что общая цена не станет отрицательной
+            if (total >= currentPrice) {
+                // Вычесть цену из общей цены
+                total -= currentPrice;
+                // Удалить индекс элемента из массива выбранных элементов
+                selectedPrices = selectedPrices.filter((item) => item !== index);
+            }
+        }
+
+        // Ограничить количество десятичных знаков до двух
+        total = parseFloat(total.toFixed(2));
+
+        // Обновить общую цену на странице
+        document.getElementById('totalPrice').textContent = total;
+    }
+}
+
+</script>
+
   <script>
-    var selectedObjectId;
-    var selectedSubjectId;
+    let currentPath = "";
+    let selectedObjectId;
+    let selectedSubjectId;
+
 $(document).ready(function() {
 
     var addressInput = $('#addressInput');
-    var addressDropdown = $('#addressDropdown');
-    var selectedCity = $('#admin-district-dropdown'); // 2
-    var selectedDistrict = $('#addresses-dropdowns'); // 5
-    var selectedSettlement = $('#settlement-dropdown'); // 6
-    var selectedPlanningStructure = $('#planningStructure-dropdown'); // 7
-    var selectedStreet = $('#street-dropdown'); // 8
-    var selectedHouse = $('#house-dropdowns'); // 10
-    var selectedApartment = $('#Apartment-dropdowns'); // 11
+    var addressDropdown = $('#address');
+    var selectedDistrict = $('#addressesArea'); // 5
+    var selectedCity = $('#addressCity'); // 2
+    var selectedSettlement = $('#addressSettlement'); // 6
+    var selectedPlanningStructure = $('#addressPlanningStructure'); // 7
+    var selectedStreet = $('#addressStreet'); // 8
+    var selectedHouse = $('#addressHouse'); // 10
+    var selectedApartment = $('#addressApartment'); // 11
 
+  
 
     // ajax к полю "Субъект РФ"
     addressInput.on('input', function() 
@@ -541,12 +695,12 @@ $(document).ready(function() {
             {
                 var addressesData = response.addresses;
                 console.log(addressesData);
-                {{-- $('select[name="address-dropdown"]').empty();
-                $('select[name="admin-district-dropdown"]').empty();
-                $('select[name="settelment-dropdown"]').empty(); --}}
+                {{-- $('select[name="address"]').empty();
+                $('select[name="addressCity"]').empty();
+                $('select[name="addressSettlement"]').empty(); --}}
            
                 if (addressesData.hasOwnProperty('2')) {
-                    var dropdown = $('select[name="addresses-dropdowns"]');
+                    var dropdown = $('select[name="addressesArea"]');
                     dropdown.empty();
                     dropdown.append('<option value="" selected disabled hidden>Выберите Район</option>');
                     $.each(addressesData['2'], function(index, address) {
@@ -557,7 +711,7 @@ $(document).ready(function() {
                 }
 
                 if (addressesData.hasOwnProperty('5')) {
-                    var dropdown = $('select[name="admin-district-dropdown"]');
+                    var dropdown = $('select[name="addressCity"]');
                     dropdown.empty();
                     dropdown.append('<option value="" selected disabled hidden>Выберите Город</option>');
                     $.each(addressesData['5'], function(index, address) {
@@ -568,7 +722,7 @@ $(document).ready(function() {
                 }
 
                 if (addressesData.hasOwnProperty('6')) {
-                    var dropdown = $('select[name="settelment-dropdown"]');
+                    var dropdown = $('select[name="addressSettlement"]');
                     dropdown.empty();
                     dropdown.append('<option value="" selected disabled hidden>Выберите населлный пункт</option>');
                     $.each(addressesData['6'], function(index, address) {
@@ -579,7 +733,7 @@ $(document).ready(function() {
                 }
 
                 if (addressesData.hasOwnProperty('7')) {
-                    var dropdown = $('select[name="planningStructure-dropdown"]');
+                    var dropdown = $('select[name="addressPlanningStructure"]');
                     dropdown.empty();
                     dropdown.append('<option value="" selected disabled hidden>Выберите элемент планировочноый структуры</option>');
                     $.each(addressesData['7'], function(index, address) {
@@ -590,7 +744,7 @@ $(document).ready(function() {
                 }
 
                 if (addressesData.hasOwnProperty('8')) {
-                    var dropdown = $('select[name="street-dropdown"]');
+                    var dropdown = $('select[name="addressStreet"]');
                     dropdown.empty();
                     dropdown.append('<option value="" selected disabled hidden>Выберите улично дорожный элемент</option>');
                     $.each(addressesData['8'], function(index, address) {
@@ -601,7 +755,7 @@ $(document).ready(function() {
                 }
 
                 if (addressesData.hasOwnProperty('10')) {
-                    var dropdown = $('select[name="house-dropdowns"]');
+                    var dropdown = $('select[name="addressHouse"]');
                     dropdown.empty();
                     dropdown.append('<option value="" selected disabled hidden>Выберите дом</option>');
                     $.each(addressesData['10'], function(index, address) {
@@ -613,7 +767,7 @@ $(document).ready(function() {
 
                 if (addressesData.hasOwnProperty('11')) 
                 {
-                    var dropdown = $('select[name="Apartment-dropdowns"]');
+                    var dropdown = $('select[name="addressApartment"]');
                     dropdown.empty();
                     dropdown.append('<option value="" selected disabled hidden>Выберите квартиру</option>');
                     $.each(addressesData['11'], function(index, address) 
@@ -624,6 +778,7 @@ $(document).ready(function() {
                     });
                 }                                    
                 
+    
             },
             error: function(error) {
                 console.log(error);
@@ -631,39 +786,41 @@ $(document).ready(function() {
 
         });
 
+
+    /* ajax запрос, который работает после отработки метода postAddress
+    данный ajax строит path для запроса к FIAS,  
+        
+    */   
       function onSelectChange(selectedElement) 
       {
-      var selectedSubjectId = selectedElement.find('option:selected').data('object-id');
-      console.log(selectedSubjectId);
-      addressDropdown.hide();
-      $.ajax(
+  
+        console.log($(this));
+        addressDropdown.hide();
+        $.ajax(
           {
             url: '{{ url("/api/postNewAddress") }}',
             method: 'POST',
-            data: { objectID: selectedObjectId, newObjectId: selectedSubjectId },
+            data: { objectID: selectedObjectId, path: currentPath },
             success: function(response) 
             {
                 var addressesDatas = response.addresses;
                 console.log(addressesDatas);
-                {{-- $('select[name="address-dropdown"]').empty();
-                $('select[name="admin-district-dropdown"]').empty();
-                $('select[name="settelment-dropdown"]').empty(); --}}      
+               
            
                 if (addressesDatas.hasOwnProperty('2')) 
-                {
-                    var dropdown = $('select[name="addresses-dropdowns"]');
+                {   
+                    var dropdown = $('select[name="addressesArea"]');
                     dropdown.empty();
                     dropdown.append('<option value="" selected disabled hidden>Выберите Район</option>');
-                    $.each(addressesDatas['2'], function(index, address) 
-                    {
+                    $.each(addressesDatas['2'], function(index, address) {
                         var newOption = new Option(address.full_name, address.full_name, false, false);
                         $(newOption).data('object-id', address.object_id);
-                        dropdown.append(newOption);
+                        dropdown.append(newOption);   
                     });
                 }
 
                 if (addressesDatas.hasOwnProperty('5')) {
-                    var dropdown = $('select[name="admin-district-dropdown"]');
+                    var dropdown = $('select[name="addressCity"]');
                     dropdown.empty();
                     dropdown.append('<option value="" selected disabled hidden>Выберите Город</option>');
                     $.each(addressesDatas['5'], function(index, address) {
@@ -674,7 +831,7 @@ $(document).ready(function() {
                 }
 
                 if (addressesDatas.hasOwnProperty('6')) {
-                    var dropdown = $('select[name="settelment-dropdown"]');
+                    var dropdown = $('select[name="addressSettlement"]');
                     dropdown.empty();
                     dropdown.append('<option value="" selected disabled hidden>Выберите населлный пункт</option>');
                     $.each(addressesDatas['6'], function(index, address) {
@@ -685,7 +842,7 @@ $(document).ready(function() {
                 }
 
                 if (addressesDatas.hasOwnProperty('7')) {
-                    var dropdown = $('select[name="planningStructure-dropdown"]');
+                    var dropdown = $('select[name="addressPlanningStructure"]');
                     dropdown.empty();
                     dropdown.append('<option value="" selected disabled hidden>Выберите элемент планировочноый структуры</option>');
                     $.each(addressesDatas['7'], function(index, address) {
@@ -696,7 +853,7 @@ $(document).ready(function() {
                 }
 
                 if (addressesDatas.hasOwnProperty('8')) {
-                    var dropdown = $('select[name="street-dropdown"]');
+                    var dropdown = $('select[name="addressStreet"]');
                     dropdown.empty();
                     dropdown.append('<option value="" selected disabled hidden>Выберите улично дорожный элемент</option>');
                     $.each(addressesDatas['8'], function(index, address) {
@@ -708,7 +865,7 @@ $(document).ready(function() {
 
                 if (addressesDatas.hasOwnProperty('10')) 
                 {
-                    var dropdown = $('select[name="house-dropdowns"]');
+                    var dropdown = $('select[name="addressHouse"]');
                     dropdown.empty();
                     dropdown.append('<option value="" selected disabled hidden>Выберите дом</option>');
                     $.each(addressesDatas['10'], function(index, address) {
@@ -720,7 +877,7 @@ $(document).ready(function() {
 
                 if (addressesDatas.hasOwnProperty('11')) 
                 {
-                    var dropdown = $('select[name="Apartment-dropdowns"]');
+                    var dropdown = $('select[name="addressApartment"]');
                     dropdown.empty();
                     dropdown.append('<option value="" selected disabled hidden>Выберите квартиру</option>');
                     $.each(addressesDatas['11'], function(index, address) 
@@ -728,75 +885,160 @@ $(document).ready(function() {
                         var newOption = new Option(address.full_name, address.full_name, false, false);
                         $(newOption).data('object-id', address.object_id);
                         dropdown.append(newOption);
+                       
                     });
                 }      
-                
-                           
-                
+
+                   
             },
-            error: function(error) {
-                        console.log(error);
-                    }
-          });
-      }
-
-      selectedCity.on('change', function() {
-        onSelectChange(selectedCity);
-    });
-
-    selectedDistrict.on('change', function() {
-        onSelectChange(selectedDistrict);
-
-    });
-
-    selectedSettlement.on('change', function() {
-        onSelectChange(selectedSettlement);
-    });
-
-    selectedPlanningStructure.on('change', function() {
-        onSelectChange(selectedPlanningStructure);
-    });
-
-    selectedStreet.on('change', function() {
-        onSelectChange(selectedStreet);
-    });
-
-    selectedHouse.on('change', function() {
-        onSelectChange(selectedHouse);
-
-    });
-
-    selectedApartment.on('change', function() {
-        onSelectChange(selectedApartment);
-    });
+            error: function(error) 
+            {
+                console.log(error);
+            }
+          }); 
 
 
-    addressDropdown.on('mousedown', function(e) {
-        e.stopPropagation(); 
-    });
+      } 
+    
+    // дебаг функция
+    function postNewAddress(currentPath) 
+    {
+    
+      console.log('Address sent to the server:', currentPath);
+    }
 
-    $(document).on('mousedown', function() {
-        addressDropdown.hide(); 
-    });
+      let addressHierarchy = []; // Массив для хранения уровней адреса
+     
+
+  function updateCurrentPath(selectedObjectId, selectorId) 
+  {
+    const selectedObjectIndex = addressHierarchy.findIndex(entry => entry.selectorId === selectorId);
+    const currentObject = 
+    {
+        objectId: selectedObjectId,
+        selectorId: selectorId
+    };
+
+    if (selectedObjectIndex === -1) 
+    {
+        // Если элемент еще не выбран, добавляем его в массив
+        addressHierarchy.push(currentObject);
+    } 
+    else 
+    {
+        // Если элемент уже выбран, обновляем его objectId
+        addressHierarchy[selectedObjectIndex].objectId = selectedObjectId;
+
+        // Проверяем порядок уровней адреса
+        if (!checkLevelOrder(selectedObjectIndex + 1, selectedObjectIndex)) 
+        {
+            // Если порядок нарушен, обнуляем путь до текущего уровня
+            addressHierarchy = addressHierarchy.slice(0, selectedObjectIndex + 1);
+        }
+    }
+
+    // Строим path на основе массива
+    const pathArray = addressHierarchy.map(entry => entry.objectId);
+    currentPath = pathArray.join('.'); // Используем глобальную переменную
+
+    // Далее вы можете использовать currentPath по своему усмотрению
+    // Например, передать его в postNewAddress(currentPath) для отправки на сервер
+    console.log(currentPath);
+
+    // Пример передачи currentPath в функцию postNewAddress
+    postNewAddress(currentPath);
+}
 
 
+function checkLevelOrder(expectedLevel, selectedObjectIndex) {
+    const currentSelectorId = addressHierarchy[selectedObjectIndex].selectorId;
+
+    // Определяем порядок уровней адреса в зависимости от текущего селектора
+    const levelOrder = {
+        'addressesArea': 5,  // Административный Район
+        'addressCity': 2,  // Город
+        'addressSettlement': 6,  // Поселок
+        'addressPlanningStructure': 7,  // Элемент планировочной структуры
+        'addressStreet': 8,  // Улица
+        'addressHouse': 10,  // Дом
+        'addressApartment': 11  // Квартира
+    };
+
+    // Если выбранный уровень идет в ожидаемом порядке, возвращаем true
+    return levelOrder[currentSelectorId] === expectedLevel;
+}
+
+// Добавьте обработчики событий для каждого выпадающего списка
+
+
+$('#addressesArea').on('change', function() {
+    const selectedObjectId = $(this).find('option:selected').data('object-id');
+    updateCurrentPath(selectedObjectId, 'addressesArea');
+    onSelectChange($(this));
+});
+
+
+$('#addressCity').on('change', function() {
+    const selectedObjectId = $(this).find('option:selected').data('object-id');
+    updateCurrentPath(selectedObjectId, 'addressCity');
+    onSelectChange($(this));
+});
+
+$('#addressSettlement').on('change', function() {
+    const selectedObjectId = $(this).find('option:selected').data('object-id');
+    updateCurrentPath(selectedObjectId, 'addressSettlement');
+    onSelectChange($(this));
+});
+
+$('#addressPlanningStructure').on('change', function() {
+    const selectedObjectId = $(this).find('option:selected').data('object-id');
+    updateCurrentPath(selectedObjectId, 'addressPlanningStructure');
+    onSelectChange($(this));
+});
+
+$('#addressStreet').on('change', function() {
+    const selectedObjectId = $(this).find('option:selected').data('object-id');
+    updateCurrentPath(selectedObjectId, 'addressStreet');
+    console.log(selectedObjectId);
+    onSelectChange($(this));
+});
+
+$('#addressHouse').on('change', function() {
+    const selectedObjectId = $(this).find('option:selected').data('object-id');
+    updateCurrentPath(selectedObjectId, 'addressHouse');
+    onSelectChange($(this));
+});
+
+$('#addressApartment').on('change', function() {
+    const selectedObjectId = $(this).find('option:selected').data('object-id');
+    updateCurrentPath(selectedObjectId, 'addressApartment');
+    onSelectChange($(this));
+});
   });
 
-    function updateDropdowns(addressesData) {
-        addressesData.forEach(function(item) {
-            var objectLevelId = item.object_level_id;
-            var addresses = item.addresses;
-            var actualDropdownContainer = $('#dropdown-container-' + objectLevelId);
-            actualDropdownContainer.empty();
 
-            addresses.forEach(function(address) {
-                var option = $('<option>').val(address).text(address);
-                actualDropdownContainer.append(option);
-            });
+        function updateDropdowns(addressesData) {
+          addressesData.forEach(function(item) {
+              var objectLevelId = item.object_level_id;
+              var addresses = item.addresses;
+              var actualDropdownContainer = $('#dropdown-container-' + objectLevelId);
+              actualDropdownContainer.empty();
 
-            actualDropdownContainer.show();
-        });
-    }
+              addresses.forEach(function(address) {
+                  var option = $('<option>').val(address).text(address);
+                  actualDropdownContainer.append(option);
+              });
+
+              actualDropdownContainer.show();
+          });
+
+          // Пример передачи currentPath в функцию postNewAddress
+          postNewAddress(currentPath);
+      }
+
+
+
+      
 });
   </script>
   <!-- plugins:js -->

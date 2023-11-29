@@ -32,61 +32,61 @@ class ShowApplicationAndAddressesController extends Controller
     }
 
     public function update(Request $request, $id)
-{
-    // Получаем данные из запроса
-    $data = $request->all();
+    {
+        // Получаем данные из запроса
+        $data = $request->all();
 
-    // Правила валидации данных
-    $validator = Validator::make($data, [
-        'id' => 'required|integer',
-        'fullname' => 'required|string',
-        'user_id' => 'required|integer',
-        'status_id' => 'required|integer',
-        'type_of_payment' => 'required|string',
-        'address' => 'required|string',
-        'phone_number' => 'required|string',
-    ]);
+        // Правила валидации данных
+        $validator = Validator::make($data, [
+            'id' => 'required|integer',
+            'fullname' => 'required|string',
+            'user_id' => 'required|integer',
+            'status_id' => 'required|integer',
+            'type_of_payment' => 'required|string',
+            'address' => 'required|string',
+            'phone_number' => 'required|string',
+        ]);
 
-    // Проверка валидации
-    if ($validator->fails()) {
-        return response()->json(['message' => $validator->errors()->first()], 422);
+        // Проверка валидации
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->first()], 422);
+        }
+
+        try {
+            // Начинаем транзакцию
+            DB::beginTransaction();
+
+            // Обновляем запись в таблице applications
+            DB::table('applications')->where('id', $data['id'])->update([
+                'fullname' => $data['fullname'],
+                'user_id' => $data['user_id'],
+                'status_id' => $data['status_id'],
+                'type_of_payment' => $data['type_of_payment'],
+            ]);
+
+            // Обновляем запись в таблице addresses
+            DB::table('addresses')->where('application_id', $data['id'])->update([
+                'address' => $data['address'],
+            ]);
+
+            // Обновляем запись в таблице phones
+            DB::table('phones')->where('application_id', $data['id'])->update([
+                'phone_number' => $data['phone_number'],
+            ]);
+
+            // Если все операции выполнены успешно, подтверждаем транзакцию
+            DB::commit();
+
+            // Возвращаем подтверждение в виде JSON-ответа
+            return response()->json(['message' => 'Данные успешно обновлены']);
+        } catch (\Exception $e) {
+            // В случае ошибки откатываем транзакцию
+            DB::rollBack();
+
+            // Возвращаем сообщение об ошибке в виде JSON-ответа
+            return response()->json(['message' => 'Произошла ошибка при обновлении данных']);
+        }
     }
-
-    try {
-        // Начинаем транзакцию
-        DB::beginTransaction();
-
-        // Обновляем запись в таблице applications
-        DB::table('applications')->where('id', $data['id'])->update([
-            'fullname' => $data['fullname'],
-            'user_id' => $data['user_id'],
-            'status_id' => $data['status_id'],
-            'type_of_payment' => $data['type_of_payment'],
-        ]);
-
-        // Обновляем запись в таблице addresses
-        DB::table('addresses')->where('application_id', $data['id'])->update([
-            'address' => $data['address'],
-        ]);
-
-        // Обновляем запись в таблице phones
-        DB::table('phones')->where('application_id', $data['id'])->update([
-            'phone_number' => $data['phone_number'],
-        ]);
-
-        // Если все операции выполнены успешно, подтверждаем транзакцию
-        DB::commit();
-
-        // Возвращаем подтверждение в виде JSON-ответа
-        return response()->json(['message' => 'Данные успешно обновлены']);
-    } catch (\Exception $e) {
-        // В случае ошибки откатываем транзакцию
-        DB::rollBack();
-
-        // Возвращаем сообщение об ошибке в виде JSON-ответа
-        return response()->json(['message' => 'Произошла ошибка при обновлении данных']);
-    }
-}
 
 
 
@@ -108,10 +108,25 @@ class ShowApplicationAndAddressesController extends Controller
                 'applications.type_of_payment',
                 'users.name as user_name',
                 'applications.user_id as user_id',
-                'addresses.address',
+                'addresses.combined_address as address', // использование combined_address
                 'phones.phone_number'
             )
-            ->get();
+            ->get()
+            ->map(function ($item) {
+                // Преобразование combined_address из JSON в массив
+                $combinedAddress = json_decode($item->address, true);
+                if ($combinedAddress !== null && !empty($combinedAddress)) {
+                    $lastKey = key(array_slice($combinedAddress, -1, 1, true));
+                    // Ваш дальнейший код с использованием $lastKey
+                } else {
+                    // Обработка ситуации, когда $combinedAddress равен null или пуст
+                    // Например, установка значения по умолчанию или другие действия
+                    $lastKey = null; // Установка значения по умолчанию или другая обработка
+                }
+                $item->address = isset($combinedAddress[$lastKey]) ? $combinedAddress[$lastKey] : null;
+    
+                return $item;
+            });
     }
 
     public function index()
@@ -119,12 +134,12 @@ class ShowApplicationAndAddressesController extends Controller
         $user = Auth::user();
         $userRole = $user->role_id;
         $applicationsWithDetails = $this->getApplicationsWithDetails($userRole);
-        $userRequisitesSettingsService = new UserRequisitesSettingsService();
 
+        $userRequisitesSettingsService = new UserRequisitesSettingsService();
+    
         return view('applicationandaddresses', compact('applicationsWithDetails', 'userRole', 'userRequisitesSettingsService', 'user'));
     }
 
 
 
-    // Остальные методы контроллера...
 }

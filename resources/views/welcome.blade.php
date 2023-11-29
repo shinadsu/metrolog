@@ -69,68 +69,98 @@
         </div>
       </nav>
     <!-- partial -->
-    <div class="container-fluid page-body-wrapper">
-      <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <ul class="nav">
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url('/') }}">
-              <i class="icon-grid menu-icon"></i>
-              <span class="menu-title">Главная</span>
-            </a>
+    <nav class="sidebar sidebar-offcanvas" id="sidebar">
+<ul class="nav">
+<li class="nav-item">
+  <a class="nav-link" href="{{ url('/') }}">
+ 
+    <span class="menu-title">Главная</span>
+  </a>
+</li>
+
+
+<li class="nav-item">
+  <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+   
+    <span class="menu-title">Заявки</span>
+    <i class="menu-arrow"></i>
+  </a>
+  <div class="collapse" id="form-elements">
+    <ul class="nav flex-column sub-menu">
+      <li class="nav-item"><a class="nav-link" href="{{ route('create.index') }}">Новая Заявка</a></li>
+    </ul>
+  </div>
+      <div class="collapse" id="form-elements">
+          <ul class="nav flex-column sub-menu">
+              <li class="nav-item"><a class="nav-link" href="{{ route('metrlog.index') }}">Мои Заявки</a></li>
+          </ul>
+      </div>
+  
+  
+</li>
+ </li>
+           <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+             
+              <span class="menu-title">Инфо. Устройства</span>
+              <i class="menu-arrow"></i>
+            </a>    
+            <div class="collapse" id="form-elements">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item"><a class="nav-link" href="{{ route('devices.index') }}">Девайсы</a></li>
+            </ul>
+          </div>
           </li>
+
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
-              <i class="icon-columns menu-icon"></i>
-              <span class="menu-title">Заявки</span>
+              
+              <span class="menu-title">Инфо. Адреса</span>
               <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="form-elements">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="{{ route('create.index') }}">Новая Заявка</a></li>
-              </ul>
-            </div>
+            </a>    
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a class="nav-link" href="{{ route('addresses.index') }}">Адреса</a></li>
               </ul>
             </div>
-            <div class="collapse" id="form-elements">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="{{ route('contacts.index') }}">Контакты</a></li>
-              </ul>
-            </div>
-            <div class="collapse" id="form-elements">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="{{ route('devices.index') }}">Девайсы</a></li>
-              </ul>
-            </div>
-            <div class="collapse" id="form-elements">
+             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a class="nav-link" href="{{ route('applicationsandaddresses.index') }}">Заявки и Адреса</a></li>
               </ul>
             </div>
-            
-
-                <div class="collapse" id="form-elements">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" href="{{ route('metrlog.index') }}">Мои Заявки</a></li>
-                    </ul>
-                </div>
-                
-                <div class="collapse" id="form-elements">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" href="{{ route('userrequisitessettings.index') }}">Реквезиты</a></li>
-                    </ul>
-                </div>
-           
-                <div class="collapse" id="form-elements">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" href="{{ route('statustransitionsController.index') }}">Статусы</a></li>
-                    </ul>
-                </div>
-            
           </li>
-      </nav>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+             
+              <span class="menu-title">Котакт. Данные</span>
+              <i class="menu-arrow"></i>
+            </a>    
+             <div class="collapse" id="form-elements">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"><a class="nav-link" href="{{ route('contacts.index') }}">Контакты</a></li>
+              </ul>
+            </div>
+          </li>
+           <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+             
+              <span class="menu-title">Админ. Данные</span>
+              <i class="menu-arrow"></i>
+            </a>    
+             <div class="collapse" id="form-elements">
+               <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"><a class="nav-link" href="{{ route('userrequisitessettings.index') }}">Реквезиты</a></li>
+                </ul>
+            </div>
+
+            <div class="collapse" id="form-elements">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"><a class="nav-link" href="{{ route('statustransitionsController.index') }}">Статусы</a></li>
+                </ul>
+            </div>
+          </li>
+</nav>
       
   <!-- plugins:js -->
   <script src="{{ 'assets/vendors/js/vendor.bundle.base.js' }}"></script>

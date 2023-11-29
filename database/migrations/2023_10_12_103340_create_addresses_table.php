@@ -11,13 +11,15 @@ class CreateAddressesTable extends Migration
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
             $table->string('address');
-            $table->string('district');
-            $table->string('logistic_area');
-            $table->string('logistic_floor');
-            $table->string('floor');
-            $table->string('intercom');
-            $table->string('entrance');
-            $table->string('guid_c');
+            $table->string('addressesArea');
+            $table->string('addressCity');
+            $table->string('addressSettlement');
+            $table->string('addressPlanningStructure');
+            $table->string('addressStreet');
+            $table->string('addressHouse');
+            $table->string('addressApartment');
+            $table->json('combined_address');
+            $table->string('object_guid');
             $table->timestamps();
         });
     }

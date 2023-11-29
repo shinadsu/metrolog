@@ -120,7 +120,7 @@
         <ul class="nav">
           <li class="nav-item">
             <a class="nav-link" href="{{ url('/') }}">
-              <i class="icon-grid menu-icon"></i>
+           
               <span class="menu-title">Главная</span>
             </a>
           </li>
@@ -140,7 +140,7 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
-              <i class="icon-columns menu-icon"></i>
+             
               <span class="menu-title">Заявки</span>
               <i class="menu-arrow"></i>
             </a>
@@ -188,8 +188,6 @@
                         <li class="nav-item"><a class="nav-link" href="{{ route('statustransitionsController.index') }}">Статусы</a></li>
                     </ul>
                 </div>
-            
-          </li>
       </nav>
     <div class="main-panel">
     <div class="content-wrapper">

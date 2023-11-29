@@ -168,7 +168,7 @@ class ApiController extends Controller
                 'Content-Type: application/json; charset=utf-8'
             ];
         
-            $addressLevels = [7, 8, 9, 10, 11, 12, 17, 2, 5, 6, 4];
+            $addressLevels = [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 17];
             $addresses = [];
         
             foreach ($addressLevels as $level) 
@@ -200,7 +200,7 @@ class ApiController extends Controller
                 curl_close($ch);
         
                 $datanew2 = json_decode($response, true);
-        
+
                 // Проверяем, что есть адреса в ответе и что это не пустой JSON
                 if (isset($datanew2['addresses']) && is_array($datanew2['addresses']) && count($datanew2['addresses']) > 0) 
                 {
@@ -211,9 +211,8 @@ class ApiController extends Controller
                             // Создание нового массива для ключа, если он еще не существует
                             if(!isset($addresses[$address['object_level_id']]))
                                 $addresses[$address['object_level_id']] = [];
-
                             // Сохранение полного имени и ID адреса в массиве
-                            $addresses[$address['object_level_id']][] = ['full_name' => $address['full_name'], 'object_id' => $address['object_id']];
+                            $addresses[$address['object_level_id']][] = ['full_name' => $address['full_name'], 'object_id' => $address['object_id'], 'object_guid' => $address['object_guid']];
                         }   
                         else 
                         {
@@ -246,7 +245,7 @@ class ApiController extends Controller
             */
 
             $objectID = $request->input('objectID');
-            $newobjectid = $request->input('newObjectId');
+            $path = $request->input('path');
             
 
             $token = 'c8ecfd58-5354-4299-95b0-d94e8060e81d';
@@ -258,7 +257,7 @@ class ApiController extends Controller
                 'Content-Type: application/json; charset=utf-8'
             ];
         
-            $addressLevels = [7, 8, 9, 10, 11, 12, 17, 2, 5, 6, 4];
+            $addressLevels = [2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 17];
             $addresses = [];
         
             foreach ($addressLevels as $level) 
@@ -266,7 +265,7 @@ class ApiController extends Controller
                 $data = [
                     'address_levels' => [$level],
                     'address_type' => 1,
-                    'path' => $objectID . "." . $newobjectid,
+                    'path' => $objectID. "." . $path,
                 ];
                 // print_r($data);
                 // die();
@@ -303,7 +302,7 @@ class ApiController extends Controller
                                 $addresses[$address['object_level_id']] = [];
 
                             // Сохранение полного имени и ID адреса в массиве
-                            $addresses[$address['object_level_id']][] = ['full_name' => $address['full_name'], 'object_id' => $address['object_id']];
+                            $addresses[$address['object_level_id']][] = ['full_name' => $address['full_name'], 'object_id' => $address['object_id'], 'object_guid' => $address['object_guid']];
                         }   
                         else 
                         {
@@ -314,5 +313,5 @@ class ApiController extends Controller
                 
             }
             return response()->json(['addresses' => $addresses]);
-        }    
+        }
 }

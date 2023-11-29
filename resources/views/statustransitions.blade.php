@@ -165,68 +165,98 @@
       </nav>
       <!-- partial -->
       <!-- partial:../../partials/_sidebar.html -->
-      <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <ul class="nav">
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url('/') }}">
-              <i class="icon-grid menu-icon"></i>
-              <span class="menu-title">Главная</span>
-            </a>
-          </li>
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+<ul class="nav">
+<li class="nav-item">
+  <a class="nav-link" href="{{ url('/') }}">
+ 
+    <span class="menu-title">Главная</span>
+  </a>
+</li>
 
+
+<li class="nav-item">
+  <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+   
+    <span class="menu-title">Заявки</span>
+    <i class="menu-arrow"></i>
+  </a>
+  <div class="collapse" id="form-elements">
+    <ul class="nav flex-column sub-menu">
+      <li class="nav-item"><a class="nav-link" href="{{ route('create.index') }}">Новая Заявка</a></li>
+    </ul>
+  </div>
+      <div class="collapse" id="form-elements">
+          <ul class="nav flex-column sub-menu">
+              <li class="nav-item"><a class="nav-link" href="{{ route('metrlog.index') }}">Мои Заявки</a></li>
+          </ul>
+      </div>
+  
+  
+</li>
+ </li>
+           <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+             
+              <span class="menu-title">Инфо. Устройства</span>
+              <i class="menu-arrow"></i>
+            </a>    
+            <div class="collapse" id="form-elements">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item"><a class="nav-link" href="{{ route('devices.index') }}">Девайсы</a></li>
+            </ul>
+          </div>
+          </li>
 
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
-              <i class="icon-columns menu-icon"></i>
-              <span class="menu-title">Заявки</span>
+              
+              <span class="menu-title">Инфо. Адреса</span>
               <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="form-elements">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="{{ route('create.index') }}">Новая Заявка</a></li>
-              </ul>
-            </div>
+            </a>    
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a class="nav-link" href="{{ route('addresses.index') }}">Адреса</a></li>
               </ul>
             </div>
-            <div class="collapse" id="form-elements">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="{{ route('contacts.index') }}">Контакты</a></li>
-              </ul>
-            </div>
-            <div class="collapse" id="form-elements">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="{{ route('devices.index') }}">Девайсы</a></li>
-              </ul>
-            </div>
-            <div class="collapse" id="form-elements">
+             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a class="nav-link" href="{{ route('applicationsandaddresses.index') }}">Заявки и Адреса</a></li>
               </ul>
             </div>
-          
-                <div class="collapse" id="form-elements">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" href="{{ route('metrlog.index') }}">Мои Заявки</a></li>
-                    </ul>
-                </div>
-        
-                <div class="collapse" id="form-elements">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" href="{{ route('userrequisitessettings.index') }}">Реквезиты</a></li>
-                    </ul>
-                </div>
-          
-                <div class="collapse" id="form-elements">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" href="{{ route('statustransitionsController.index') }}">Статусы</a></li>
-                    </ul>
-                </div>
-           
           </li>
-      </nav>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+             
+              <span class="menu-title">Котакт. Данные</span>
+              <i class="menu-arrow"></i>
+            </a>    
+             <div class="collapse" id="form-elements">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"><a class="nav-link" href="{{ route('contacts.index') }}">Контакты</a></li>
+              </ul>
+            </div>
+          </li>
+           <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+             
+              <span class="menu-title">Админ. Данные</span>
+              <i class="menu-arrow"></i>
+            </a>    
+             <div class="collapse" id="form-elements">
+               <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"><a class="nav-link" href="{{ route('userrequisitessettings.index') }}">Реквезиты</a></li>
+                </ul>
+            </div>
+
+            <div class="collapse" id="form-elements">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"><a class="nav-link" href="{{ route('statustransitionsController.index') }}">Статусы</a></li>
+                </ul>
+            </div>
+          </li>
+</nav>
       <!-- partial -->
 <div class="main-panel">
     <div class="content-wrapper">
@@ -264,15 +294,15 @@
                             <div class="form-group">
                                 <label for="own_requests_allowed">Свои заявки</label>
                                 <select class="form-control" id="own_requests_allowed" name="own_requests_allowed" required>
-                                                <option value="1" @if(old('setting_enabled') == '1') selected @endif>Да</option>
-                                                <option value="0" @if(old('setting_enabled') == '0') selected @endif>Нет</option>
+                                                <option value="1" @if(old('own_requests_allowed') == '1') selected @endif>Да</option>
+                                                <option value="0" @if(old('own_requests_allowed') == '0') selected @endif>Нет</option>
                                             </select>
                             </div>
                             <div class="form-group">
                                 <label for="others_requests_allowed">Чужие Заявки</label>
                                 <select class="form-control" id="others_requests_allowed" name="others_requests_allowed" required>
-                                                <option value="1" @if(old('setting_enabled') == '1') selected @endif>Да</option>
-                                                <option value="0" @if(old('setting_enabled') == '0') selected @endif>Нет</option>
+                                                <option value="1" @if(old('others_requests_allowed') == '1') selected @endif>Да</option>
+                                                <option value="0" @if(old('others_requests_allowed') == '0') selected @endif>Нет</option>
                                             </select>
                             </div>
                             <button type="submit" class="btn btn-primary mr-2">Сохранить настройки</button>
@@ -293,21 +323,21 @@
                                 <tr>
                                     <th>Изначальный статус</th>
                                     <th>Доступный статус</th>
-                                    <th>Группа ролей</th>
+                                    <th>Группы Пользователей</th>
                                     <th>Свои заявки</th>
                                     <th>Чужие заявки</th>
                                 </tr>
                             </thead>
                             <tbody>
                             @foreach($statustransitions as $transition)
-<tr>
-    <td>{{ $transition->base_status_name }}</td>
-    <td>{{ $transition->new_status_name }}</td>
-    <td>{{ $transition->role_name }}</td>
-    <td>{{ $transition->own_requests_allowed }}</td>
-    <td>{{ $transition->others_requests_allowed }}</td>
-</tr>
-@endforeach
+                            <tr>
+                                <td>{{ $transition->base_status_name }}</td>
+                                <td>{{ $transition->new_status_name }}</td>
+                                <td>{{ $transition->role_name }}</td>
+                                <td>{{ $transition->own_requests_allowed == '1' ? 'Доступно' : 'Не Доступно' }}</td>
+                                <td>{{ $transition->others_requests_allowed == '1' ? 'Доступно' : 'Не Доступно' }}</td>
+                            </tr>
+                            @endforeach
 
 
                             </tbody>

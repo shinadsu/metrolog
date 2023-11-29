@@ -38,16 +38,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/applicationsandaddresses/{id}/edit', 'App\Http\Controllers\ShowApplicationAndAddressesController@edit')->name('applicationsandaddresses.edit');
     Route::put('/applicationsandaddresses/{id}', 'App\Http\Controllers\ShowApplicationAndAddressesController@update')->name('updateappandaddress.update');
 
-
-    Route::post('/proxy/fias', function () {
-        $response = Http::withHeaders([
-            'master-token' => 'ваш-master-token',
-            'Accept' => 'application/json'
-        ])->post('https://fias-public-service.nalog.ru/api/spas/v2.0/GetAddressItems', request()->all());
-    
-        return $response->body();
-    });
-
     Route::get('/metrolog', 'App\Http\Controllers\Metrlog@index')
         ->middleware(['auth', 'CheckRoleMiddlware:metrolog, administrator'])
         ->name('metrlog.index');
@@ -57,9 +47,7 @@ Route::middleware(['auth'])->group(function () {
         return view('tesfiasapi');
     })->name('fias');
 
-    // Работа с fias api
-    // Route::get('/api/getAddressHint', 'App\Http\Controllers\ApiController@getAddressHint');
-    // Route::get('/api/searchAddressHint', 'App\Http\Controllers\ApiController@searchAddressHint');
+    
     Route::post('/api/getAddressItems', 'App\Http\Controllers\ApiController@getAddressItems');
     Route::post('/api/postAddress', 'App\Http\Controllers\ApiController@postAddress');
     Route::post('/api/postNewAddress', 'App\Http\Controllers\ApiController@postNewAddress');
@@ -69,12 +57,3 @@ Route::middleware(['auth'])->group(function () {
 
 Auth::routes();
 
-// Auth::routes();
-
-// Route::get('/devices', 'App\Http\Controllers\ShowDeviceController@index')->name('devices.index');
-
-// Route::get('/metrolog', 'App\Http\Controllers\Metrlog@index')
-//         ->middleware(['auth', 'CheckRoleMiddlware:metrolog,administrator'])
-//         ->name('metrlog.index');
-
-// Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');

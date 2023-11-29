@@ -163,68 +163,98 @@
       </nav>
       <!-- partial -->
       <!-- partial:../../partials/_sidebar.html -->
-      <nav class="sidebar sidebar-offcanvas" id="sidebar">
-        <ul class="nav">
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url('/') }}">
-              <i class="icon-grid menu-icon"></i>
-              <span class="menu-title">Главная</span>
-            </a>
-          </li>
+     <nav class="sidebar sidebar-offcanvas" id="sidebar">
+<ul class="nav">
+<li class="nav-item">
+  <a class="nav-link" href="{{ url('/') }}">
+ 
+    <span class="menu-title">Главная</span>
+  </a>
+</li>
 
+
+<li class="nav-item">
+  <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+   
+    <span class="menu-title">Заявки</span>
+    <i class="menu-arrow"></i>
+  </a>
+  <div class="collapse" id="form-elements">
+    <ul class="nav flex-column sub-menu">
+      <li class="nav-item"><a class="nav-link" href="{{ route('create.index') }}">Новая Заявка</a></li>
+    </ul>
+  </div>
+      <div class="collapse" id="form-elements">
+          <ul class="nav flex-column sub-menu">
+              <li class="nav-item"><a class="nav-link" href="{{ route('metrlog.index') }}">Мои Заявки</a></li>
+          </ul>
+      </div>
+  
+  
+</li>
+ </li>
+           <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+             
+              <span class="menu-title">Инфо. Устройства</span>
+              <i class="menu-arrow"></i>
+            </a>    
+            <div class="collapse" id="form-elements">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item"><a class="nav-link" href="{{ route('devices.index') }}">Девайсы</a></li>
+            </ul>
+          </div>
+          </li>
 
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
-              <i class="icon-columns menu-icon"></i>
-              <span class="menu-title">Заявки</span>
+              
+              <span class="menu-title">Инфо. Адреса</span>
               <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="form-elements">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="{{ route('create.index') }}">Новая Заявка</a></li>
-              </ul>
-            </div>
+            </a>    
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a class="nav-link" href="{{ route('addresses.index') }}">Адреса</a></li>
               </ul>
             </div>
-            <div class="collapse" id="form-elements">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="{{ route('contacts.index') }}">Контакты</a></li>
-              </ul>
-            </div>
-            <div class="collapse" id="form-elements">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"><a class="nav-link" href="{{ route('devices.index') }}">Девайсы</a></li>
-              </ul>
-            </div>
-            <div class="collapse" id="form-elements">
+             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a class="nav-link" href="{{ route('applicationsandaddresses.index') }}">Заявки и Адреса</a></li>
               </ul>
             </div>
-           
-                <div class="collapse" id="form-elements">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" href="{{ route('metrlog.index') }}">Мои Заявки</a></li>
-                    </ul>
-                </div>
-         
-                <div class="collapse" id="form-elements">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" href="{{ route('userrequisitessettings.index') }}">Реквезиты</a></li>
-                    </ul>
-                </div>
-        
-                <div class="collapse" id="form-elements">
-                    <ul class="nav flex-column sub-menu">
-                        <li class="nav-item"><a class="nav-link" href="{{ route('statustransitionsController.index') }}">Статусы</a></li>
-                    </ul>
-                </div>
-          
           </li>
-      </nav>
+
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+             
+              <span class="menu-title">Котакт. Данные</span>
+              <i class="menu-arrow"></i>
+            </a>    
+             <div class="collapse" id="form-elements">
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"><a class="nav-link" href="{{ route('contacts.index') }}">Контакты</a></li>
+              </ul>
+            </div>
+          </li>
+           <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+             
+              <span class="menu-title">Админ. Данные</span>
+              <i class="menu-arrow"></i>
+            </a>    
+             <div class="collapse" id="form-elements">
+               <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"><a class="nav-link" href="{{ route('userrequisitessettings.index') }}">Реквезиты</a></li>
+                </ul>
+            </div>
+
+            <div class="collapse" id="form-elements">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item"><a class="nav-link" href="{{ route('statustransitionsController.index') }}">Статусы</a></li>
+                </ul>
+            </div>
+          </li>
+</nav>
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">
@@ -256,39 +286,33 @@
                         </thead>
                         <tbody>
                         @foreach($applicationsWithDetails as $application)
-                          <tr>
-                              <td>{{ $application->application_id }}</td>
-                              <td>{{ $application->fullname }}</td>
-                              <td>{{ $application->status_name }}</td>
-                              <td>{{ $application->type_of_payment }}</td>
-                              <td>{{ $application->user_name }}</td>
-                              <td>
-                                  @php
-                                      $access = $userRequisitesSettingsService->canViewPhoneNumberAndAddress($user->role_id, $application->user_id, $application->status_id);
-                                  @endphp
+                            <tr>
+                                <td>{{ $application->application_id }}</td>
+                                <td>{{ $application->fullname }}</td>
+                                <td>{{ $application->status_name }}</td>
+                                <td>{{ $application->type_of_payment }}</td>
+                                <td>{{ $application->user_name }}</td>
+                                <td>
+                                    @php
+                                        $access = $userRequisitesSettingsService->canViewPhoneNumberAndAddress($user->role_id, $application->user_id, $application->status_id);
+                                    @endphp
 
-                                  @if ($access['address'])
-                                      {{ $application->address }}
-                                  @else
-                                      Адрес не доступен
-                                  @endif
-                              </td>
-                              <td>
-                                  @if ($access['phone_number'])
-                                      {{ $application->phone_number }}
-                                  @else
-                                      Номер телефона не доступен
-                                  @endif
-                              </td>
-                              <td>
-                              <td>
-                              <!-- <td>
-                                  <a href="{{ route('applicationsandaddresses.edit', ['id' => $application->application_id]) }}" class="btn btn-sm btn-primary">Ред.</a>
-                              </td> -->
-
-                              </td>
-                          </tr>
-                      @endforeach
+                                    @if ($access['address'])
+                                        {{ $application->address }}
+                                    @else
+                                        Адрес не доступен
+                                    @endif
+                                </td>
+                                <td>
+                                    @if ($access['phone_number'])
+                                        {{ $application->phone_number }}
+                                    @else
+                                        Номер телефона не доступен
+                                    @endif
+                                </td>
+                                <!-- Дополнительные столбцы и действия по желанию -->
+                            </tr>
+                        @endforeach
                         </tbody>
                     </table>
                   </div>

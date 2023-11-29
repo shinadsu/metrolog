@@ -25,6 +25,11 @@ class Kernel extends HttpKernel
        
     ];
 
+    protected $commands = [
+        // Другие команды...
+        \App\Console\Commands\InsertFiasTypes::class,
+    ];
+
     protected $routeMiddleware = [
         // другие middleware
         'CheckRoleMiddlware' => \App\Http\Middleware\CheckRoleMiddlware::class,

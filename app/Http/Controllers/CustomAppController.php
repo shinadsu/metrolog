@@ -6,6 +6,12 @@ use App\Models\Application;
 use App\Models\Address;
 use App\Models\Phone;
 use App\Models\Payer;
+use App\Models\additionalWork;
+use App\Models\claims;
+use App\Models\plumbingServices;
+use App\Models\replacement;
+use App\Models\specifications;
+use App\Models\verificationOfСounters;
 use App\Models\addressPayer;
 use App\Models\addressApplication;
 use App\Models\applicationMetrolog;
@@ -31,7 +37,7 @@ class CustomAppController extends Controller
         } 
         else 
         {
-           dd('пидор');
+           dd('error');
         }
         $Users = User::where('role_id', 2)->get();    
         $allowedStatuses = statustransitions::where('role_id', $roleId)
@@ -39,41 +45,55 @@ class CustomAppController extends Controller
                                         ->pluck('new_status_id');
 
         $statuses = Statuses::whereIn('id', $allowedStatuses)->get(); 
-        
-        return view('create', compact('statuses', 'Users', 'request'));
+
+        // работа с номенкулатурой
+
+
+        $additionalWork = additionalWork::with('price')->get();
+
+        $claims = claims::with('price')->get();
+
+        $plumbingServices = plumbingServices::with('price')->get();
+
+        $verificationOfCounters = verificationOfСounters::with('price')->get();
+
+        $specifications = specifications::with('price')->get();
+
+        $replacements = Replacement::with('price')->get();
+        //
+        return view('create', compact('statuses', 'Users', 'request', 'additionalWork', 'claims', 'plumbingServices', 'verificationOfCounters', 'specifications', 'replacements'));
     }
 
 
     public function store(Request $request)
     {   
         $validator = Validator::make($request->all(), [
-            // поля валидации
-            'fullname' => 'required|string',
-            // 'status' => 'required|string',
-            'type_of_payment' => 'required|string',
-            'address' => 'required|string',
-            'district' => 'required|string',
-            'logistic_area' => 'required|string',
-            'logistic_floor' => 'required|string',
-            'floor' => 'required|string',
-            'intercom' => 'required|string',
-            'entrance' => 'required|string',
-            'guid_c' => 'required|string',
             
-            // 'factory_number' => 'required|string',
-            // 'brand' => 'required|string',
-            // 'device_type' => 'required|string',
-            // 'grsi_number' => 'required|integer',
-            // 'scheduled_verification_date' => 'required|date_format:d.m.Y',
-            // 'release_year' => 'required|integer',
-            // 'modification' => 'required|string',
-            // 'type' => 'required|string',
+            'fullname' => 'required|string',
+            'status_id' => 'required|integer',
+            'type_of_payment' => 'required|string',
+
+            
+            'address' => 'required|string',
+            'addressesArea' => 'string|max:255',
+            'addressCity' => 'string',
+            'addressSettlement' => 'string',
+            'addressPlanningStructure' => 'string',
+            'addressStreet' => 'string',
+            'addressHouse' => 'string',
+            'addressApartment' => 'string',
+            
+            
+           
             'phone_number' => 'required|string',
             'country_code' => 'required|string',
-            'payer_code' => 'required|string',
-            'actual' => 'required|string',
             'city_code' => 'required|string',
             'extension_number' => 'required|string',
+
+            
+            'payer_code' => 'required|string',
+            'actual' => 'required|string',
+           
         ]);
 
        if ($validator->fails()) {
@@ -93,7 +113,12 @@ class CustomAppController extends Controller
         $application = Application::create($applicationData);
 
         // заполнение адреса
-        $addressData = $request->only('address', 'district', 'logistic_area', 'logistic_floor', 'floor', 'intercom', 'entrance', 'guid_c');
+        $addressData = $request->only(
+        'address', 'addressesArea', 
+        'addressCity', 'addressSettlement', 
+        'addressPlanningStructure', 'addressStreet', 
+        'addressHouse', 'addressApartment', 
+        'object_guid');
         $address = Address::firstOrCreate($addressData);
 
         // структура заполнения кода плательщика и сводной таблицы плательщиков и адресов

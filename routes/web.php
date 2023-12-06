@@ -37,6 +37,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/fiasapi', 'App\Http\Controllers\TestFiasApiController@index')->name('fiasapi.index');
     Route::get('/applicationsandaddresses/{id}/edit', 'App\Http\Controllers\ShowApplicationAndAddressesController@edit')->name('applicationsandaddresses.edit');
     Route::put('/applicationsandaddresses/{id}', 'App\Http\Controllers\ShowApplicationAndAddressesController@update')->name('updateappandaddress.update');
+    Route::get('/testforapplicationandaddress', 'App\Http\Controllers\TestAppAddress@index')->name('testforapplicationandaddress.index');
 
     Route::get('/metrolog', 'App\Http\Controllers\Metrlog@index')
         ->middleware(['auth', 'CheckRoleMiddlware:metrolog, administrator'])

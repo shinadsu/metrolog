@@ -202,25 +202,28 @@ class ApiController extends Controller
                 $datanew2 = json_decode($response, true);
 
                 // Проверяем, что есть адреса в ответе и что это не пустой JSON
-                if (isset($datanew2['addresses']) && is_array($datanew2['addresses']) && count($datanew2['addresses']) > 0) 
-                {
-                    foreach ($datanew2['addresses'] as $address) 
-                    {
-                        if (isset($address['full_name']) && !empty($address['full_name']) && isset($address['object_id'])) 
-                        {   
+                if (isset($datanew2['addresses']) && is_array($datanew2['addresses']) && count($datanew2['addresses']) > 0) {
+                    foreach ($datanew2['addresses'] as $address) {
+                        if (isset($address['full_name']) && !empty($address['full_name']) && isset($address['object_id'])) {
+                            $objectLevelId = $address['object_level_id'];
+                            $typeShortName = $this->getTypeShortName($address['hierarchy'], $objectLevelId);
+                    
                             // Создание нового массива для ключа, если он еще не существует
-                            if(!isset($addresses[$address['object_level_id']]))
-                                $addresses[$address['object_level_id']] = [];
+                            if (!isset($addresses[$objectLevelId])) {
+                                $addresses[$objectLevelId] = [];
+                            }
+                    
                             // Сохранение полного имени и ID адреса в массиве
-                            $addresses[$address['object_level_id']][] = ['full_name' => $address['full_name'], 'object_id' => $address['object_id'], 'object_guid' => $address['object_guid']];
-                        }   
-                        else 
-                        {
+                            $addresses[$objectLevelId][] = [
+                                'full_name' => $typeShortName,
+                                'object_id' => $address['object_id'],
+                                'object_guid' => $address['object_guid']
+                            ];
+                        } else {
                             echo 'Error: Address does not exist';
                         }
                     }
                 }
-                
             }
             return response()->json(['addresses' => $addresses]);
         }
@@ -291,21 +294,24 @@ class ApiController extends Controller
                 $datanew2 = json_decode($response, true);
         
                 // Проверяем, что есть адреса в ответе и что это не пустой JSON
-                if (isset($datanew2['addresses']) && is_array($datanew2['addresses']) && count($datanew2['addresses']) > 0) 
-                {
-                    foreach ($datanew2['addresses'] as $address) 
-                    {
-                        if (isset($address['full_name']) && !empty($address['full_name']) && isset($address['object_id'])) 
-                        {   
+                if (isset($datanew2['addresses']) && is_array($datanew2['addresses']) && count($datanew2['addresses']) > 0) {
+                    foreach ($datanew2['addresses'] as $address) {
+                        if (isset($address['full_name']) && !empty($address['full_name']) && isset($address['object_id'])) {
+                            $objectLevelId = $address['object_level_id'];
+                            $typeShortName = $this->getTypeShortName($address['hierarchy'], $objectLevelId);
+                    
                             // Создание нового массива для ключа, если он еще не существует
-                            if(!isset($addresses[$address['object_level_id']]))
-                                $addresses[$address['object_level_id']] = [];
-
+                            if (!isset($addresses[$objectLevelId])) {
+                                $addresses[$objectLevelId] = [];
+                            }
+                    
                             // Сохранение полного имени и ID адреса в массиве
-                            $addresses[$address['object_level_id']][] = ['full_name' => $address['full_name'], 'object_id' => $address['object_id'], 'object_guid' => $address['object_guid']];
-                        }   
-                        else 
-                        {
+                            $addresses[$objectLevelId][] = [
+                                'full_name' => $typeShortName,
+                                'object_id' => $address['object_id'],
+                                'object_guid' => $address['object_guid']
+                            ];
+                        } else {
                             echo 'Error: Address does not exist';
                         }
                     }
@@ -313,5 +319,17 @@ class ApiController extends Controller
                 
             }
             return response()->json(['addresses' => $addresses]);
+        }
+
+
+        private function getTypeShortName($hierarchy, $objectLevelId)
+        {
+            $lastFullNameShort = '';
+            foreach ($hierarchy as $level) {
+                if ($level['object_level_id'] == $objectLevelId) {
+                    $lastFullNameShort = $level['full_name_short'];
+                }
+            }
+            return $lastFullNameShort;
         }
 }

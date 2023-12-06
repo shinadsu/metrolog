@@ -304,7 +304,7 @@
                     </div>
                 </div>
 
-                <div class="col-12 grid-margin stretch-card">
+            <div class="col-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="card-title">Заполнение адреса</h4>
@@ -353,8 +353,11 @@
                     <div class="card-body">
                         <ul class="nav nav-tabs" role="tablist">
                             <li class="nav-item">
-                                <a class="nav-link active" id="dopTab" data-toggle="tab" href="#dop" role="tab" aria-controls="dop" aria-selected="true">Доп работы</a>
+                                <a class="nav-link" id="allDataTab" data-toggle="tab" href="#allData" role="tab" aria-controls="allData" aria-selected="false">Общие товары и услуги</a>
                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link active" id="dopTab" data-toggle="tab" href="#dop" role="tab" aria-controls="dop" aria-selected="true">Доп работы</a>
+                            </li> 
                             <li class="nav-item">
                                 <a class="nav-link" id="zamenaTab" data-toggle="tab" href="#zamena" role="tab" aria-controls="zamena" aria-selected="false">Замена</a>
                             </li>
@@ -370,31 +373,107 @@
                             <li class="nav-item">
                                 <a class="nav-link" id="specificationsTab" data-toggle="tab" href="#specifications" role="tab" aria-controls="specifications" aria-selected="false">Спецификации</a>
                             </li>
+                            
                         </ul>
-                        <div id="totalPrice">
-                            <h4>Общая цена: <span id="totalPrice">0</span></h4>
-                        </div>
-
+                        
                         <div class="tab-content">
-                            <div class="tab-pane fade show active" id="dop" role="tabpanel" aria-labelledby="dopTab">
+                         <div id="totalPriceContainer">
+                            <h4>Общая цена: <span id="totalPriceValue">0</span></h4>
+                        </div>
+                        <div class="tab-pane fade" id="allData" role="tabpanel" aria-labelledby="allDataTab">
+                            <div style="max-height: 400px; overflow-y: auto;">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr> 
+                                            <th>Наименование</th>
+                                            <th>Кол.во</th>
+                                            <th>Цена</th>
+                                            <th>Плюс</th>
+                                            <th>Минус</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Добавляем данные из $additionalWork -->
+                                        @foreach($additionalWork as $index => $additionalWor)
+                                            <tr data-id="{{ $index }}">
+                                                <td>{{ $additionalWor->name }}</td>
+                                                 <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                <td class="price">{{ $additionalWor->price->price }}</td>
+                                                <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
+                                                <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
+
+                                            </tr>
+                                        @endforeach
+
+                                        <!-- Добавляем данные из $replacements -->
+                                        @foreach($replacements as $index => $replacement)
+                                            <tr data-id="{{ $index }}">
+                                                <td>{{ $replacement->name }}</td>
+                                                 <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                <td class="price">{{ $replacement->price->price }}</td>
+                                                <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
+                                                <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
+                                            </tr>
+                                        @endforeach
+
+                                        @foreach($verificationOfCounters as $index => $verificationOfCounter)
+                                        <tr data-id="{{ $index }}">
+                                                <td>{{ $verificationOfCounter->name }}</td>
+                                                 <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                <td class="price">{{ $verificationOfCounter->price->price }}</td>
+                                                <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
+                                                <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
+                                            </tr>
+                                        @endforeach
+
+                                        @foreach($plumbingServices as $index => $plumbingService)
+                                        <tr data-id="{{ $index }}">
+                                                    <td>{{ $plumbingService->name }}</td>
+                                                     <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                    <td class="price">{{ $plumbingService->price->price }}</td>
+                                                    <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
+                                                    <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
+                                                </tr>
+                                        @endforeach
+
+                                        @foreach($specifications as $index => $specification)
+                                        <tr data-id="{{ $index }}">
+                                                    <td>{{ $specification->name }}</td>
+                                                     <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                    <td class="price">{{ $specification->price->price }}</td>
+                                                    <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
+                                                    <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
+                                                </tr>
+                                        @endforeach
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                            <div class="tab-pane fade show active" id="dop" role="tabpanel" aria-labelledby="dopTab" data-category="additionalWork">
                                 <div style="max-height: 400px; overflow-y: auto;">
                                     <div class="table-responsive pt-3">
                                         <table class="table table-bordered">
                                         <thead>
                                             <tr>
                                                 <th>Наименование</th>
+                                                
                                                 <th>Цена</th>
                                                 <th>Плюс</th>
                                                 <th>Минус</th>
+                                                <th>Кол.во</th>
                                             </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach($additionalWork as $index => $additionalWor)
                                                     <tr data-id="{{ $index }}">
                                                         <td>{{ $additionalWor->name }}</td>
+                                                        
                                                         <td class="price">{{ $additionalWor->price->price }}</td>
                                                         <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
                                                         <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
+                                                        <td class="quantity" id="quantity{{ $index }}">0</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -402,15 +481,16 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="zamena" role="tabpanel" aria-labelledby="zamenaTab">
+                           <div class="tab-pane fade" id="zamena" role="tabpanel" aria-labelledby="zamenaTab" data-category="replacements">
                                 <div style="max-height: 400px; overflow-y: auto;">
                                     <table class="table table-bordered">
                                             <thead>
                                                 <tr>
-                                                    <th>Наименование</th>
-                                                    <th>Цена</th>
-                                                    <th>Плюс</th>
-                                                    <th>Минус</th>
+                                                <th>Наименование</th>
+                                                <th>Цена</th>
+                                                <th>Плюс</th>
+                                                <th>Минус</th>
+                                                <th>Кол.во</th>
 
                                                 </tr>
                                             </thead>
@@ -418,112 +498,132 @@
                                                 @foreach($replacements as $index => $replacement)
                                                 <tr data-id="{{ $index }}">
                                                         <td>{{ $replacement->name }}</td>
+                                                        
                                                         <td class="price">{{ $replacement->price->price }}</td>
                                                         <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
                                                         <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
+                                                        <td class="quantity" id="quantity{{ $index }}">0</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
                                         </table>
                                     </div>
                                </div>
-                            <div class="tab-pane fade" id="poverka" role="tabpanel" aria-labelledby="poverkaTab">
+                            <div class="tab-pane fade" id="poverka" role="tabpanel" aria-labelledby="poverkaTab" data-category="verificationOfCounters">
                                 <div style="max-height: 400px; overflow-y: auto;">
                                     <table class="table table-bordered">
                                             <thead>
                                                 <tr> 
-                                                    <th>Наименование</th>
-                                                    <th>Цена</th>
-                                                    <th>Плюс</th>
-                                                    <th>Минус</th>
+                                                <th>Наименование</th>
+                                               
+                                                <th>Цена</th>
+                                                <th>Плюс</th>
+                                                <th>Минус</th>
+                                                <th>Кол.во</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach($verificationOfCounters as $index => $verificationOfCounter)
                                                 <tr data-id="{{ $index }}">
                                                         <td>{{ $verificationOfCounter->name }}</td>
+                                                        
                                                         <td class="price">{{ $verificationOfCounter->price->price }}</td>
                                                         <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
                                                         <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
+                                                        <td class="quantity" id="quantity{{ $index }}">0</td>
                                                     </tr>
                                                 @endforeach
                                             </tbody>
                                         </table>
                                     </div>
                                </div>
-                            <div class="tab-pane fade" id="pretenzii" role="tabpanel" aria-labelledby="pretenziiTab">
+                            <div class="tab-pane fade" id="pretenzii" role="tabpanel" aria-labelledby="pretenziiTab" data-category="claims">
                                 <div style="max-height: 400px; overflow-y: auto;">
                                     <table class="table table-bordered">
                                             <thead>
                                                 <tr> 
-                                                    <th>Наименование</th>
-                                                    <th>Цена</th>
-                                                    <th>Плюс</th>
-                                                    <th>Минус</th>
+                                                <th>Наименование</th>
+                                               
+                                                <th>Цена</th>
+                                                <th>Плюс</th>
+                                                <th>Минус</th>
+                                                <th>Кол.во</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                             @foreach($claims as $index => $claim)
                                             <tr data-id="{{ $index }}">
                                                         <td>{{ $claim->name }}</td>
-                                                        <td class="price">{{ $claim->price->price }}</td>
+                                                       
+                                                        <td class="price">{{ $claim->price->price }}</td>                                                    
                                                         <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
                                                         <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
+                                                        <td class="quantity" id="quantity{{ $index }}">0</td>
                                                     </tr>
                                             @endforeach
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
-                            <div class="tab-pane fade" id="santeh" role="tabpanel" aria-labelledby="santehTab">
+                            <div class="tab-pane fade" id="santeh" role="tabpanel" aria-labelledby="santehTab" data-category="plumbingServices">
                                 <div style="max-height: 400px; overflow-y: auto;">
                                 <table class="table table-bordered">
                                         <thead>
                                             <tr> 
                                                 <th>Наименование</th>
+                                               
                                                 <th>Цена</th>
                                                 <th>Плюс</th>
                                                 <th>Минус</th>
+                                                <th>Кол.во</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach($plumbingServices as $index => $plumbingService)
                                             <tr data-id="{{ $index }}">
                                                         <td>{{ $plumbingService->name }}</td>
+                                                      
                                                         <td class="price">{{ $plumbingService->price->price }}</td>
                                                         <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
                                                         <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
+                                                        <td class="quantity" id="quantity{{ $index }}">0</td>
                                                     </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="specifications" role="tabpanel" aria-labelledby="specificationsTab">
+                            <div class="tab-pane fade" id="specifications" role="tabpanel" aria-labelledby="specificationsTab" data-category="specifications">
                                 <div style="max-height: 400px; overflow-y: auto;">
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr> 
                                                 <th>Наименование</th>
+                                    
                                                 <th>Цена</th>
                                                 <th>Плюс</th>
                                                 <th>Минус</th>
+                                                <th>Кол.во</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach($specifications as $index => $specification)
                                             <tr data-id="{{ $index }}">
                                                         <td>{{ $specification->name }}</td>
+                                                        
                                                         <td class="price">{{ $specification->price->price }}</td>
                                                         <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
                                                         <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
+                                                        <td class="quantity" id="quantity{{ $index }}">0</td>
                                                     </tr>
                                             @endforeach
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
+                                                
                         </div>
+                        
                     </div>
                 </div>
             </div>
@@ -575,35 +675,54 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Кнопка отправки -->
             <button type="submit" class="btn btn-primary mr-2">Отправить заявку</button>
         </form>
     </div>
 </div>
 
 <script>
-var selectedPrices = [];
-var total = 0;
+    let selectedPrices = {};
+    let total = 0;
 
-function updateTotalPrice(operation, index) {
-    var priceElement = document.querySelector('tr[data-id="' + index + '"] .price');
-    var currentPrice = parseFloat(priceElement.textContent);
+    function updateTotalPrice(operation, index) {
+        let activeTab = document.querySelector('.tab-pane.active');
+        let category = activeTab.getAttribute('data-category');
 
-    // Проверка, что элемент был ранее добавлен
-    if (selectedPrices.includes(index)) {
+        let selectedItem = activeTab.querySelector('tr[data-id="' + index + '"]');
+        let itemName = selectedItem.querySelector('td:first-child').textContent;
+        let currentPrice = parseFloat(selectedItem.querySelector('.price').textContent);
+
+        // Находим ячейку с количеством для обновления
+        let quantityCell = selectedItem.querySelector('.quantity');
+
+        if (!selectedPrices[category]) {
+            selectedPrices[category] = [];
+        }
+
+        // Проверяем, есть ли уже элемент с таким индексом в массиве
+        let existingItem = selectedPrices[category].find(item => item.index === index);
+
         if (operation === 'plus') {
-            // Добавить цену к общей цене
-            total += currentPrice;
-            // Добавить индекс элемента в массив выбранных элементов
-            selectedPrices.push(index);
-        } else if (operation === 'minus') {
-            // Проверка, что общая цена не станет отрицательной
-            if (total >= currentPrice) {
-                // Вычесть цену из общей цены
-                total -= currentPrice;
-                // Удалить индекс элемента из массива выбранных элементов
-                selectedPrices = selectedPrices.filter((item) => item !== index);
+            if (!existingItem) {
+                // Добавить цену к общей цене
+                total += currentPrice;
+                // Добавить элемент в массив выбранных элементов
+                selectedPrices[category].push({ index, name: itemName, price: currentPrice, quantity: 1 });
+            } else {
+                // Если элемент уже существует, увеличиваем его количество и цену
+                existingItem.quantity += 1;
+                existingItem.price += currentPrice;
+                total += currentPrice;
+            }
+        } else if (operation === 'minus' && existingItem) {
+            // Если есть элемент для уменьшения
+            existingItem.quantity -= 1;
+            existingItem.price -= currentPrice;
+            total -= currentPrice;
+
+            // Удаляем элемент, если его количество стало нулевым или отрицательным
+            if (existingItem.quantity <= 0) {
+                selectedPrices[category] = selectedPrices[category].filter(item => item.index !== index);
             }
         }
 
@@ -611,11 +730,17 @@ function updateTotalPrice(operation, index) {
         total = parseFloat(total.toFixed(2));
 
         // Обновить общую цену на странице
-        document.getElementById('totalPrice').textContent = total;
-    }
-}
+        document.getElementById('totalPriceValue').textContent = total;
 
+        // Обновить количество на странице
+        if (quantityCell) {
+            quantityCell.textContent = existingItem ? existingItem.quantity : 0;
+        }
+    }
 </script>
+
+
+
 
   <script>
     let currentPath = "";
@@ -624,27 +749,24 @@ function updateTotalPrice(operation, index) {
 
 $(document).ready(function() {
 
-    var addressInput = $('#addressInput');
-    var addressDropdown = $('#address');
-    var selectedDistrict = $('#addressesArea'); // 5
-    var selectedCity = $('#addressCity'); // 2
-    var selectedSettlement = $('#addressSettlement'); // 6
-    var selectedPlanningStructure = $('#addressPlanningStructure'); // 7
-    var selectedStreet = $('#addressStreet'); // 8
-    var selectedHouse = $('#addressHouse'); // 10
-    var selectedApartment = $('#addressApartment'); // 11
+    let addressInput = $('#addressInput');
+    let addressDropdown = $('#address');
+    let selectedDistrict = $('#addressesArea'); // 5
+    let selectedCity = $('#addressCity'); // 2
+    let selectedSettlement = $('#addressSettlement'); // 6
+    let selectedPlanningStructure = $('#addressPlanningStructure'); // 7
+    let selectedStreet = $('#addressStreet'); // 8
+    let selectedHouse = $('#addressHouse'); // 10
+    let selectedApartment = $('#addressApartment'); // 11
+    let addressHierarchy = []; // Массив для хранения уровней адреса
 
-  
-
-    // ajax к полю "Субъект РФ"
-    addressInput.on('input', function() 
-    {
-        var searchValue = $(this).val();
+    addressInput.on('input', function() {
+        let searchValue = $(this).val();
         $.ajax({
             url: '{{ url("/api/getAddressItems") }}',
             method: 'post',
             success: function(response) {
-                var fullNames = response.addresses;
+                let fullNames = response.addresses;
                 updateDropdown(fullNames);
             },
             error: function(error) {
@@ -653,39 +775,75 @@ $(document).ready(function() {
         });
     });
 
+// получаем object_id для поля "Субъект РФ"
+function updateDropdown(addresses) {
+    addressDropdown.empty();
 
-    // получаем object_id для поля "Субъект РФ"
-    function updateDropdown(addresses) 
-    {
-        addressDropdown.empty();
+    addresses.forEach(function(address) {
+        let option = $('<option>').val(address.full_name).text(address.full_name);
+        option.data('object-id', address.object_id);
+        addressDropdown.append(option);
+    });
 
-        addresses.forEach(function(address) 
-        {
-            var option = $('<option>').val(address.full_name).text(address.full_name);
-            option.data('object-id', address.object_id); 
-            addressDropdown.append(option);
-        });
+    // Clear other address-related dropdowns
+    clearAddressFields();
 
-        addressDropdown.show();
-        
+    addressDropdown.show();
+}
+
+function clearAddressFields() {
+    // Clear the values of other address-related dropdowns
+    $('#addressesArea, #addressCity, #addressSettlement, #addressPlanningStructure, #addressStreet, #addressHouse, #addressApartment').empty();
+}
+
+function getIndexInHierarchy(selectorId) {
+        let lowerLevelSelectors = [
+            'addressesArea',
+            'addressCity',
+            'addressSettlement',
+            'addressPlanningStructure',
+            'addressStreet',
+            'addressHouse',
+            'addressApartment'
+        ];
+
+        return lowerLevelSelectors.indexOf(selectorId);
     }
 
+function clearLowerLevelFields(selectorId) {
+    let lowerLevelSelectors = [
+        'addressesArea',
+        'addressCity',
+        'addressSettlement',
+        'addressPlanningStructure',
+        'addressStreet',
+        'addressHouse',
+        'addressApartment'
+    ];
 
-    addressInput.on('input', function() 
-    {
-        if (addressInput.val() === '') {
-            addressDropdown.show();
-        }
-    });
+    let startIndex = getIndexInHierarchy(selectorId);
+    for (let i = startIndex + 1; i < lowerLevelSelectors.length; i++) {
+        $('#' + lowerLevelSelectors[i]).empty();
+    }
+}
+
+addressInput.on('input', function() {
+    if (addressInput.val() === '') {
+        addressDropdown.show();
+        clearAddressFields(); // Clear other fields when the input is empty
+    }
+});
 
     // ajax для обновления полей в зависмости от выбранного object_id
     addressDropdown.on('change', function() 
     {
-        var selectedObjectId = addressDropdown.find('option:selected').data('object-id');
-        var selectedObjectName = addressDropdown.val();
+        let selectedObjectId = addressDropdown.find('option:selected').data('object-id');
+        let selectedObjectName = addressDropdown.val();
         console.log(selectedObjectId);
         addressInput.val(selectedObjectName);
         addressDropdown.hide(); // Скрываем выпадающий список
+
+        clearLowerLevelFields('address');
 
         $.ajax({
             url: '{{ url("/api/postAddress") }}',
@@ -693,73 +851,73 @@ $(document).ready(function() {
             data: { selectedAddress: selectedObjectId },
             success: function(response) 
             {
-                var addressesData = response.addresses;
+                let addressesData = response.addresses;
                 console.log(addressesData);
                 {{-- $('select[name="address"]').empty();
                 $('select[name="addressCity"]').empty();
                 $('select[name="addressSettlement"]').empty(); --}}
            
                 if (addressesData.hasOwnProperty('2')) {
-                    var dropdown = $('select[name="addressesArea"]');
+                    let dropdown = $('select[name="addressesArea"]');
                     dropdown.empty();
                     dropdown.append('<option value="" selected disabled hidden>Выберите Район</option>');
                     $.each(addressesData['2'], function(index, address) {
-                        var newOption = new Option(address.full_name, address.full_name, false, false);
+                        let newOption = new Option(address.full_name, address.full_name, false, false);
                         $(newOption).data('object-id', address.object_id);
                         dropdown.append(newOption);
                     });
                 }
 
                 if (addressesData.hasOwnProperty('5')) {
-                    var dropdown = $('select[name="addressCity"]');
+                    let dropdown = $('select[name="addressCity"]');
                     dropdown.empty();
                     dropdown.append('<option value="" selected disabled hidden>Выберите Город</option>');
                     $.each(addressesData['5'], function(index, address) {
-                        var newOption = new Option(address.full_name, address.full_name, false, false);
+                        let newOption = new Option(address.full_name, address.full_name, false, false);
                         $(newOption).data('object-id', address.object_id);
                         dropdown.append(newOption);
                     });
                 }
 
                 if (addressesData.hasOwnProperty('6')) {
-                    var dropdown = $('select[name="addressSettlement"]');
+                    let dropdown = $('select[name="addressSettlement"]');
                     dropdown.empty();
                     dropdown.append('<option value="" selected disabled hidden>Выберите населлный пункт</option>');
                     $.each(addressesData['6'], function(index, address) {
-                        var newOption = new Option(address.full_name, address.full_name, false, false);
+                        let newOption = new Option(address.full_name, address.full_name, false, false);
                         $(newOption).data('object-id', address.object_id);
                         dropdown.append(newOption);
                     });
                 }
 
                 if (addressesData.hasOwnProperty('7')) {
-                    var dropdown = $('select[name="addressPlanningStructure"]');
+                    let dropdown = $('select[name="addressPlanningStructure"]');
                     dropdown.empty();
                     dropdown.append('<option value="" selected disabled hidden>Выберите элемент планировочноый структуры</option>');
                     $.each(addressesData['7'], function(index, address) {
-                        var newOption = new Option(address.full_name, address.full_name, false, false);
+                        let newOption = new Option(address.full_name, address.full_name, false, false);
                         $(newOption).data('object-id', address.object_id);
                         dropdown.append(newOption);
                     });
                 }
 
                 if (addressesData.hasOwnProperty('8')) {
-                    var dropdown = $('select[name="addressStreet"]');
+                    let dropdown = $('select[name="addressStreet"]');
                     dropdown.empty();
                     dropdown.append('<option value="" selected disabled hidden>Выберите улично дорожный элемент</option>');
                     $.each(addressesData['8'], function(index, address) {
-                        var newOption = new Option(address.full_name, address.full_name, false, false);
+                        let newOption = new Option(address.full_name, address.full_name, false, false);
                         $(newOption).data('object-id', address.object_id);
                         dropdown.append(newOption);
                     });
                 }
 
                 if (addressesData.hasOwnProperty('10')) {
-                    var dropdown = $('select[name="addressHouse"]');
+                    let dropdown = $('select[name="addressHouse"]');
                     dropdown.empty();
                     dropdown.append('<option value="" selected disabled hidden>Выберите дом</option>');
                     $.each(addressesData['10'], function(index, address) {
-                        var newOption = new Option(address.full_name, address.full_name, false, false);
+                        let newOption = new Option(address.full_name, address.full_name, false, false);
                         $(newOption).data('object-id', address.object_id);
                         dropdown.append(newOption);
                     });
@@ -767,12 +925,12 @@ $(document).ready(function() {
 
                 if (addressesData.hasOwnProperty('11')) 
                 {
-                    var dropdown = $('select[name="addressApartment"]');
+                    let dropdown = $('select[name="addressApartment"]');
                     dropdown.empty();
                     dropdown.append('<option value="" selected disabled hidden>Выберите квартиру</option>');
                     $.each(addressesData['11'], function(index, address) 
                     {
-                        var newOption = new Option(address.full_name, address.full_name, false, false);
+                        let newOption = new Option(address.full_name, address.full_name, false, false);
                         $(newOption).data('object-id', address.object_id);
                         dropdown.append(newOption);
                     });
@@ -791,250 +949,254 @@ $(document).ready(function() {
     данный ajax строит path для запроса к FIAS,  
         
     */   
-      function onSelectChange(selectedElement) 
-      {
-  
-        console.log($(this));
-        addressDropdown.hide();
-        $.ajax(
-          {
-            url: '{{ url("/api/postNewAddress") }}',
-            method: 'POST',
-            data: { objectID: selectedObjectId, path: currentPath },
-            success: function(response) 
-            {
-                var addressesDatas = response.addresses;
-                console.log(addressesDatas);
-               
-           
-                if (addressesDatas.hasOwnProperty('2')) 
-                {   
-                    var dropdown = $('select[name="addressesArea"]');
-                    dropdown.empty();
-                    dropdown.append('<option value="" selected disabled hidden>Выберите Район</option>');
-                    $.each(addressesDatas['2'], function(index, address) {
-                        var newOption = new Option(address.full_name, address.full_name, false, false);
-                        $(newOption).data('object-id', address.object_id);
-                        dropdown.append(newOption);   
-                    });
-                }
+    function onSelectChange(selectedElement) 
+    {
 
-                if (addressesDatas.hasOwnProperty('5')) {
-                    var dropdown = $('select[name="addressCity"]');
-                    dropdown.empty();
-                    dropdown.append('<option value="" selected disabled hidden>Выберите Город</option>');
-                    $.each(addressesDatas['5'], function(index, address) {
-                        var newOption = new Option(address.full_name, address.full_name, false, false);
-                        $(newOption).data('object-id', address.object_id);
-                        dropdown.append(newOption);
-                    });
-                }
+    console.log($(this));
+    addressDropdown.hide();
+    $.ajax(
+        {
+        url: '{{ url("/api/postNewAddress") }}',
+        method: 'POST',
+        data: { objectID: selectedObjectId, path: currentPath },
+        success: function(response) 
+        {
+            let addressesDatas = response.addresses;
+            console.log(addressesDatas);
+            
+            postNewAddress(currentPath)
 
-                if (addressesDatas.hasOwnProperty('6')) {
-                    var dropdown = $('select[name="addressSettlement"]');
-                    dropdown.empty();
-                    dropdown.append('<option value="" selected disabled hidden>Выберите населлный пункт</option>');
-                    $.each(addressesDatas['6'], function(index, address) {
-                        var newOption = new Option(address.full_name, address.full_name, false, false);
-                        $(newOption).data('object-id', address.object_id);
-                        dropdown.append(newOption);
-                    });
-                }
-
-                if (addressesDatas.hasOwnProperty('7')) {
-                    var dropdown = $('select[name="addressPlanningStructure"]');
-                    dropdown.empty();
-                    dropdown.append('<option value="" selected disabled hidden>Выберите элемент планировочноый структуры</option>');
-                    $.each(addressesDatas['7'], function(index, address) {
-                        var newOption = new Option(address.full_name, address.full_name, false, false);
-                        $(newOption).data('object-id', address.object_id);
-                        dropdown.append(newOption);
-                    });
-                }
-
-                if (addressesDatas.hasOwnProperty('8')) {
-                    var dropdown = $('select[name="addressStreet"]');
-                    dropdown.empty();
-                    dropdown.append('<option value="" selected disabled hidden>Выберите улично дорожный элемент</option>');
-                    $.each(addressesDatas['8'], function(index, address) {
-                        var newOption = new Option(address.full_name, address.full_name, false, false);
-                        $(newOption).data('object-id', address.object_id);
-                        dropdown.append(newOption);
-                    });
-                }
-
-                if (addressesDatas.hasOwnProperty('10')) 
-                {
-                    var dropdown = $('select[name="addressHouse"]');
-                    dropdown.empty();
-                    dropdown.append('<option value="" selected disabled hidden>Выберите дом</option>');
-                    $.each(addressesDatas['10'], function(index, address) {
-                        var newOption = new Option(address.full_name, address.full_name, false, false);
-                        $(newOption).data('object-id', address.object_id);
-                        dropdown.append(newOption);
-                    });
-                }
-
-                if (addressesDatas.hasOwnProperty('11')) 
-                {
-                    var dropdown = $('select[name="addressApartment"]');
-                    dropdown.empty();
-                    dropdown.append('<option value="" selected disabled hidden>Выберите квартиру</option>');
-                    $.each(addressesDatas['11'], function(index, address) 
-                    {
-                        var newOption = new Option(address.full_name, address.full_name, false, false);
-                        $(newOption).data('object-id', address.object_id);
-                        dropdown.append(newOption);
-                       
-                    });
-                }      
-
-                   
-            },
-            error: function(error) 
-            {
-                console.log(error);
+            if (addressesDatas.hasOwnProperty('2')) 
+            {   
+                let dropdown = $('select[name="addressesArea"]');
+                dropdown.empty();
+                dropdown.append('<option value="" selected disabled hidden>Выберите Район</option>');
+                $.each(addressesDatas['2'], function(index, address) {
+                    let newOption = new Option(address.full_name, address.full_name, false, false);
+                    $(newOption).data('object-id', address.object_id);
+                    dropdown.append(newOption);   
+                });
             }
-          }); 
+
+            if (addressesDatas.hasOwnProperty('5')) {
+                let dropdown = $('select[name="addressCity"]');
+                dropdown.empty();
+                dropdown.append('<option value="" selected disabled hidden>Выберите Город</option>');
+                $.each(addressesDatas['5'], function(index, address) {
+                    let newOption = new Option(address.full_name, address.full_name, false, false);
+                    $(newOption).data('object-id', address.object_id);
+                    dropdown.append(newOption);
+                });
+            }
+
+            if (addressesDatas.hasOwnProperty('6')) {
+                let dropdown = $('select[name="addressSettlement"]');
+                dropdown.empty();
+                dropdown.append('<option value="" selected disabled hidden>Выберите населлный пункт</option>');
+                $.each(addressesDatas['6'], function(index, address) {
+                    let newOption = new Option(address.full_name, address.full_name, false, false);
+                    $(newOption).data('object-id', address.object_id);
+                    dropdown.append(newOption);
+                });
+            }
+
+            if (addressesDatas.hasOwnProperty('7')) {
+                let dropdown = $('select[name="addressPlanningStructure"]');
+                dropdown.empty();
+                dropdown.append('<option value="" selected disabled hidden>Выберите элемент планировочноый структуры</option>');
+                $.each(addressesDatas['7'], function(index, address) {
+                    let newOption = new Option(address.full_name, address.full_name, false, false);
+                    $(newOption).data('object-id', address.object_id);
+                    dropdown.append(newOption);
+                });
+            }
+
+            if (addressesDatas.hasOwnProperty('8')) {
+                let dropdown = $('select[name="addressStreet"]');
+                dropdown.empty();
+                dropdown.append('<option value="" selected disabled hidden>Выберите улично дорожный элемент</option>');
+                $.each(addressesDatas['8'], function(index, address) {
+                    let newOption = new Option(address.full_name, address.full_name, false, false);
+                    $(newOption).data('object-id', address.object_id);
+                    dropdown.append(newOption);
+                });
+            }
+
+            if (addressesDatas.hasOwnProperty('10')) 
+            {
+                let dropdown = $('select[name="addressHouse"]');
+                dropdown.empty();
+                dropdown.append('<option value="" selected disabled hidden>Выберите дом</option>');
+                $.each(addressesDatas['10'], function(index, address) {
+                    let newOption = new Option(address.full_name, address.full_name, false, false);
+                    $(newOption).data('object-id', address.object_id);
+                    dropdown.append(newOption);
+                });
+            }
+
+            if (addressesDatas.hasOwnProperty('11')) 
+            {
+                let dropdown = $('select[name="addressApartment"]');
+                dropdown.empty();
+                dropdown.append('<option value="" selected disabled hidden>Выберите квартиру</option>');
+                $.each(addressesDatas['11'], function(index, address) 
+                {
+                    let newOption = new Option(address.full_name, address.full_name, false, false);
+                    $(newOption).data('object-id', address.object_id);
+                    dropdown.append(newOption);
+                    
+                });
+            }      
+
+                
+        },
+        error: function(error) 
+        {
+            console.log(error);
+        }
+        }); 
 
 
-      } 
+    } 
     
     // дебаг функция
     function postNewAddress(currentPath) 
     {
-    
-      console.log('Address sent to the server:', currentPath);
+        console.log('Address sent to the server:', currentPath);
     }
 
-      let addressHierarchy = []; // Массив для хранения уровней адреса
-     
 
-  function updateCurrentPath(selectedObjectId, selectorId) 
-  {
-    const selectedObjectIndex = addressHierarchy.findIndex(entry => entry.selectorId === selectorId);
-    const currentObject = 
+    function updateCurrentPath(selectedObjectId, selectorId) 
     {
-        objectId: selectedObjectId,
-        selectorId: selectorId
-    };
+        const selectedObjectIndex = addressHierarchy.findIndex(entry => entry.selectorId === selectorId);
+        const currentObject = {
+            objectId: selectedObjectId,
+            selectorId: selectorId
+        };
 
-    if (selectedObjectIndex === -1) 
-    {
-        // Если элемент еще не выбран, добавляем его в массив
-        addressHierarchy.push(currentObject);
-    } 
-    else 
-    {
-        // Если элемент уже выбран, обновляем его objectId
-        addressHierarchy[selectedObjectIndex].objectId = selectedObjectId;
-
-        // Проверяем порядок уровней адреса
-        if (!checkLevelOrder(selectedObjectIndex + 1, selectedObjectIndex)) 
+        if (selectedObjectIndex === -1) 
         {
-            // Если порядок нарушен, обнуляем путь до текущего уровня
-            addressHierarchy = addressHierarchy.slice(0, selectedObjectIndex + 1);
+            // If the element is not selected yet, add it to the array
+            addressHierarchy.push(currentObject);
+        } 
+        else 
+        {
+            // If the element is already selected, update its objectId
+            addressHierarchy[selectedObjectIndex].objectId = selectedObjectId;
+
+            // Check and enforce the order of address levels
+            if (!checkLevelOrder(selectedObjectIndex + 1, selectedObjectIndex)) 
+            {
+                // If the order is violated, reset the path to the current level
+                addressHierarchy = addressHierarchy.slice(0, selectedObjectIndex + 1);
+            }
         }
+
+        // Build the path based on the array
+        const pathArray = addressHierarchy.map(entry => entry.objectId);
+        currentPath = pathArray.join('.');
+
+        // Utilize the currentPath as needed
+        console.log(currentPath);
+
+        // Пример: Передача currentPath в функцию postNewAddress
+        postNewAddress(currentPath);
     }
 
-    // Строим path на основе массива
-    const pathArray = addressHierarchy.map(entry => entry.objectId);
-    currentPath = pathArray.join('.'); // Используем глобальную переменную
 
-    // Далее вы можете использовать currentPath по своему усмотрению
-    // Например, передать его в postNewAddress(currentPath) для отправки на сервер
-    console.log(currentPath);
+    function checkLevelOrder(expectedLevel, selectedObjectIndex) 
+    {
+        const currentSelectorId = addressHierarchy[selectedObjectIndex].selectorId;
 
-    // Пример передачи currentPath в функцию postNewAddress
-    postNewAddress(currentPath);
-}
+        // Define the order of address levels based on selectorId
+        const levelOrder = {
+            'addressesArea': 5,
+            'addressCity': 2,
+            'addressSettlement': 6,
+            'addressPlanningStructure': 7,
+            'addressStreet': 8,
+            'addressHouse': 10,
+            'addressApartment': 11
+        };
 
-
-function checkLevelOrder(expectedLevel, selectedObjectIndex) {
-    const currentSelectorId = addressHierarchy[selectedObjectIndex].selectorId;
-
-    // Определяем порядок уровней адреса в зависимости от текущего селектора
-    const levelOrder = {
-        'addressesArea': 5,  // Административный Район
-        'addressCity': 2,  // Город
-        'addressSettlement': 6,  // Поселок
-        'addressPlanningStructure': 7,  // Элемент планировочной структуры
-        'addressStreet': 8,  // Улица
-        'addressHouse': 10,  // Дом
-        'addressApartment': 11  // Квартира
-    };
-
-    // Если выбранный уровень идет в ожидаемом порядке, возвращаем true
-    return levelOrder[currentSelectorId] === expectedLevel;
-}
-
-// Добавьте обработчики событий для каждого выпадающего списка
+        // Check if the selected level follows the expected order
+        return levelOrder[currentSelectorId] === expectedLevel;
+    }
 
 
-$('#addressesArea').on('change', function() {
-    const selectedObjectId = $(this).find('option:selected').data('object-id');
-    updateCurrentPath(selectedObjectId, 'addressesArea');
-    onSelectChange($(this));
+    
+    $('#addressesArea').on('change', function() {
+        const selectedObjectId = $(this).find('option:selected').data('object-id');
+        updateCurrentPath(selectedObjectId, 'addressesArea');
+        clearLowerLevelFields('addressesArea');
+        onSelectChange($(this));
+    });
+
+
+    $('#addressCity').on('change', function() {
+        const selectedObjectId = $(this).find('option:selected').data('object-id');
+        updateCurrentPath(selectedObjectId, 'addressCity');
+        clearLowerLevelFields('addressCity');
+        onSelectChange($(this));
+    });
+
+    $('#addressSettlement').on('change', function() {
+        const selectedObjectId = $(this).find('option:selected').data('object-id');
+        updateCurrentPath(selectedObjectId, 'addressSettlement');
+        clearLowerLevelFields('addressSettlement');
+        onSelectChange($(this));
+    });
+
+    $('#addressPlanningStructure').on('change', function() {
+        const selectedObjectId = $(this).find('option:selected').data('object-id');
+        updateCurrentPath(selectedObjectId, 'addressPlanningStructure');
+        clearLowerLevelFields('addressPlanningStructure');
+        onSelectChange($(this));
+    });
+
+    $('#addressStreet').on('change', function() {
+        const selectedObjectId = $(this).find('option:selected').data('object-id');
+        updateCurrentPath(selectedObjectId, 'addressStreet');
+        clearLowerLevelFields('addressStreet');
+        console.log(selectedObjectId);
+        onSelectChange($(this));
+    });
+
+    $('#addressHouse').on('change', function() {
+        const selectedObjectId = $(this).find('option:selected').data('object-id');
+        updateCurrentPath(selectedObjectId, 'addressHouse');
+        clearLowerLevelFields('addressHouse');
+        onSelectChange($(this));
+    });
+
+    $('#addressApartment').on('change', function() {
+        const selectedObjectId = $(this).find('option:selected').data('object-id');
+        updateCurrentPath(selectedObjectId, 'addressApartment');
+        clearLowerLevelFields('addressApartment');
+        onSelectChange($(this));
+    });
 });
 
 
-$('#addressCity').on('change', function() {
-    const selectedObjectId = $(this).find('option:selected').data('object-id');
-    updateCurrentPath(selectedObjectId, 'addressCity');
-    onSelectChange($(this));
-});
+    function updateDropdowns(addressesData) 
+    {
+        addressesData.forEach(function(item) {
+            let objectLevelId = item.object_level_id;
+            let addresses = item.addresses;
+            let actualDropdownContainer = $('#dropdown-container-' + objectLevelId);
+            actualDropdownContainer.empty();
 
-$('#addressSettlement').on('change', function() {
-    const selectedObjectId = $(this).find('option:selected').data('object-id');
-    updateCurrentPath(selectedObjectId, 'addressSettlement');
-    onSelectChange($(this));
-});
+            addresses.forEach(function(address) {
+                let option = $('<option>').val(address).text(address);
+                actualDropdownContainer.append(option);
+            });
 
-$('#addressPlanningStructure').on('change', function() {
-    const selectedObjectId = $(this).find('option:selected').data('object-id');
-    updateCurrentPath(selectedObjectId, 'addressPlanningStructure');
-    onSelectChange($(this));
-});
+            actualDropdownContainer.show();
+        });
 
-$('#addressStreet').on('change', function() {
-    const selectedObjectId = $(this).find('option:selected').data('object-id');
-    updateCurrentPath(selectedObjectId, 'addressStreet');
-    console.log(selectedObjectId);
-    onSelectChange($(this));
-});
-
-$('#addressHouse').on('change', function() {
-    const selectedObjectId = $(this).find('option:selected').data('object-id');
-    updateCurrentPath(selectedObjectId, 'addressHouse');
-    onSelectChange($(this));
-});
-
-$('#addressApartment').on('change', function() {
-    const selectedObjectId = $(this).find('option:selected').data('object-id');
-    updateCurrentPath(selectedObjectId, 'addressApartment');
-    onSelectChange($(this));
-});
-  });
-
-
-        function updateDropdowns(addressesData) {
-          addressesData.forEach(function(item) {
-              var objectLevelId = item.object_level_id;
-              var addresses = item.addresses;
-              var actualDropdownContainer = $('#dropdown-container-' + objectLevelId);
-              actualDropdownContainer.empty();
-
-              addresses.forEach(function(address) {
-                  var option = $('<option>').val(address).text(address);
-                  actualDropdownContainer.append(option);
-              });
-
-              actualDropdownContainer.show();
-          });
-
-          // Пример передачи currentPath в функцию postNewAddress
-          postNewAddress(currentPath);
-      }
+        // Пример передачи currentPath в функцию postNewAddress
+        postNewAddress(currentPath);
+    }
 
 
 

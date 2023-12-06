@@ -18,6 +18,11 @@ class Application extends Model
     {
         return $this->belongsTo(Statuses::class, 'status_id');
     }
+
+    public function addressApplications()
+    {
+        return $this->belongsToMany(Address::class, 'address_applications', 'application_id', 'address_id');
+    }
     
     public function addresses()
     {

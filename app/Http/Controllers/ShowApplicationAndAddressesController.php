@@ -108,25 +108,10 @@ class ShowApplicationAndAddressesController extends Controller
                 'applications.type_of_payment',
                 'users.name as user_name',
                 'applications.user_id as user_id',
-                'addresses.combined_address as address', // использование combined_address
+                'addresses.full_address as address', 
                 'phones.phone_number'
             )
-            ->get()
-            ->map(function ($item) {
-                // Преобразование combined_address из JSON в массив
-                $combinedAddress = json_decode($item->address, true);
-                if ($combinedAddress !== null && !empty($combinedAddress)) {
-                    $lastKey = key(array_slice($combinedAddress, -1, 1, true));
-                    // Ваш дальнейший код с использованием $lastKey
-                } else {
-                    // Обработка ситуации, когда $combinedAddress равен null или пуст
-                    // Например, установка значения по умолчанию или другие действия
-                    $lastKey = null; // Установка значения по умолчанию или другая обработка
-                }
-                $item->address = isset($combinedAddress[$lastKey]) ? $combinedAddress[$lastKey] : null;
-    
-                return $item;
-            });
+            ->get();
     }
 
     public function index()

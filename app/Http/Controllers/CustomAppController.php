@@ -72,8 +72,9 @@ class CustomAppController extends Controller
             'fullname' => 'required|string',
             'status_id' => 'required|integer',
             'type_of_payment' => 'required|string',
-
             
+            
+
             'address' => 'required|string',
             'addressesArea' => 'string|max:255',
             'addressCity' => 'string',
@@ -83,8 +84,7 @@ class CustomAppController extends Controller
             'addressHouse' => 'string',
             'addressApartment' => 'string',
             
-            
-           
+
             'phone_number' => 'required|string',
             'country_code' => 'required|string',
             'city_code' => 'required|string',
@@ -93,10 +93,11 @@ class CustomAppController extends Controller
             
             'payer_code' => 'required|string',
             'actual' => 'required|string',
-           
+            'totalPriceValue' => 'required|string',
+            
         ]);
 
-       if ($validator->fails()) {
+        if ($validator->fails()) {
             dd($validator->errors());
             return redirect()->back()->withErrors($validator)->withInput();
     }
@@ -107,19 +108,27 @@ class CustomAppController extends Controller
         DB::beginTransaction();
 
 
-     
-        $applicationData = $request->only('fullname', 'user_id', 'status_id', 'type_of_payment');
+        
+        $applicationData = $request->only('fullname', 'user_id', 'status_id', 'type_of_payment', 'totalPriceValue');
         $applicationData['user_id'] = auth()->user()->id;
         $application = Application::create($applicationData);
 
         // заполнение адреса
+
         $addressData = $request->only(
-        'address', 'addressesArea', 
-        'addressCity', 'addressSettlement', 
-        'addressPlanningStructure', 'addressStreet', 
-        'addressHouse', 'addressApartment', 
-        'object_guid');
+            'address', 'addressesArea', 'addressCity', 'addressSettlement',
+            'addressPlanningStructure', 'addressStreet', 'addressHouse',
+            'addressApartment', 'object_guid'
+        );
+
+        $fullAddress = $this->buildFullAddress($addressData);
+
+        // Добавляем полный адрес к массиву данных перед сохранением
+        $addressData['full_address'] = $fullAddress;
+
+        // Сохраняем в базу данных
         $address = Address::firstOrCreate($addressData);
+
 
         // структура заполнения кода плательщика и сводной таблицы плательщиков и адресов
         $payer = Payer::where('payer_code', $request->input('payer_code'))
@@ -214,7 +223,24 @@ class CustomAppController extends Controller
         return redirect()->back()->with('error', 'Произошла ошибка. Пожалуйста, попробуйте еще раз.');
     }
 }
-    
+
+    private function buildFullAddress($addressData)
+    {
+        $fullAddress = '';
+
+        // Собираем полный адрес, добавляя к каждому не пустому полю соответствующий разделитель
+        foreach ($addressData as $value) {
+            if (!empty($value)) {
+                $fullAddress .= $value . ', ';
+            }
+        }
+
+        // Убираем последнюю запятую и пробел
+        $fullAddress = rtrim($fullAddress, ', ');
+
+        return $fullAddress;
+    }
+
 }
 
 

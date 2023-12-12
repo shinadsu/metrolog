@@ -11,16 +11,52 @@
 <link rel="stylesheet" href="{{ 'assets/vendors/ti-icons/css/themify-icons.css' }}">
 <link rel="stylesheet" href="{{ 'assets/vendors/css/vendor.bundle.base.css' }}">
 <!-- endinject -->
-<!-- Plugin css for this page -->
 <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="{{ 'assets/vendors/select2/select2.min.css' }}">
-<link rel="stylesheet" href="{{ 'assets/vendors/select2-bootstrap-theme/select2-bootstrap.min.css' }}">
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.default.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
+
+  <!-- Include Selectize.js JS -->
 <!-- End plugin css for this page -->
 <!-- inject:css -->
 <link rel="stylesheet" href="{{ 'assets/css/vertical-layout-light/style.css' }}">
 <!-- endinject -->
 <link rel="shortcut icon" href="{{ 'assets/images/favicon.png' }}" />
+<style>
+.loader {
+  width: 48px;
+  height: 48px;
+  display: inline-block;
+  position: relative;
+}
+.loader::after,
+.loader::before {
+  content: '';  
+  box-sizing: border-box;
+  width: 48px;
+  height: 48px;
+  border: 2px solid #FFF;
+  position: absolute;
+  left: 0;
+  top: 0;
+  animation: rotation 2s ease-in-out infinite alternate;
+}
+.loader::after {
+  border-color: #FF3D00;
+  animation-direction: alternate-reverse;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} 
+    </style>
 </head>
 
 <body>
@@ -309,9 +345,10 @@
                     <div class="card-body">
                         <h4 class="card-title">Заполнение адреса</h4>
                         <div class="form-group">
-                            <label for="addressInput">Субъект РФ</label>
-                            <input type="text" class="form-control" id="addressInput" name="addressInput" required>
+                            <label for="addressInput">Субъект РФ</label> 
+                            <input type="text" class="form-control" id="addressInput" name="addressInput" required> 
                             <select id="address" class="form-control" name="address" style="display: none;"></select>
+                            
                         </div>
                         <div class="form-group">
                             <label for="addressesArea">Административный Район</label>
@@ -345,8 +382,7 @@
                     </div>
                 </div>
             </div>
-
-            <!-- ... Your existing code ... -->
+            
 
             <div class="col-12 grid-margin stretch-card">
                 <div class="card">
@@ -377,9 +413,11 @@
                         </ul>
                         
                         <div class="tab-content">
-                         <div id="totalPriceContainer">
-                            <h4>Общая цена: <span id="totalPriceValue">0</span></h4>
+                        <div id="totalPriceContainer">
+                            <h4>Общая цена: <span id="totalPriceDisplay">0</span></h4>
+                            <input type="hidden" name="totalPriceValue" id="totalPriceInput" value="0">
                         </div>
+
                         <div class="tab-pane fade" id="allData" role="tabpanel" aria-labelledby="allDataTab">
                             <div style="max-height: 400px; overflow-y: auto;">
                                 <table class="table table-bordered">
@@ -680,11 +718,74 @@
     </div>
 </div>
 
+
+<!-- Вставьте скрипт updateTotalPrice здесь -->
+
+<!-- // let selectedPrices = {};
+// let total = 0;
+
+// function updateTotalPrice(operation, index) {
+//     // Prevent form submission when buttons are clicked
+//     event.preventDefault();
+
+//     let activeTab = document.querySelector('.tab-pane.active');
+//     let category = activeTab.getAttribute('data-category');
+
+//     let selectedItem = activeTab.querySelector('tr[data-id="' + index + '"]');
+//     let itemName = selectedItem.querySelector('td:first-child').textContent;
+//     let currentPrice = parseFloat(selectedItem.querySelector('.price').textContent);
+
+//     // Находим ячейку с количеством для обновления
+//     let quantityCell = selectedItem.querySelector('.quantity');
+
+//     if (!selectedPrices[category]) {
+//         selectedPrices[category] = [];
+//     }
+
+//     // Проверяем, есть ли уже элемент с таким индексом в массиве
+//     let existingItem = selectedPrices[category].find(item => item.index === index);
+
+//     if (operation === 'plus') {
+//         if (!existingItem) {
+//             // Добавить цену к общей цене
+//             total += currentPrice;
+//             // Добавить элемент в массив выбранных элементов
+//             selectedPrices[category].push({ index, name: itemName, price: currentPrice, quantity: 1 });
+//         } else {
+//             // Если элемент уже существует, увеличиваем его количество и цену
+//             existingItem.quantity += 1;
+//             existingItem.price += currentPrice;
+//             total += currentPrice;
+//         }
+//     } else if (operation === 'minus' && existingItem && existingItem.quantity > 0) {
+//         // Если есть элемент для уменьшения и количество больше 0
+//         existingItem.quantity -= 1;
+//         existingItem.price -= currentPrice;
+//         total -= currentPrice;
+//     }
+
+//     // Ограничить количество десятичных знаков до двух
+//     total = parseFloat(total.toFixed(2));
+
+//     // Обновить общую цену на странице
+//     document.getElementById('totalPriceDisplay').textContent = total;
+
+//     // Обновить количество на странице
+//     if (quantityCell) {
+//         quantityCell.textContent = existingItem ? existingItem.quantity : 0;
+//     } else {
+//         console.error('Quantity cell not found for index ' + index);
+//     }
+// } -->
+
 <script>
-    let selectedPrices = {};
-    let total = 0;
+    let selectedPrices = JSON.parse(localStorage.getItem('selectedPrices')) || {};
+    let total = parseFloat(localStorage.getItem('total')) || 0;
 
     function updateTotalPrice(operation, index) {
+        // Prevent form submission when buttons are clicked
+        event.preventDefault();
+
         let activeTab = document.querySelector('.tab-pane.active');
         let category = activeTab.getAttribute('data-category');
 
@@ -714,30 +815,41 @@
                 existingItem.price += currentPrice;
                 total += currentPrice;
             }
-        } else if (operation === 'minus' && existingItem) {
-            // Если есть элемент для уменьшения
+        } else if (operation === 'minus' && existingItem && existingItem.quantity > 0) {
+            // Если есть элемент для уменьшения и количество больше 0
             existingItem.quantity -= 1;
             existingItem.price -= currentPrice;
             total -= currentPrice;
-
-            // Удаляем элемент, если его количество стало нулевым или отрицательным
-            if (existingItem.quantity <= 0) {
-                selectedPrices[category] = selectedPrices[category].filter(item => item.index !== index);
-            }
         }
 
         // Ограничить количество десятичных знаков до двух
         total = parseFloat(total.toFixed(2));
 
-        // Обновить общую цену на странице
-        document.getElementById('totalPriceValue').textContent = total;
+        // Обновить общую цену и количество на странице
+        document.getElementById('totalPriceDisplay').textContent = total;
 
         // Обновить количество на странице
         if (quantityCell) {
             quantityCell.textContent = existingItem ? existingItem.quantity : 0;
+        } else {
+            console.error('Quantity cell not found for index ' + index);
         }
+
+        // Сохраняем значения в локальное хранилище
+        localStorage.setItem('selectedPrices', JSON.stringify(selectedPrices));
+        localStorage.setItem('total', total);
     }
+
+    // Вызываем эту функцию для восстановления значений при загрузке страницы
+    updateTotalPrice('plus', 0);
 </script>
+
+
+
+
+
+
+
 
 
 
@@ -760,20 +872,43 @@ $(document).ready(function() {
     let selectedApartment = $('#addressApartment'); // 11
     let addressHierarchy = []; // Массив для хранения уровней адреса
 
-    addressInput.on('input', function() {
-        let searchValue = $(this).val();
-        $.ajax({
-            url: '{{ url("/api/getAddressItems") }}',
-            method: 'post',
-            success: function(response) {
-                let fullNames = response.addresses;
-                updateDropdown(fullNames);
-            },
-            error: function(error) {
-                console.log(error);
-            }
-        });
+   
+let isDropdownChange = false;
+
+function createLoader(fieldId) {
+    let loaderId = fieldId + 'Loader';
+    let loader = $('<span class="loader"></span>').attr('id', loaderId);
+    $('#' + fieldId).parent().append(loader);
+    return loader;
+}
+
+addressInput.on('input', function () {
+    let searchValue = $(this).val();
+
+    // Проверка, является ли поле пустым
+    if (!isDropdownChange) {
+        // Если изменение произошло не из addressDropdown, скрываем лоадер
+        $('#addressesAreaLoader').hide();
+    }
+
+    $.ajax({
+        url: '{{ url("/api/getAddressItems") }}',
+        method: 'post',
+        success: function (response) {
+            let fullNames = response.addresses;
+            updateDropdown(fullNames);
+        },
+        error: function (error) {
+            console.log(error);
+        },
+        complete: function () {
+            // Скрываем лоадер после завершения запроса
+            loader.hide();
+        }
     });
+});
+
+
 
 // получаем object_id для поля "Субъект РФ"
 function updateDropdown(addresses) {
@@ -834,121 +969,90 @@ addressInput.on('input', function() {
     }
 });
 
+    function updateAddressField(fieldId, addressesData, label) {
+        let dropdown = $('#' + fieldId);
+        dropdown.empty();
+        dropdown.append('<option value="" selected disabled hidden>Выберите ' + label + '</option>');
+        $.each(addressesData, function (index, address) {
+            let newOption = new Option(address.full_name, address.full_name, false, false);
+            $(newOption).data('object-id', address.object_id);
+            dropdown.append(newOption);
+        });
+    }
+
+
+
     // ajax для обновления полей в зависмости от выбранного object_id
-    addressDropdown.on('change', function() 
-    {
-        let selectedObjectId = addressDropdown.find('option:selected').data('object-id');
+    addressDropdown.on('change', function () {
+    let selectedOption = addressDropdown.find('option:selected');
+    
+        if (selectedOption.length === 0) {
+            // Ничего не выбрано, просто выходим из функции
+            return;
+        }
+        let loader = createLoader('addressesArea');
+        loader.show();
+        // let loader = createLoader('addressCity');
+        // loader.show();
+
+        let selectedObjectId = selectedOption.data('object-id');
         let selectedObjectName = addressDropdown.val();
         console.log(selectedObjectId);
         addressInput.val(selectedObjectName);
-        addressDropdown.hide(); // Скрываем выпадающий список
-
+        addressDropdown.hide();
         clearLowerLevelFields('address');
+      
 
         $.ajax({
             url: '{{ url("/api/postAddress") }}',
             method: 'POST',
             data: { selectedAddress: selectedObjectId },
             success: function(response) 
-            {
+            {   
+                $('.loader').hide();
                 let addressesData = response.addresses;
                 console.log(addressesData);
-                {{-- $('select[name="address"]').empty();
-                $('select[name="addressCity"]').empty();
-                $('select[name="addressSettlement"]').empty(); --}}
+               
            
-                if (addressesData.hasOwnProperty('2')) {
-                    let dropdown = $('select[name="addressesArea"]');
-                    dropdown.empty();
-                    dropdown.append('<option value="" selected disabled hidden>Выберите Район</option>');
-                    $.each(addressesData['2'], function(index, address) {
-                        let newOption = new Option(address.full_name, address.full_name, false, false);
-                        $(newOption).data('object-id', address.object_id);
-                        dropdown.append(newOption);
-                    });
-                }
+            if (addressesData.hasOwnProperty('2')) {
+                updateAddressField('addressCity', addressesData['2'], 'Город');
+            }
 
-                if (addressesData.hasOwnProperty('5')) {
-                    let dropdown = $('select[name="addressCity"]');
-                    dropdown.empty();
-                    dropdown.append('<option value="" selected disabled hidden>Выберите Город</option>');
-                    $.each(addressesData['5'], function(index, address) {
-                        let newOption = new Option(address.full_name, address.full_name, false, false);
-                        $(newOption).data('object-id', address.object_id);
-                        dropdown.append(newOption);
-                    });
-                }
+            if (addressesData.hasOwnProperty('5')) {
+                updateAddressField('addressesArea', addressesData['5'], 'Район');
+            }
 
-                if (addressesData.hasOwnProperty('6')) {
-                    let dropdown = $('select[name="addressSettlement"]');
-                    dropdown.empty();
-                    dropdown.append('<option value="" selected disabled hidden>Выберите населлный пункт</option>');
-                    $.each(addressesData['6'], function(index, address) {
-                        let newOption = new Option(address.full_name, address.full_name, false, false);
-                        $(newOption).data('object-id', address.object_id);
-                        dropdown.append(newOption);
-                    });
-                }
+            if (addressesData.hasOwnProperty('6')) {
+                updateAddressField('addressSettlement', addressesData['6'], 'Поселок');
+            }
 
-                if (addressesData.hasOwnProperty('7')) {
-                    let dropdown = $('select[name="addressPlanningStructure"]');
-                    dropdown.empty();
-                    dropdown.append('<option value="" selected disabled hidden>Выберите элемент планировочноый структуры</option>');
-                    $.each(addressesData['7'], function(index, address) {
-                        let newOption = new Option(address.full_name, address.full_name, false, false);
-                        $(newOption).data('object-id', address.object_id);
-                        dropdown.append(newOption);
-                    });
-                }
+            if (addressesData.hasOwnProperty('7')) {
+                updateAddressField('addressPlanningStructure', addressesData['7'], 'Элемент планировочной структуры');
+            }
 
-                if (addressesData.hasOwnProperty('8')) {
-                    let dropdown = $('select[name="addressStreet"]');
-                    dropdown.empty();
-                    dropdown.append('<option value="" selected disabled hidden>Выберите улично дорожный элемент</option>');
-                    $.each(addressesData['8'], function(index, address) {
-                        let newOption = new Option(address.full_name, address.full_name, false, false);
-                        $(newOption).data('object-id', address.object_id);
-                        dropdown.append(newOption);
-                    });
-                }
+            if (addressesData.hasOwnProperty('8')) {
+                updateAddressField('addressStreet', addressesData['8'], 'Улица');
+            }
 
-                if (addressesData.hasOwnProperty('10')) {
-                    let dropdown = $('select[name="addressHouse"]');
-                    dropdown.empty();
-                    dropdown.append('<option value="" selected disabled hidden>Выберите дом</option>');
-                    $.each(addressesData['10'], function(index, address) {
-                        let newOption = new Option(address.full_name, address.full_name, false, false);
-                        $(newOption).data('object-id', address.object_id);
-                        dropdown.append(newOption);
-                    });
-                }
+            if (addressesData.hasOwnProperty('10')) {
+                updateAddressField('addressHouse', addressesData['10'], 'Дом');
+            }
 
-                if (addressesData.hasOwnProperty('11')) 
-                {
-                    let dropdown = $('select[name="addressApartment"]');
-                    dropdown.empty();
-                    dropdown.append('<option value="" selected disabled hidden>Выберите квартиру</option>');
-                    $.each(addressesData['11'], function(index, address) 
-                    {
-                        let newOption = new Option(address.full_name, address.full_name, false, false);
-                        $(newOption).data('object-id', address.object_id);
-                        dropdown.append(newOption);
-                    });
-                }                                    
+            if (addressesData.hasOwnProperty('11')) {
+                updateAddressField('addressApartment', addressesData['11'], 'Квартира');
+            }                               
                 
     
             },
             error: function(error) {
                 console.log(error);
+                $('.loader').hide();
             }
 
         });
 
 
-    /* ajax запрос, который работает после отработки метода postAddress
-    данный ajax строит path для запроса к FIAS,  
-        
-    */   
+
     function onSelectChange(selectedElement) 
     {
 
@@ -1197,12 +1301,12 @@ addressInput.on('input', function() {
         // Пример передачи currentPath в функцию postNewAddress
         postNewAddress(currentPath);
     }
-
-
-
       
 });
   </script>
+
+
+
   <!-- plugins:js -->
   <script src="{{ 'assets/vendors/js/vendor.bundle.base.js' }} "></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
@@ -1210,7 +1314,9 @@ addressInput.on('input', function() {
   <!-- Plugin js for this page -->
   <script src="{{ 'assets/vendors/typeahead.js/typeahead.bundle.min.js' }} "></script>
   <script src="{{ 'assets/vendors/select2/select2.min.js' }} "></script>
-  <!-- End plugin js for this page -->
+
+
+ <!-- End plugin js for this page -->
   <!-- inject:js -->
   <script src="{{ 'assets/js/off-canvas.js' }} "></script>
   <script src="{{ 'assets/js/hoverable-collapse.js' }} "></script>

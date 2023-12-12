@@ -283,7 +283,7 @@
                                             <td>
                                                 <ul>
                                                     @foreach ($application->addresses as $address)
-                                                        <li>{{ $address->address }}</li>
+                                                        <li>{{ $address->full_address }}</li>
                                                     @endforeach
                                                 </ul>
                                             </td>

@@ -15,6 +15,7 @@ class Address extends Model
         'addressStreet', 
         'addressHouse', 
         'addressApartment',
+        'full_address',
         'combined_address',
         'object_guid', // добавляем комбинированное поле
     ];

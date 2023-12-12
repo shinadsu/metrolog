@@ -51,41 +51,13 @@ class Metrlog extends Controller
            $query->where('application_id', $id);
        })->get();
 
-       $processedAddresses = $addresses->map(function ($address) {
-         $combinedAddress = $address->combined_address;
-     
-         // Проверяем, является ли $combinedAddress строкой JSON
-         if (is_string($combinedAddress)) {
-             // Если строка JSON, преобразуем ее в массив
-             $combinedAddress = json_decode($combinedAddress, true);
-     
-             // Проверяем успешность декодирования JSON
-             if (json_last_error() !== JSON_ERROR_NONE) {
-                 // Обработка ошибки декодирования
-                 $combinedAddress = [];
-             }
-         }
-     
-         // Проверяем, что $combinedAddress является массивом и не пуст
-         if (is_array($combinedAddress) && !empty($combinedAddress)) {
-             // Получаем последний ключ
-             $lastKey = key(array_slice($combinedAddress, -1, 1, true));
-     
-             // Присваиваем значение address значения последнего ключа
-             $address->address = isset($combinedAddress[$lastKey]) ? $combinedAddress[$lastKey] : null;
-         } else {
-             // Если $combinedAddress не является массивом или пуст, присваиваем null
-             $address->address = null;
-         }
-     
-         return $address;
-     });
-     
+        $processedAddresses = $addresses->map(function ($address) 
+        {
+            $address->address = $address->full_address;
+            return $address;
+        });
 
-     
-     
-     
-   
+    
        $phoneIds = $processedAddresses->pluck('id')->toArray();
        $phones = Phone::whereIn('id', AddressPhone::whereIn('address_id', $phoneIds)->pluck('phone_id'))->get();
    

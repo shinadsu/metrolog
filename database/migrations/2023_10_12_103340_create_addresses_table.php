@@ -18,6 +18,7 @@ class CreateAddressesTable extends Migration
             $table->string('addressStreet');
             $table->string('addressHouse');
             $table->string('addressApartment');
+            $table->string('full_address');
             $table->json('combined_address');
             $table->string('object_guid');
             $table->timestamps();

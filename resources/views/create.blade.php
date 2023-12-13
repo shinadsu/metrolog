@@ -25,37 +25,62 @@
 <!-- endinject -->
 <link rel="shortcut icon" href="{{ 'assets/images/favicon.png' }}" />
 <style>
-.loader {
-  width: 48px;
-  height: 48px;
-  display: inline-block;
-  position: relative;
-}
-.loader::after,
-.loader::before {
-  content: '';  
+
+html {
   box-sizing: border-box;
-  width: 48px;
-  height: 48px;
-  border: 2px solid #FFF;
-  position: absolute;
-  left: 0;
-  top: 0;
-  animation: rotation 2s ease-in-out infinite alternate;
-}
-.loader::after {
-  border-color: #FF3D00;
-  animation-direction: alternate-reverse;
+  font-size: 87.5%;
 }
 
-@keyframes rotation {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-} 
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  padding: 1em;
+}
+
+p {
+  margin-top: 0;
+}
+
+h1 {
+  font-weight: 700;
+  margin-top: 0;
+}
+
+h2 {
+  font-weight: 700;
+  margin-top: 0;
+}
+
+h3 {
+  font-weight: 700;
+  margin-top: 0;
+}
+
+h4 {
+  font-weight: 700;
+  margin-top: 0;
+}
+
+h5 {
+  font-weight: 700;
+  margin-top: 0;
+}
+
+h6 {
+  font-weight: 700;
+  margin-top: 0;
+}
+
+/* kbd {
+  background: #ddd;
+  border-radius: 0.2em;
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.25);
+  padding-left: 0.2em;
+  padding-right: 0.2em;
+} */
     </style>
 </head>
 
@@ -339,7 +364,6 @@
                         </div>
                     </div>
                 </div>
-
             <div class="col-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
@@ -746,11 +770,84 @@
                         </div>
                     </div>
                 </div>
+
+
+                <div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Информация по моим Заявкам</h4>
+            <p class="card-description">Add class <code>.table</code></p>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Адрес</th>
+                            <th>ФИО</th>
+                            <th>Тип оплаты</th>
+                            <th>Статус</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                            $index = ($applicationsWithDetails->currentPage() - 1) * $applicationsWithDetails->perPage();
+                        @endphp
+                        @foreach ($applicationsWithDetails as $application)
+                            @if ($application->user_id === auth()->user()->id)
+                                <tr>
+                                    <td>{{ ++$index }}</td>
+                                    <td>{{ $application->address }}</td>
+                                    <td>{{ $application->fullname }}</td>
+                                    <td>{{ $application->type_of_payment }}</td>
+                                    <td>
+                                        @if ($application->status_name == 'новая')
+                                            <span class="badge badge-success">{{ $application->status_name }}</span>
+                                        @elseif ($application->status_name == 'в графике')
+                                            <span class="badge badge-warning">{{ $application->status_name }}</span>
+                                        @else
+                                            {{ $application->status_name }}
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
+            <div class="d-flex justify-content-center">
+                {{ $applicationsWithDetails->links() }}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+            </div>
+          </div>
             <button type="submit" class="btn btn-primary mr-2">Отправить заявку</button>
         </form>
     </div>
+    
 </div>
+<footer class="footer">
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
+            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
+          </div>
+          <div class="d-sm-flex justify-content-center justify-content-sm-between">
+            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Themewagon</a></span> 
+          </div>
+        </footer> 
+
+
+
+        
 
 
 <!-- Вставьте скрипт updateTotalPrice здесь -->

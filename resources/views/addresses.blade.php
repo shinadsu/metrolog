@@ -17,6 +17,64 @@
   <link rel="stylesheet" href="{{ 'assets/css/vertical-layout-light/style.css' }}">
   <!-- endinject -->
   <link rel="shortcut icon" href="{{ 'assets/images/favicon.png' }}" />
+  <style>
+
+html {
+  box-sizing: border-box;
+  font-size: 87.5%;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+body {
+  font-family: "Open Sans", sans-serif;
+  padding: 1em;
+}
+
+p {
+  margin-top: 0;
+}
+
+h1 {
+  font-weight: 700;
+  margin-top: 0;
+}
+
+h2 {
+  font-weight: 700;
+  margin-top: 0;
+}
+
+h3 {
+  font-weight: 700;
+  margin-top: 0;
+}
+
+h4 {
+  font-weight: 700;
+  margin-top: 0;
+}
+
+h5 {
+  font-weight: 700;
+  margin-top: 0;
+}
+
+h6 {
+  font-weight: 700;
+  margin-top: 0;
+}
+
+/* kbd {
+  background: #ddd;
+  border-radius: 0.2em;
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.25);
+  padding-left: 0.2em;
+  padding-right: 0.2em;
+} */
+    </style>
 </head>
 
 <body>

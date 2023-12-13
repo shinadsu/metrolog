@@ -21,7 +21,7 @@
                 </span>
             @endif
         </div>
-
+<!-- 
         <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
             <div>
                 <p class="text-sm text-gray-700 leading-5">
@@ -37,9 +37,9 @@
                     <span class="font-medium">{{ $paginator->total() }}</span>
                     {!! __('results') !!}
                 </p>
-            </div>
+            </div> -->
 
-            <div>
+            <!-- <div>
                 <span class="relative z-0 inline-flex shadow-sm rounded-md">
                     {{-- Previous Page Link --}}
                     @if ($paginator->onFirstPage())
@@ -100,7 +100,7 @@
                         </span>
                     @endif
                 </span>
-            </div>
-        </div>
+            </div> -->
+        
     </nav>
 @endif

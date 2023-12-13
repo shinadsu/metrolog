@@ -72,6 +72,8 @@ class CustomAppController extends Controller
             'fullname' => 'required|string',
             'status_id' => 'required|integer',
             'type_of_payment' => 'required|string',
+            'productsInfo' => 'required|json',
+            
             
             
 
@@ -109,7 +111,17 @@ class CustomAppController extends Controller
 
 
         
+
+        
         $applicationData = $request->only('fullname', 'user_id', 'status_id', 'type_of_payment', 'totalPriceValue');
+        $productsInfo = json_decode($request->input('productsInfo'), true);
+        $applicationData['productsInfo'] = json_encode($productsInfo);
+
+        $totalPrice = collect($productsInfo)
+        ->pluck('price')
+        ->sum();
+
+        $applicationData['totalPriceValue'] = (string) $totalPrice;
         $applicationData['user_id'] = auth()->user()->id;
         $application = Application::create($applicationData);
 

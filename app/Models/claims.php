@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class claims extends Model
-{
-    use HasFactory;
-
-    protected $fillable = ['name', 'price_id'];
-
-    public function price()
+    class claims extends Model
     {
-        return $this->belongsTo(Prices::class);
+        use HasFactory;
+
+        protected $fillable = ['name', 'price_id'];
+
+        public function price()
+        {
+            return $this->belongsTo(Prices::class);
+        }
     }
-}

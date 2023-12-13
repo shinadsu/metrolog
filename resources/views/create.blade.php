@@ -418,6 +418,8 @@
                             <input type="hidden" name="totalPriceValue" id="totalPriceInput" value="0">
                         </div>
 
+                        <input type="hidden" name="productsInfo" id="productsInfo" value="">
+
                         <div class="tab-pane fade" id="allData" role="tabpanel" aria-labelledby="allDataTab">
                             <div style="max-height: 400px; overflow-y: auto;">
                                 <table class="table table-bordered">
@@ -425,6 +427,7 @@
                                         <tr> 
                                             <th>Наименование</th>
                                             <th>Кол.во</th>
+                                                <th style="display: none;">Время</th>
                                             <th>Цена</th>
                                             <th>Плюс</th>
                                             <th>Минус</th>
@@ -435,7 +438,8 @@
                                         @foreach($additionalWork as $index => $additionalWor)
                                             <tr data-id="{{ $index }}">
                                                 <td>{{ $additionalWor->name }}</td>
-                                                 <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                        <td style="display: none;">{{ $additionalWor->timeforjob }}</td> <!-- Hidden field with timeforjob -->
                                                 <td class="price">{{ $additionalWor->price->price }}</td>
                                                 <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
                                                 <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
@@ -447,7 +451,8 @@
                                         @foreach($replacements as $index => $replacement)
                                             <tr data-id="{{ $index }}">
                                                 <td>{{ $replacement->name }}</td>
-                                                 <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                        <td style="display: none;">{{ $additionalWor->timeforjob }}</td> <!-- Hidden field with timeforjob -->
                                                 <td class="price">{{ $replacement->price->price }}</td>
                                                 <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
                                                 <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
@@ -457,7 +462,8 @@
                                         @foreach($verificationOfCounters as $index => $verificationOfCounter)
                                         <tr data-id="{{ $index }}">
                                                 <td>{{ $verificationOfCounter->name }}</td>
-                                                 <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                        <td style="display: none;">{{ $additionalWor->timeforjob }}</td> <!-- Hidden field with timeforjob -->
                                                 <td class="price">{{ $verificationOfCounter->price->price }}</td>
                                                 <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
                                                 <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
@@ -467,7 +473,8 @@
                                         @foreach($plumbingServices as $index => $plumbingService)
                                         <tr data-id="{{ $index }}">
                                                     <td>{{ $plumbingService->name }}</td>
-                                                     <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                    <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                        <td style="display: none;">{{ $additionalWor->timeforjob }}</td> <!-- Hidden field with timeforjob -->
                                                     <td class="price">{{ $plumbingService->price->price }}</td>
                                                     <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
                                                     <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
@@ -477,7 +484,8 @@
                                         @foreach($specifications as $index => $specification)
                                         <tr data-id="{{ $index }}">
                                                     <td>{{ $specification->name }}</td>
-                                                     <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                    <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                        <td style="display: none;">{{ $additionalWor->timeforjob }}</td> <!-- Hidden field with timeforjob -->
                                                     <td class="price">{{ $specification->price->price }}</td>
                                                     <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
                                                     <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
@@ -501,6 +509,7 @@
                                                 <th>Плюс</th>
                                                 <th>Минус</th>
                                                 <th>Кол.во</th>
+                                                <th style="display: none;">Время</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -512,6 +521,8 @@
                                                         <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
                                                         <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
                                                         <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                        <td style="display: none;">{{ $additionalWor->timeforjob }}</td> <!-- Hidden field with timeforjob -->
+                                                       
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -529,6 +540,7 @@
                                                 <th>Плюс</th>
                                                 <th>Минус</th>
                                                 <th>Кол.во</th>
+                                                <th style="display: none;">Время</th>
 
                                                 </tr>
                                             </thead>
@@ -540,7 +552,8 @@
                                                         <td class="price">{{ $replacement->price->price }}</td>
                                                         <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
                                                         <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
-                                                        <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                       <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                        <td style="display: none;">{{ $replacement->timeforjob }}</td> <!-- Hidden field with timeforjob -->
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -558,6 +571,7 @@
                                                 <th>Плюс</th>
                                                 <th>Минус</th>
                                                 <th>Кол.во</th>
+                                                <th style="display: none;">Время</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -568,7 +582,8 @@
                                                         <td class="price">{{ $verificationOfCounter->price->price }}</td>
                                                         <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
                                                         <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
-                                                        <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                       <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                        <td style="display: none;">{{ $verificationOfCounter->timeforjob }}</td> <!-- Hidden field with timeforjob -->
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -586,6 +601,7 @@
                                                 <th>Плюс</th>
                                                 <th>Минус</th>
                                                 <th>Кол.во</th>
+                                                <th style="display: none;">Время</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -596,7 +612,8 @@
                                                         <td class="price">{{ $claim->price->price }}</td>                                                    
                                                         <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
                                                         <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
-                                                        <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                       <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                        <td style="display: none;">{{ $claim->timeforjob }}</td> <!-- Hidden field with timeforjob -->
                                                     </tr>
                                             @endforeach
                                             </tbody>
@@ -614,6 +631,7 @@
                                                 <th>Плюс</th>
                                                 <th>Минус</th>
                                                 <th>Кол.во</th>
+                                                <th style="display: none;">Время</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -624,7 +642,8 @@
                                                         <td class="price">{{ $plumbingService->price->price }}</td>
                                                         <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
                                                         <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
-                                                        <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                       <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                        <td style="display: none;">{{ $plumbingService->timeforjob }}</td> <!-- Hidden field with timeforjob -->
                                                     </tr>
                                             @endforeach
                                         </tbody>
@@ -637,11 +656,11 @@
                                         <thead>
                                             <tr> 
                                                 <th>Наименование</th>
-                                    
                                                 <th>Цена</th>
                                                 <th>Плюс</th>
                                                 <th>Минус</th>
                                                 <th>Кол.во</th>
+                                                <th style="display: none;">Время</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -652,7 +671,8 @@
                                                         <td class="price">{{ $specification->price->price }}</td>
                                                         <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
                                                         <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
-                                                        <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                       <td class="quantity" id="quantity{{ $index }}">0</td>
+                                                        <td style="display: none;">{{ $specification->timeforjob }}</td> <!-- Hidden field with timeforjob -->
                                                     </tr>
                                             @endforeach
                                         </tbody>
@@ -720,70 +740,11 @@
 
 
 <!-- Вставьте скрипт updateTotalPrice здесь -->
-
-<!-- // let selectedPrices = {};
-// let total = 0;
-
-// function updateTotalPrice(operation, index) {
-//     // Prevent form submission when buttons are clicked
-//     event.preventDefault();
-
-//     let activeTab = document.querySelector('.tab-pane.active');
-//     let category = activeTab.getAttribute('data-category');
-
-//     let selectedItem = activeTab.querySelector('tr[data-id="' + index + '"]');
-//     let itemName = selectedItem.querySelector('td:first-child').textContent;
-//     let currentPrice = parseFloat(selectedItem.querySelector('.price').textContent);
-
-//     // Находим ячейку с количеством для обновления
-//     let quantityCell = selectedItem.querySelector('.quantity');
-
-//     if (!selectedPrices[category]) {
-//         selectedPrices[category] = [];
-//     }
-
-//     // Проверяем, есть ли уже элемент с таким индексом в массиве
-//     let existingItem = selectedPrices[category].find(item => item.index === index);
-
-//     if (operation === 'plus') {
-//         if (!existingItem) {
-//             // Добавить цену к общей цене
-//             total += currentPrice;
-//             // Добавить элемент в массив выбранных элементов
-//             selectedPrices[category].push({ index, name: itemName, price: currentPrice, quantity: 1 });
-//         } else {
-//             // Если элемент уже существует, увеличиваем его количество и цену
-//             existingItem.quantity += 1;
-//             existingItem.price += currentPrice;
-//             total += currentPrice;
-//         }
-//     } else if (operation === 'minus' && existingItem && existingItem.quantity > 0) {
-//         // Если есть элемент для уменьшения и количество больше 0
-//         existingItem.quantity -= 1;
-//         existingItem.price -= currentPrice;
-//         total -= currentPrice;
-//     }
-
-//     // Ограничить количество десятичных знаков до двух
-//     total = parseFloat(total.toFixed(2));
-
-//     // Обновить общую цену на странице
-//     document.getElementById('totalPriceDisplay').textContent = total;
-
-//     // Обновить количество на странице
-//     if (quantityCell) {
-//         quantityCell.textContent = existingItem ? existingItem.quantity : 0;
-//     } else {
-//         console.error('Quantity cell not found for index ' + index);
-//     }
-// } -->
-
 <script>
-    let selectedPrices = JSON.parse(localStorage.getItem('selectedPrices')) || {};
-    let total = parseFloat(localStorage.getItem('total')) || 0;
+    let selectedPrices = {};
+    let total = 0;
 
     function updateTotalPrice(operation, index) {
-        // Prevent form submission when buttons are clicked
         event.preventDefault();
 
         let activeTab = document.querySelector('.tab-pane.active');
@@ -792,6 +753,13 @@
         let selectedItem = activeTab.querySelector('tr[data-id="' + index + '"]');
         let itemName = selectedItem.querySelector('td:first-child').textContent;
         let currentPrice = parseFloat(selectedItem.querySelector('.price').textContent);
+        let timeForJob = selectedItem.querySelector('td:last-child').textContent; // Extracting timeforjob
+
+        let productInfo = {
+            name: itemName,
+            price: currentPrice,
+            timeforjob: timeForJob, // Adding timeforjob to productInfo
+        };
 
         // Находим ячейку с количеством для обновления
         let quantityCell = selectedItem.querySelector('.quantity');
@@ -800,56 +768,38 @@
             selectedPrices[category] = [];
         }
 
-        // Проверяем, есть ли уже элемент с таким индексом в массиве
-        let existingItem = selectedPrices[category].find(item => item.index === index);
+        let existingItem = selectedPrices[category].find(item => item.name === itemName);
 
         if (operation === 'plus') {
             if (!existingItem) {
-                // Добавить цену к общей цене
                 total += currentPrice;
-                // Добавить элемент в массив выбранных элементов
-                selectedPrices[category].push({ index, name: itemName, price: currentPrice, quantity: 1 });
+                selectedPrices[category].push({ name: itemName, price: currentPrice, quantity: 1, timeforjob: timeForJob });
             } else {
-                // Если элемент уже существует, увеличиваем его количество и цену
                 existingItem.quantity += 1;
                 existingItem.price += currentPrice;
                 total += currentPrice;
             }
         } else if (operation === 'minus' && existingItem && existingItem.quantity > 0) {
-            // Если есть элемент для уменьшения и количество больше 0
             existingItem.quantity -= 1;
             existingItem.price -= currentPrice;
             total -= currentPrice;
         }
 
-        // Ограничить количество десятичных знаков до двух
         total = parseFloat(total.toFixed(2));
 
-        // Обновить общую цену и количество на странице
         document.getElementById('totalPriceDisplay').textContent = total;
 
-        // Обновить количество на странице
         if (quantityCell) {
             quantityCell.textContent = existingItem ? existingItem.quantity : 0;
         } else {
             console.error('Quantity cell not found for index ' + index);
         }
 
-        // Сохраняем значения в локальное хранилище
-        localStorage.setItem('selectedPrices', JSON.stringify(selectedPrices));
-        localStorage.setItem('total', total);
+        // Обновление информации о продуктах в заявке
+        let productsInfoInput = document.getElementById('productsInfo');
+        productsInfoInput.value = JSON.stringify(selectedPrices);
     }
-
-    // Вызываем эту функцию для восстановления значений при загрузке страницы
-    updateTotalPrice('plus', 0);
 </script>
-
-
-
-
-
-
-
 
 
 

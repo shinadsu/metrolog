@@ -18,6 +18,7 @@ use App\Models\applicationMetrolog;
 use App\Models\Statuses;
 use App\Models\statustransitions;
 use App\Models\User;
+use App\Models\commentary;
 use App\Models\addressPhone;
 use Illuminate\Http\Request;
 
@@ -73,8 +74,7 @@ class CustomAppController extends Controller
             'status_id' => 'required|integer',
             'type_of_payment' => 'required|string',
             'productsInfo' => 'required|json',
-            
-            
+            'totalPriceValue' => 'required|numeric',
             
 
             'address' => 'required|string',
@@ -85,6 +85,15 @@ class CustomAppController extends Controller
             'addressStreet' => 'string',
             'addressHouse' => 'string',
             'addressApartment' => 'string',
+
+
+            'logistic_commentary' => 'nullable|string',
+            'metrolog_commentary' => 'nullable|string',
+            'operator_commentary' => 'nullable|string',
+
+
+            'payer_code' => 'required|string',
+            'actual' => 'required|string',
             
 
             'phone_number' => 'required|string',
@@ -92,10 +101,6 @@ class CustomAppController extends Controller
             'city_code' => 'required|string',
             'extension_number' => 'required|string',
 
-            
-            'payer_code' => 'required|string',
-            'actual' => 'required|string',
-            'totalPriceValue' => 'required|string',
             
         ]);
 
@@ -110,22 +115,14 @@ class CustomAppController extends Controller
         DB::beginTransaction();
 
 
-        
-
-        
         $applicationData = $request->only('fullname', 'user_id', 'status_id', 'type_of_payment', 'totalPriceValue');
         $productsInfo = json_decode($request->input('productsInfo'), true);
         $applicationData['productsInfo'] = json_encode($productsInfo);
-
-        $totalPrice = collect($productsInfo)
-        ->pluck('price')
-        ->sum();
-
-        $applicationData['totalPriceValue'] = (string) $totalPrice;
         $applicationData['user_id'] = auth()->user()->id;
         $application = Application::create($applicationData);
+        
 
-        // заполнение адреса
+      
 
         $addressData = $request->only(
             'address', 'addressesArea', 'addressCity', 'addressSettlement',
@@ -135,14 +132,14 @@ class CustomAppController extends Controller
 
         $fullAddress = $this->buildFullAddress($addressData);
 
-        // Добавляем полный адрес к массиву данных перед сохранением
+       
         $addressData['full_address'] = $fullAddress;
 
-        // Сохраняем в базу данных
+        
         $address = Address::firstOrCreate($addressData);
 
 
-        // структура заполнения кода плательщика и сводной таблицы плательщиков и адресов
+       
         $payer = Payer::where('payer_code', $request->input('payer_code'))
                     ->where('actual', $request->input('actual'))
                     ->first();
@@ -157,12 +154,12 @@ class CustomAppController extends Controller
         $addressPayer = addressPayer::where('payer_id', $payer->id)
                                     ->first();
 
-        // Если связь существует, выводим ошибку и завершаем выполнение метода
+        
         if ($addressPayer) {
             return redirect()->back()->with('error', 'На данный адрес уже привязан плательщик.');
         }
 
-        // Создаем связь адреса и плательщика
+      
         addressPayer::create([
             'address_id' => $address->id,
             'payer_id' => $payer->id
@@ -188,16 +185,17 @@ class CustomAppController extends Controller
         // $addressDevicedata['device_id'] = $device->id;
         // $addressDevice = addressDevice::create($addressDevicedata);
 
-        $addressApplicationData = $request->only('application_id', 'address_id');
-        $addressApplicationData['application_id'] = $application->id;
-        $addressApplicationData['address_id'] = $address->id;
-        $addressApplication = addressApplication::create($addressApplicationData);
 
         // заполненые сводной таблицы
         // $addressPayerdata = $request->only('address_id', 'payer_id');
         // $addressPayerdata['address_id'] = $address->id;
         // $addressPayerdata['payer_id'] = $payer->id;
         // $addressPayer = addressPayer::create($addressPayerdata);
+
+        $addressApplicationData = $request->only('application_id', 'address_id');
+        $addressApplicationData['application_id'] = $application->id;
+        $addressApplicationData['address_id'] = $address->id;
+        $addressApplication = addressApplication::create($addressApplicationData);
 
         $applicationMetrologdata = $request->only('application_id', 'metrolog_id');
         $applicationMetrologdata['application_id'] = $application->id;
@@ -212,16 +210,18 @@ class CustomAppController extends Controller
             'extension_number' => $request->input('extension_number'),
         ]);
 
-        // заполненые сводной таблицы
+        
         $addressPhonedata = $request->only('address_id', 'phone_id');
         $addressPhonedata['address_id'] = $address->id;
         $addressPhonedata['phone_id'] = $phone->id;
         $addressPhone = addressPhone::create($addressPhonedata);
 
 
-
+        $commentaryData = $request->only('application_id', 'logistic_commentary', 'metrolog_commentary', 'operator_commentary');
+        $commentaryData['application_id'] = $application->id;
+        $commentary = Commentary::create($commentaryData);
         
-        // $device->address_id = $address->id;
+       
         $application->save();
 
         DB::commit();

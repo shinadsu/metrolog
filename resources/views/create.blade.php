@@ -415,7 +415,7 @@
                         <div class="tab-content">
                         <div id="totalPriceContainer">
                             <h4>Общая цена: <span id="totalPriceDisplay">0</span></h4>
-                            <input type="hidden" name="totalPriceValue" id="totalPriceInput" value="0">
+                            <input type="hidden" name="totalPriceValue" id="totalPriceInput" value="">
                         </div>
 
                         <input type="hidden" name="productsInfo" id="productsInfo" value="">
@@ -685,11 +685,25 @@
                     </div>
                 </div>
             </div>
-
-<!-- ... Continue with your existing code ... -->
-
-
-
+            <div class="col-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                    <h4 class="card-title">Комментарии</h4>
+                        <div class="form-group">
+                        <label for="logistic_commentary">Комментарий логиста</label>
+                        <textarea class="form-control" id="logistic_commentary" name="logistic_commentary" rows="3" placeholder="Введите комментарий логиста"></textarea>
+                        </div>
+                        <div class="form-group">
+                        <label for="metrolog_commentary">Комментарий метролога</label>
+                        <textarea class="form-control" id="metrolog_commentary" name="metrolog_commentary" rows="3" placeholder="Введите комментарий метролога"></textarea>
+                        </div>
+                        <div class="form-group">
+                        <label for="operator_commentary">Комментарий оператора</label>
+                        <textarea class="form-control" id="operator_commentary" name="operator_commentary" rows="3" placeholder="Введите комментарий оператора"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
                 <div class="col-md-6 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
@@ -795,11 +809,16 @@
             console.error('Quantity cell not found for index ' + index);
         }
 
+        // Update the hidden input field with the total value
+        let totalPriceInput = document.getElementById('totalPriceInput');
+        totalPriceInput.value = total;
+
         // Обновление информации о продуктах в заявке
         let productsInfoInput = document.getElementById('productsInfo');
         productsInfoInput.value = JSON.stringify(selectedPrices);
     }
 </script>
+
 
 
 

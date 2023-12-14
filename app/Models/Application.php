@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Application extends Model
 {
-    protected $fillable = ['fullname', 'user_id', 'status_id', 'type_of_payment', 'totalPriceValue', 'productsInfo'];
+    protected $fillable = ['fullname', 'user_id', 'status_id', 'source', 'datepicker', 'type_of_payment', 'totalTimesInput', 'totalPriceValue', 'productsInfo'];
 
     use HasFactory;
 

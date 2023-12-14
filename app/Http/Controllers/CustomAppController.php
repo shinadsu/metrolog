@@ -79,11 +79,15 @@ class CustomAppController extends Controller
             DB::beginTransaction();
 
 
-            $applicationData = $request->only('fullname', 'user_id', 'status_id', 'type_of_payment', 'totalPriceValue');
+            $applicationData = $request->only('fullname', 'user_id', 'status_id', 'source', 'type_of_payment', 'totalTimesInput', 'totalPriceValue');
+            $datepicker = \DateTime::createFromFormat('d.m.Y H:i', $request->input('datepicker'));
+            $applicationData['datepicker'] = $datepicker->format('Y-m-d H:i:s'); // Преобразование в нужный формат
             $productsInfo = json_decode($request->input('productsInfo'), true);
             $applicationData['productsInfo'] = json_encode($productsInfo);
             $applicationData['user_id'] = auth()->user()->id;
             $application = Application::create($applicationData);
+            
+            
             
 
         

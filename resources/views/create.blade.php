@@ -10,13 +10,14 @@
 <link rel="stylesheet" href="{{ 'assets/vendors/feather/feather.css' }}">
 <link rel="stylesheet" href="{{ 'assets/vendors/ti-icons/css/themify-icons.css' }}">
 <link rel="stylesheet" href="{{ 'assets/vendors/css/vendor.bundle.base.css' }}">
-<!-- endinject -->
-<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.default.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/air-datepicker@2.2.3/dist/css/datepicker.min.css">
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
+
 
   <!-- Include Selectize.js JS -->
 <!-- End plugin css for this page -->
@@ -328,32 +329,39 @@ h6 {
         <form action="{{ route('create.store') }}" class="form-sample" method="POST">
             @csrf
             <div class="row">
-                <div class="col-12 grid-margin stretch-card">
-                    <div class="card">
-                        <div class="card-body">
-                            <h4 class="card-title">Первоначальные данные</h4>            
-                            <div class="form-group">
-                                <label for="fullname">ФИО</label>
-                                <input type="text" class="form-control form-control-lg" id="fullname" name="fullname" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="status_id">Статус</label>
-                                <select class="form-control" id="status_id" name="status_id" required>
-                                    @foreach($statuses as $status)
-                                        <option value="{{ $status->id }}" {{ $status->name == 'new' ? 'selected' : '' }}>
-                                            {{ $status->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="type_of_payment">Тип оплаты</label>
-                                <select id="type_of_payment" name="type_of_payment" class="form-control" required>
-                                    <option value="наличный">Наличный</option>
-                                    <option value="безналичный">Безналичный</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
+            <div class="col-md-6 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                <h4 class="card-title">Первоначальные данные</h4>  
+                <div class="form-group">
+                    <label for="fullname">ФИО</label>
+                        <input type="text" class="form-control form-control-lg" id="fullname" name="fullname" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="status_id">Статус</label>
+                        <select class="form-control" id="status_id" name="status_id" required>
+                            @foreach($statuses as $status)
+                                <option value="{{ $status->id }}" {{ $status->name == 'new' ? 'selected' : '' }}>
+                                    {{ $status->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="type_of_payment">Тип оплаты</label>
+                        <select id="type_of_payment" name="type_of_payment" class="form-control" required>
+                            <option value="наличный">Наличный</option>
+                            <option value="безналичный">Безналичный</option>
+                        </select>
+                    </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 grid-margin stretch-card">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Остальные данные</h4>
+                  <div class="form-group">
                                 <label for="metrolog_id">Метролог</label>
                                 <select class="form-control" id="metrolog_id" name="metrolog_id" required>
                                     @foreach($Users as $user)
@@ -361,9 +369,21 @@ h6 {
                                     @endforeach
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="source">Источник</label>
+                                <select class="form-control" id="source" name="source" required>
+                                    @foreach (['письма','интернет (звонок)','посоветовали','наш клиент','SMS','стенды','интернет (заявки)','печать','белянин','интернет (акция)','оператор кц','интернет (звонок) акция','яндекс услуги'] as $option)
+                                        <option value="{{ $option }}">{{ $option }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="datepicker">Выберите дату</label>
+                                <input type="text" name="datepicker" class="form-control" id="datepicker">
                         </div>
                     </div>
                 </div>
+            </div>
             <div class="col-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
@@ -402,19 +422,15 @@ h6 {
                             <label for="addressApartment">Квартира</label>
                             <select id="addressApartment" class="form-control" name="addressApartment"></select>
                         </div>
-                        
+                        <button type="button" class="btn btn-danger" id="clearFieldsButton">Очистить поля</button>
                     </div>
                 </div>
-            </div>
-            
+            </div>      
 
             <div class="col-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
                         <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link" id="allDataTab" data-toggle="tab" href="#allData" role="tab" aria-controls="allData" aria-selected="false">Общие товары и услуги</a>
-                            </li>
                             <li class="nav-item">
                                 <a class="nav-link active" id="dopTab" data-toggle="tab" href="#dop" role="tab" aria-controls="dop" aria-selected="true">Доп работы</a>
                             </li> 
@@ -432,8 +448,7 @@ h6 {
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="specificationsTab" data-toggle="tab" href="#specifications" role="tab" aria-controls="specifications" aria-selected="false">Спецификации</a>
-                            </li>
-                            
+                            </li>   
                         </ul>
                         
                         <div class="tab-content">
@@ -442,85 +457,9 @@ h6 {
                             <input type="hidden" name="totalPriceValue" id="totalPriceInput" value="">
                         </div>
 
+                        <input type="hidden" name="totalTimesInput" id="totalTimesInput" value="">
                         <input type="hidden" name="productsInfo" id="productsInfo" value="">
 
-                        <div class="tab-pane fade" id="allData" role="tabpanel" aria-labelledby="allDataTab">
-                            <div style="max-height: 400px; overflow-y: auto;">
-                                <table class="table table-bordered">
-                                    <thead>
-                                        <tr> 
-                                            <th>Наименование</th>
-                                            <th>Кол.во</th>
-                                                <th style="display: none;">Время</th>
-                                            <th>Цена</th>
-                                            <th>Плюс</th>
-                                            <th>Минус</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <!-- Добавляем данные из $additionalWork -->
-                                        @foreach($additionalWork as $index => $additionalWor)
-                                            <tr data-id="{{ $index }}">
-                                                <td>{{ $additionalWor->name }}</td>
-                                                <td class="quantity" id="quantity{{ $index }}">0</td>
-                                                        <td style="display: none;">{{ $additionalWor->timeforjob }}</td> <!-- Hidden field with timeforjob -->
-                                                <td class="price">{{ $additionalWor->price->price }}</td>
-                                                <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
-                                                <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
-
-                                            </tr>
-                                        @endforeach
-
-                                        <!-- Добавляем данные из $replacements -->
-                                        @foreach($replacements as $index => $replacement)
-                                            <tr data-id="{{ $index }}">
-                                                <td>{{ $replacement->name }}</td>
-                                                <td class="quantity" id="quantity{{ $index }}">0</td>
-                                                        <td style="display: none;">{{ $additionalWor->timeforjob }}</td> <!-- Hidden field with timeforjob -->
-                                                <td class="price">{{ $replacement->price->price }}</td>
-                                                <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
-                                                <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
-                                            </tr>
-                                        @endforeach
-
-                                        @foreach($verificationOfCounters as $index => $verificationOfCounter)
-                                        <tr data-id="{{ $index }}">
-                                                <td>{{ $verificationOfCounter->name }}</td>
-                                                <td class="quantity" id="quantity{{ $index }}">0</td>
-                                                        <td style="display: none;">{{ $additionalWor->timeforjob }}</td> <!-- Hidden field with timeforjob -->
-                                                <td class="price">{{ $verificationOfCounter->price->price }}</td>
-                                                <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
-                                                <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
-                                            </tr>
-                                        @endforeach
-
-                                        @foreach($plumbingServices as $index => $plumbingService)
-                                        <tr data-id="{{ $index }}">
-                                                    <td>{{ $plumbingService->name }}</td>
-                                                    <td class="quantity" id="quantity{{ $index }}">0</td>
-                                                        <td style="display: none;">{{ $additionalWor->timeforjob }}</td> <!-- Hidden field with timeforjob -->
-                                                    <td class="price">{{ $plumbingService->price->price }}</td>
-                                                    <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
-                                                    <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
-                                                </tr>
-                                        @endforeach
-
-                                        @foreach($specifications as $index => $specification)
-                                        <tr data-id="{{ $index }}">
-                                                    <td>{{ $specification->name }}</td>
-                                                    <td class="quantity" id="quantity{{ $index }}">0</td>
-                                                        <td style="display: none;">{{ $additionalWor->timeforjob }}</td> <!-- Hidden field with timeforjob -->
-                                                    <td class="price">{{ $specification->price->price }}</td>
-                                                    <td><button class="btn btn-success btn-sm" onclick="updateTotalPrice('plus', {{ $index }})">+</button></td>
-                                                    <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
-                                                </tr>
-                                        @endforeach
-
-
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
                             <div class="tab-pane fade show active" id="dop" role="tabpanel" aria-labelledby="dopTab" data-category="additionalWork">
                                 <div style="max-height: 400px; overflow-y: auto;">
                                     <div class="table-responsive pt-3">
@@ -546,7 +485,6 @@ h6 {
                                                         <td><button class="btn btn-danger btn-sm" onclick="updateTotalPrice('minus', {{ $index }})">-</button></td>
                                                         <td class="quantity" id="quantity{{ $index }}">0</td>
                                                         <td style="display: none;">{{ $additionalWor->timeforjob }}</td> <!-- Hidden field with timeforjob -->
-                                                       
                                                     </tr>
                                                 @endforeach
                                             </tbody>
@@ -770,64 +708,54 @@ h6 {
                         </div>
                     </div>
                 </div>
-
-
                 <div class="col-lg-12 grid-margin stretch-card">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">Информация по моим Заявкам</h4>
-            <p class="card-description">Add class <code>.table</code></p>
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Адрес</th>
-                            <th>ФИО</th>
-                            <th>Тип оплаты</th>
-                            <th>Статус</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                            $index = ($applicationsWithDetails->currentPage() - 1) * $applicationsWithDetails->perPage();
-                        @endphp
-                        @foreach ($applicationsWithDetails as $application)
-                            @if ($application->user_id === auth()->user()->id)
-                                <tr>
-                                    <td>{{ ++$index }}</td>
-                                    <td>{{ $application->address }}</td>
-                                    <td>{{ $application->fullname }}</td>
-                                    <td>{{ $application->type_of_payment }}</td>
-                                    <td>
-                                        @if ($application->status_name == 'новая')
-                                            <span class="badge badge-success">{{ $application->status_name }}</span>
-                                        @elseif ($application->status_name == 'в графике')
-                                            <span class="badge badge-warning">{{ $application->status_name }}</span>
-                                        @else
-                                            {{ $application->status_name }}
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endif
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-            <div class="d-flex justify-content-center">
-                {{ $applicationsWithDetails->links() }}
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
-
-
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title">Информация по моим Заявкам</h4>
+                           
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Адрес</th>
+                                            <th>ФИО</th>
+                                            <th>Тип оплаты</th>
+                                            <th>Статус</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php
+                                            $index = ($applicationsWithDetails->currentPage() - 1) * $applicationsWithDetails->perPage();
+                                        @endphp
+                                        @foreach ($applicationsWithDetails as $application)
+                                            @if ($application->user_id === auth()->user()->id)
+                                                <tr>
+                                                    <td>{{ ++$index }}</td>
+                                                    <td>{{ $application->address }}</td>
+                                                    <td>{{ $application->fullname }}</td>
+                                                    <td>{{ $application->type_of_payment }}</td>
+                                                    <td>
+                                                        @if ($application->status_name == 'новая')
+                                                            <span class="badge badge-success">{{ $application->status_name }}</span>
+                                                        @elseif ($application->status_name == 'в графике')
+                                                            <span class="badge badge-warning">{{ $application->status_name }}</span>
+                                                        @else
+                                                            {{ $application->status_name }}
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-flex justify-content-center">
+                                {{ $applicationsWithDetails->links() }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
           </div>
             <button type="submit" class="btn btn-primary mr-2">Отправить заявку</button>
@@ -835,89 +763,28 @@ h6 {
     </div>
     
 </div>
-<footer class="footer">
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Copyright © 2021.  Premium <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrap admin template</a> from BootstrapDash. All rights reserved.</span>
-            <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">Hand-crafted & made with <i class="ti-heart text-danger ml-1"></i></span>
-          </div>
-          <div class="d-sm-flex justify-content-center justify-content-sm-between">
-            <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">Distributed by <a href="https://www.themewagon.com/" target="_blank">Themewagon</a></span> 
-          </div>
-        </footer> 
+
+  <script src="{{ 'assets/vendors/js/vendor.bundle.base.js' }} "></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/air-datepicker@2.2.3/dist/js/datepicker.min.js"></script>
 
 
-
-        
-
-
-<!-- Вставьте скрипт updateTotalPrice здесь -->
-<script>
-    let selectedPrices = {};
-    let total = 0;
-
-    function updateTotalPrice(operation, index) {
-        event.preventDefault();
-
-        let activeTab = document.querySelector('.tab-pane.active');
-        let category = activeTab.getAttribute('data-category');
-
-        let selectedItem = activeTab.querySelector('tr[data-id="' + index + '"]');
-        let itemName = selectedItem.querySelector('td:first-child').textContent;
-        let currentPrice = parseFloat(selectedItem.querySelector('.price').textContent);
-        let timeForJob = selectedItem.querySelector('td:last-child').textContent; // Extracting timeforjob
-
-        let productInfo = {
-            name: itemName,
-            price: currentPrice,
-            timeforjob: timeForJob, // Adding timeforjob to productInfo
-        };
-
-        // Находим ячейку с количеством для обновления
-        let quantityCell = selectedItem.querySelector('.quantity');
-
-        if (!selectedPrices[category]) {
-            selectedPrices[category] = [];
-        }
-
-        let existingItem = selectedPrices[category].find(item => item.name === itemName);
-
-        if (operation === 'plus') {
-            if (!existingItem) {
-                total += currentPrice;
-                selectedPrices[category].push({ name: itemName, price: currentPrice, quantity: 1, timeforjob: timeForJob });
-            } else {
-                existingItem.quantity += 1;
-                existingItem.price += currentPrice;
-                total += currentPrice;
-            }
-        } else if (operation === 'minus' && existingItem && existingItem.quantity > 0) {
-            existingItem.quantity -= 1;
-            existingItem.price -= currentPrice;
-            total -= currentPrice;
-        }
-
-        total = parseFloat(total.toFixed(2));
-
-        document.getElementById('totalPriceDisplay').textContent = total;
-
-        if (quantityCell) {
-            quantityCell.textContent = existingItem ? existingItem.quantity : 0;
-        } else {
-            console.error('Quantity cell not found for index ' + index);
-        }
-
-        // Update the hidden input field with the total value
-        let totalPriceInput = document.getElementById('totalPriceInput');
-        totalPriceInput.value = total;
-
-        // Обновление информации о продуктах в заявке
-        let productsInfoInput = document.getElementById('productsInfo');
-        productsInfoInput.value = JSON.stringify(selectedPrices);
-    }
-</script>
-
-
-
+  
+  <script src="{{ 'assets/vendors/typeahead.js/typeahead.bundle.min.js' }} "></script>
+  <script src="{{ 'assets/vendors/select2/select2.min.js' }} "></script>
+  <script src="{{ 'assets/js/off-canvas.js' }} "></script>
+  <script src="{{ 'assets/js/hoverable-collapse.js' }} "></script>
+  <script src="{{ 'assets/js/template.js' }} "></script>
+  <script src="{{ 'assets/js/settings.js' }} "></script>
+  <script src="{{ 'assets/js/todolist.js' }} "></script>
+  <script src="{{ 'assets/js/file-upload.js' }} "></script>
+  <script src="{{ 'assets/js/typeahead.js' }} "></script>
+  <script src="{{ 'assets/js/select2.js' }} "></script>
 
 
   <script>
@@ -938,24 +805,10 @@ $(document).ready(function() {
     let selectedApartment = $('#addressApartment'); // 11
     let addressHierarchy = []; // Массив для хранения уровней адреса
 
-   
-let isDropdownChange = false;
 
-function createLoader(fieldId) {
-    let loaderId = fieldId + 'Loader';
-    let loader = $('<span class="loader"></span>').attr('id', loaderId);
-    $('#' + fieldId).parent().append(loader);
-    return loader;
-}
 
 addressInput.on('input', function () {
     let searchValue = $(this).val();
-
-    // Проверка, является ли поле пустым
-    if (!isDropdownChange) {
-        // Если изменение произошло не из addressDropdown, скрываем лоадер
-        $('#addressesAreaLoader').hide();
-    }
 
     $.ajax({
         url: '{{ url("/api/getAddressItems") }}',
@@ -967,10 +820,6 @@ addressInput.on('input', function () {
         error: function (error) {
             console.log(error);
         },
-        complete: function () {
-            // Скрываем лоадер после завершения запроса
-            loader.hide();
-        }
     });
 });
 
@@ -1035,31 +884,10 @@ addressInput.on('input', function() {
     }
 });
 
-    function updateAddressField(fieldId, addressesData, label) {
-        let dropdown = $('#' + fieldId);
-        dropdown.empty();
-        dropdown.append('<option value="" selected disabled hidden>Выберите ' + label + '</option>');
-        $.each(addressesData, function (index, address) {
-            let newOption = new Option(address.full_name, address.full_name, false, false);
-            $(newOption).data('object-id', address.object_id);
-            dropdown.append(newOption);
-        });
-    }
-
-
 
     // ajax для обновления полей в зависмости от выбранного object_id
     addressDropdown.on('change', function () {
     let selectedOption = addressDropdown.find('option:selected');
-    
-        if (selectedOption.length === 0) {
-            // Ничего не выбрано, просто выходим из функции
-            return;
-        }
-        let loader = createLoader('addressesArea');
-        loader.show();
-        // let loader = createLoader('addressCity');
-        // loader.show();
 
         let selectedObjectId = selectedOption.data('object-id');
         let selectedObjectName = addressDropdown.val();
@@ -1075,44 +903,97 @@ addressInput.on('input', function() {
             data: { selectedAddress: selectedObjectId },
             success: function(response) 
             {   
-                $('.loader').hide();
                 let addressesData = response.addresses;
                 console.log(addressesData);
                
            
-            if (addressesData.hasOwnProperty('2')) {
-                updateAddressField('addressCity', addressesData['2'], 'Город');
+            if (addressesData.hasOwnProperty('2')) 
+            {   
+                let dropdown = $('select[name="addressesArea"]');
+                dropdown.empty();
+                dropdown.append('<option value="" selected disabled hidden>Выберите Район</option>');
+                $.each(addressesData['2'], function(index, address) {
+                    let newOption = new Option(address.full_name, address.full_name, false, false);
+                    $(newOption).data('object-id', address.object_id);
+                    dropdown.append(newOption);   
+                });
             }
 
             if (addressesData.hasOwnProperty('5')) {
-                updateAddressField('addressesArea', addressesData['5'], 'Район');
+                let dropdown = $('select[name="addressCity"]');
+                dropdown.empty();
+                dropdown.append('<option value="" selected disabled hidden>Выберите Город</option>');
+                $.each(addressesData['5'], function(index, address) {
+                    let newOption = new Option(address.full_name, address.full_name, false, false);
+                    $(newOption).data('object-id', address.object_id);
+                    dropdown.append(newOption);
+                });
             }
 
             if (addressesData.hasOwnProperty('6')) {
-                updateAddressField('addressSettlement', addressesData['6'], 'Поселок');
+                let dropdown = $('select[name="addressSettlement"]');
+                dropdown.empty();
+                dropdown.append('<option value="" selected disabled hidden>Выберите населлный пункт</option>');
+                $.each(addressesData['6'], function(index, address) {
+                    let newOption = new Option(address.full_name, address.full_name, false, false);
+                    $(newOption).data('object-id', address.object_id);
+                    dropdown.append(newOption);
+                });
             }
 
             if (addressesData.hasOwnProperty('7')) {
-                updateAddressField('addressPlanningStructure', addressesData['7'], 'Элемент планировочной структуры');
+                let dropdown = $('select[name="addressPlanningStructure"]');
+                dropdown.empty();
+                dropdown.append('<option value="" selected disabled hidden>Выберите элемент планировочноый структуры</option>');
+                $.each(addressesData['7'], function(index, address) {
+                    let newOption = new Option(address.full_name, address.full_name, false, false);
+                    $(newOption).data('object-id', address.object_id);
+                    dropdown.append(newOption);
+                });
             }
 
             if (addressesData.hasOwnProperty('8')) {
-                updateAddressField('addressStreet', addressesData['8'], 'Улица');
+                let dropdown = $('select[name="addressStreet"]');
+                dropdown.empty();
+                dropdown.append('<option value="" selected disabled hidden>Выберите улично дорожный элемент</option>');
+                $.each(addressesData['8'], function(index, address) {
+                    let newOption = new Option(address.full_name, address.full_name, false, false);
+                    $(newOption).data('object-id', address.object_id);
+                    dropdown.append(newOption);
+                });
             }
 
-            if (addressesData.hasOwnProperty('10')) {
-                updateAddressField('addressHouse', addressesData['10'], 'Дом');
+            if (addressesData.hasOwnProperty('10')) 
+            {
+                let dropdown = $('select[name="addressHouse"]');
+                dropdown.empty();
+                dropdown.append('<option value="" selected disabled hidden>Выберите дом</option>');
+                $.each(addressesData['10'], function(index, address) {
+                    let newOption = new Option(address.full_name, address.full_name, false, false);
+                    $(newOption).data('object-id', address.object_id);
+                    dropdown.append(newOption);
+                });
             }
 
-            if (addressesData.hasOwnProperty('11')) {
-                updateAddressField('addressApartment', addressesData['11'], 'Квартира');
-            }                               
+            if (addressesData.hasOwnProperty('11')) 
+            {
+                let dropdown = $('select[name="addressApartment"]');
+                dropdown.empty();
+                dropdown.append('<option value="" selected disabled hidden>Выберите квартиру</option>');
+                $.each(addressesData['11'], function(index, address) 
+                {
+                    let newOption = new Option(address.full_name, address.full_name, false, false);
+                    $(newOption).data('object-id', address.object_id);
+                    dropdown.append(newOption);
+                    
+                });
+            }                                 
                 
     
             },
             error: function(error) {
                 console.log(error);
-                $('.loader').hide();
+               
             }
 
         });
@@ -1122,7 +1003,7 @@ addressInput.on('input', function() {
     function onSelectChange(selectedElement) 
     {
 
-    console.log($(this));
+    // console.log($(this));
     addressDropdown.hide();
     $.ajax(
         {
@@ -1132,7 +1013,7 @@ addressInput.on('input', function() {
         success: function(response) 
         {
             let addressesDatas = response.addresses;
-            console.log(addressesDatas);
+            // console.log(addressesDatas);
             
             postNewAddress(currentPath)
 
@@ -1373,27 +1254,175 @@ addressInput.on('input', function() {
 
 
 
-  <!-- plugins:js -->
-  <script src="{{ 'assets/vendors/js/vendor.bundle.base.js' }} "></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-  <!-- endinject -->
-  <!-- Plugin js for this page -->
-  <script src="{{ 'assets/vendors/typeahead.js/typeahead.bundle.min.js' }} "></script>
-  <script src="{{ 'assets/vendors/select2/select2.min.js' }} "></script>
+<script>
+    let selectedPrices = {};
+    let total = 0;
+    let totalTimes = '00:00:00'; // Total accumulated time
+
+    function updateTotalPrice(operation, index) {
+    event.preventDefault();
+
+    let activeTab = document.querySelector('.tab-pane.active');
+    let selectedItem = activeTab.querySelector('tr[data-id="' + index + '"]');
+    let itemName = selectedItem.querySelector('td:first-child').textContent;
+    let currentPrice = parseFloat(selectedItem.querySelector('.price').textContent);
+    let timeForJob = selectedItem.querySelector('td:last-child').textContent; // Извлечение timeforjob
+
+    // Находим ячейку с количеством для обновления
+    let quantityCell = selectedItem.querySelector('.quantity');
+
+    let existingItem = selectedPrices[itemName];
+
+    // Обновление общего времени для конкретного товара
+    existingItem = existingItem || { quantity: 0, price: 0, timeforjob: '00:00:00' };
+
+    if (operation === 'plus') {
+        existingItem.timeforjob = addTime(existingItem.timeforjob, timeForJob);
+        existingItem.quantity += 1;
+        existingItem.price += currentPrice;
+        total += currentPrice;
+        totalTimes = addTime(totalTimes, timeForJob);
+    } else if (operation === 'minus' && existingItem.quantity > 0) {
+        existingItem.timeforjob = subtractTime(existingItem.timeforjob, timeForJob);
+        existingItem.quantity -= 1;
+        existingItem.price -= currentPrice;
+        total -= currentPrice;
+        totalTimes = subtractTime(totalTimes, timeForJob);
+    }
+
+    total = parseFloat(total.toFixed(2));
+
+    document.getElementById('totalPriceDisplay').textContent = total;
+
+    if (quantityCell) {
+        quantityCell.textContent = existingItem.quantity;
+    } else {
+        console.error('Quantity cell not found for index ' + index);
+    }
+
+    // Обновление скрытого поля с общей стоимостью
+    let totalPriceInput = document.getElementById('totalPriceInput');
+    totalPriceInput.value = total;
+
+    // Обновление скрытого поля с общим временем для каждого товара
+    let productsInfoInput = document.getElementById('productsInfo');
+    selectedPrices[itemName] = existingItem;
+    productsInfoInput.value = JSON.stringify(selectedPrices);
+
+    // Обновление скрытого поля с общим временем
+    let totalTimesInput = document.getElementById('totalTimesInput');
+    totalTimesInput.value = totalTimes;
+
+    // Вывод в консоль выбранных цен и времени
+    console.log('Selected Prices:', selectedPrices);
+    console.log('Total Times:', totalTimes);
+}
 
 
- <!-- End plugin js for this page -->
-  <!-- inject:js -->
-  <script src="{{ 'assets/js/off-canvas.js' }} "></script>
-  <script src="{{ 'assets/js/hoverable-collapse.js' }} "></script>
-  <script src="{{ 'assets/js/template.js' }} "></script>
-  <script src="{{ 'assets/js/settings.js' }} "></script>
-  <script src="{{ 'assets/js/todolist.js' }} "></script>
-  <!-- endinject -->
-  <!-- Custom js for this page-->
-  <script src="{{ 'assets/js/file-upload.js' }} "></script>
-  <script src="{{ 'assets/js/typeahead.js' }} "></script>
-  <script src="{{ 'assets/js/select2.js' }} "></script>
+
+    function addTime(time1, time2) {
+        let [hours1, minutes1, seconds1] = time1.split(':').map(Number);
+        let [hours2, minutes2, seconds2] = time2.split(':').map(Number);
+
+        let totalHours = hours1 + hours2;
+        let totalMinutes = minutes1 + minutes2;
+        let totalSeconds = seconds1 + seconds2;
+
+        // Handle carryovers
+        if (totalSeconds >= 60) {
+            totalMinutes += Math.floor(totalSeconds / 60);
+            totalSeconds %= 60;
+        }
+
+        if (totalMinutes >= 60) {
+            totalHours += Math.floor(totalMinutes / 60);
+            totalMinutes %= 60;
+        }
+
+        // Format the result
+        return `${padZero(totalHours)}:${padZero(totalMinutes)}:${padZero(totalSeconds)}`;
+    }
+
+    function subtractTime(time1, time2) {
+    let [hours1, minutes1, seconds1] = time1.split(':').map(Number);
+    let [hours2, minutes2, seconds2] = time2.split(':').map(Number);
+
+    let totalHours = hours1 - hours2;
+    let totalMinutes = minutes1 - minutes2;
+    let totalSeconds = seconds1 - seconds2;
+
+    // Handle borrow
+    while (totalSeconds < 0) {
+        totalMinutes -= 1;
+        totalSeconds += 60;
+    }
+
+    while (totalMinutes < 0) {
+        totalHours -= 1;
+        totalMinutes += 60;
+    }
+
+    // Ensure non-negative values
+    totalHours = Math.max(0, totalHours);
+    totalMinutes = Math.max(0, totalMinutes);
+    totalSeconds = Math.max(0, totalSeconds);
+
+    // Format the result
+    return `${padZero(totalHours)}:${padZero(totalMinutes)}:${padZero(totalSeconds)}`;
+}
+
+
+    function padZero(number) {
+        return number < 10 ? '0' + number : number;
+    }
+</script>
+
+
+
+
+
+<script>
+$(document).ready(function() {
+    $('#datepicker').datepicker({
+        language: 'ru', // Устанавливаем язык (например, русский)
+        dateFormat: 'dd.mm.yyyy', // Формат даты
+        autoClose: false, // Закрытие календаря после выбора даты
+        timepicker: true,
+        
+    });
+});
+
+</script>
+
+<script>
+    document.getElementById('clearFieldsButton').addEventListener('click', function() 
+    {
+        // Очистка значений полей
+        document.getElementById('addressInput').value = '';
+        
+        // Очистка значений выпадающих списков
+        clearDropdown('address');
+        clearDropdown('addressesArea');
+        clearDropdown('addressCity');
+        clearDropdown('addressSettlement');
+        clearDropdown('addressPlanningStructure');
+        clearDropdown('addressStreet');
+        clearDropdown('addressHouse');
+        clearDropdown('addressApartment');
+
+        // Если поля - это select, их можно очистить так:
+        document.getElementById('addressesArea').selectedIndex = -1;
+    });
+
+    function clearDropdown(id) 
+    {
+        let dropdown = document.getElementById(id);
+        dropdown.innerHTML = '';
+    }
+
+</script>
+
+
   <!-- End custom js for this page-->
   </body>
 

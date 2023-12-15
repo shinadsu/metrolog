@@ -497,9 +497,24 @@ h1 {
           </div>
           </li>
 
+            <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+             
+              <span class="menu-title">Графики Работ</span>
+              <i class="menu-arrow"></i>
+            </a>    
+            <div class="collapse" id="form-elements">
+            <ul class="nav flex-column sub-menu">
+              <li class="nav-item"><a class="nav-link" href="{{ route('devices.index') }}">Операторы</a></li>
+            </ul>
+             <ul class="nav flex-column sub-menu">
+              <li class="nav-item"><a class="nav-link" href="{{ route('devices.index') }}">Логисты</a></li>
+            </ul>
+          </div>
+          </li>
+
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
-              
               <span class="menu-title">Инфо. Адреса</span>
               <i class="menu-arrow"></i>
             </a>    
@@ -545,8 +560,7 @@ h1 {
                 </ul>
             </div>
           </li>
-</nav>
-<div class="main-panel">
+</nav><div class="main-panel">
     <div class="content-wrapper">
         <!-- Working version of https://dribbble.com/shots/14552329--Exploration-Task-Management-Dashboard -->
 <!-- Working version of https://dribbble.com/shots/14552329--Exploration-Task-Management-Dashboard -->

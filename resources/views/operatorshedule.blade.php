@@ -2,23 +2,36 @@
 <html lang="en">
 
 <head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Skydash Admin</title>
-  <!-- plugins:css -->
-  <link rel="stylesheet" href="{{ 'assets/vendors/feather/feather.css' }}">
-  <link rel="stylesheet" href="{{ 'assets/vendors/ti-icons/css/themify-icons.css' }}">
-  <link rel="stylesheet" href="{{ 'assets/vendors/css/vendor.bundle.base.css' }}">
-  <!-- endinject -->
-  <!-- Plugin css for this page -->
-  <!-- End plugin css for this page -->
-  <!-- inject:css -->
-  <link rel="stylesheet" href="{{ 'assets/css/vertical-layout-light/style.css' }}">
-  <!-- endinject -->
-  <link rel="shortcut icon" href="{{ 'assets/images/favicon.png' }}" />
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>METROLOG</title>
+<!-- plugins:css -->
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.default.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/air-datepicker@2.2.3/dist/css/datepicker.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
 
-  <style>
+<link rel="stylesheet" href="{{ 'assets/vendors/feather/feather.css' }}">
+<link rel="stylesheet" href="{{ 'assets/vendors/ti-icons/css/themify-icons.css' }}">
+<link rel="stylesheet" href="{{ 'assets/vendors/css/vendor.bundle.base.css' }}">
+<link rel="stylesheet" href="{{ 'assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css' }}">
+<link rel="stylesheet" href="{{ 'assets/vendors/ti-icons/css/themify-icons.css' }}">
+<link rel="stylesheet" type="{{ 'assets/text/css" href="js/select.dataTables.min.css' }}">
+<link rel="stylesheet" href="{{ 'assets/css/vertical-layout-light/style.css' }}">
+<link rel="shortcut icon" href="images/favicon.png" />
+
+
+  <!-- Include Selectize.js JS -->
+<!-- End plugin css for this page -->
+<!-- inject:css -->
+<link rel="stylesheet" href="{{ 'assets/css/vertical-layout-light/style.css' }}">
+<!-- endinject -->
+<link rel="shortcut icon" href="{{ 'assets/images/favicon.png' }}" />
+<style>
 
 html {
   box-sizing: border-box;
@@ -67,6 +80,8 @@ h6 {
   font-weight: 700;
   margin-top: 0;
 }
+
+
 
 /* kbd {
   background: #ddd;
@@ -211,75 +226,78 @@ h6 {
         </ul>
       </nav>
 
-      <div class="main-panel">
-    <div class="content-wrapper">
-        <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Заявки</h4>
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Заявка №</th>
-                                        <th>ФИО</th>
-                                        <th>Адрес</th>
-                                        <th>Дата создания</th>
-                                        <th>Статус</th>
-                                        <th>Полная информация</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($applications as $application)
-                                        <tr>
-                                            <td>{{ $application->id }}</td>
-                                            <td>{{ $application->fullname }}</td>
-                                            <td>
-                                                <ul>
-                                                    @foreach ($application->addresses as $address)
-                                                        <li>{{ $address->full_address }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </td>
-                                            <td>{{ $application->created_at }}</td>
-                                            <td>
-                                                @if ($application->status === 'не завершена')
-                                                    <label class="badge badge-danger">Не завершена</label>
-                                                @elseif ($application->status === 'в процессе')
-                                                    <label class="badge badge-warning">В процессе</label>
-                                                @elseif ($application->status === 'завершена')
-                                                    <label class="badge badge-success">Завершена</label>
-                                                @else
-                                                    <label class="badge badge-info">{{ $application->status->name }}</label>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <a href="{{ route('applications.show', ['id' => $application->id]) }}" class="btn btn-primary">Посмотреть</a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+     <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">  
+        <!-- календарь работ операторов -->
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Календарь Работ Операторов</h4>
+                  <div id="calendar"></div>
                 </div>
             </div>
         </div>
+        <!-- конец календаря работ операторов -->
     </div>
 </div>
 
+<script>
+$(document).ready(function () {
+    let operatorshedulers = @json($events);
+    console.log(operatorshedulers);
+
+    $('#calendar').fullCalendar({
+        header: {
+            initialView: 'dayGridWeek',
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month, agendaWeek, agendaDay'
+            
+        },
+        events: operatorshedulers,
+        selectable: true,
+        selectHelper: true,
+        eventRender: function (event, element) {
+            var incoming = event.incoming ;
+            var outgoing = event.outgoing ;
+            element.popover({
+                title: event.title,
+                content:  'Время начала работы: ' + event.start.format('HH:mm') + '\n' + 'Время окнчания работы: ' + event.end.format('HH:mm') + '\n' + 
+                          '\nВходящие: ' + incoming + '.' +
+                          '\nИсходящие: ' + outgoing + '.',
+                trigger: 'hover',
+                placement: 'top',
+                container: 'body'
+            });
+        },
+        weekends: true,
+        dayRender: function (date, cell) {
+            if (date.day() === 0 || date.day() === 6) {
+                cell.css('background-color', 'Pink');
+            }
+        },
+        locale: 'ru',
+    });
+    
+});
+</script>
 
 
-
-
-  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+  
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/air-datepicker@2.2.3/dist/js/datepicker.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ru.js"></script>
+  
+
+<!-- FullCalendar JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
 
   <script src="{{ 'assets/vendors/typeahead.js/typeahead.bundle.min.js' }} "></script>
   <script src="{{ 'assets/vendors/select2/select2.min.js' }} "></script>
@@ -292,6 +310,9 @@ h6 {
   <script src="{{ 'assets/js/typeahead.js' }} "></script>
   <script src="{{ 'assets/js/select2.js' }} "></script>
 
-</body>
 
-</html>
+
+  <!-- End custom js for this page-->
+  </body>
+
+  </html

@@ -2,23 +2,33 @@
 <html lang="en">
 
 <head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Skydash Admin</title>
-  <!-- plugins:css -->
-  <link rel="stylesheet" href="{{ 'assets/vendors/feather/feather.css' }}">
-  <link rel="stylesheet" href="{{ 'assets/vendors/ti-icons/css/themify-icons.css' }}">
-  <link rel="stylesheet" href="{{ 'assets/vendors/css/vendor.bundle.base.css' }}">
-  <!-- endinject -->
-  <!-- Plugin css for this page -->
-  <!-- End plugin css for this page -->
-  <!-- inject:css -->
-  <link rel="stylesheet" href="{{ 'assets/css/vertical-layout-light/style.css' }}">
-  <!-- endinject -->
-  <link rel="shortcut icon" href="{{ 'assets/images/favicon.png' }}" />
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>METROLOG</title>
+<!-- plugins:css -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.default.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/air-datepicker@2.2.3/dist/css/datepicker.min.css">
+<link rel="stylesheet" href="{{ 'assets/vendors/feather/feather.css' }}">
+<link rel="stylesheet" href="{{ 'assets/vendors/ti-icons/css/themify-icons.css' }}">
+<link rel="stylesheet" href="{{ 'assets/vendors/css/vendor.bundle.base.css' }}">
+<link rel="stylesheet" href="{{ 'assets/vendors/datatables.net-bs4/dataTables.bootstrap4.css' }}">
+<link rel="stylesheet" href="{{ 'assets/vendors/ti-icons/css/themify-icons.css' }}">
+<link rel="stylesheet" type="{{ 'assets/text/css" href="js/select.dataTables.min.css' }}">
+<link rel="stylesheet" href="{{ 'assets/css/vertical-layout-light/style.css' }}">
+<link rel="shortcut icon" href="images/favicon.png" />
 
-  <style>
+
+  <!-- Include Selectize.js JS -->
+<!-- End plugin css for this page -->
+<!-- inject:css -->
+<link rel="stylesheet" href="{{ 'assets/css/vertical-layout-light/style.css' }}">
+<!-- endinject -->
+<link rel="shortcut icon" href="{{ 'assets/images/favicon.png' }}" />
+<style>
 
 html {
   box-sizing: border-box;
@@ -68,13 +78,6 @@ h6 {
   margin-top: 0;
 }
 
-/* kbd {
-  background: #ddd;
-  border-radius: 0.2em;
-  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.25);
-  padding-left: 0.2em;
-  padding-right: 0.2em;
-} */
     </style>
 </head>
 
@@ -211,68 +214,15 @@ h6 {
         </ul>
       </nav>
 
-      <div class="main-panel">
-    <div class="content-wrapper">
-        <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="card-title">Заявки</h4>
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>Заявка №</th>
-                                        <th>ФИО</th>
-                                        <th>Адрес</th>
-                                        <th>Дата создания</th>
-                                        <th>Статус</th>
-                                        <th>Полная информация</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($applications as $application)
-                                        <tr>
-                                            <td>{{ $application->id }}</td>
-                                            <td>{{ $application->fullname }}</td>
-                                            <td>
-                                                <ul>
-                                                    @foreach ($application->addresses as $address)
-                                                        <li>{{ $address->full_address }}</li>
-                                                    @endforeach
-                                                </ul>
-                                            </td>
-                                            <td>{{ $application->created_at }}</td>
-                                            <td>
-                                                @if ($application->status === 'не завершена')
-                                                    <label class="badge badge-danger">Не завершена</label>
-                                                @elseif ($application->status === 'в процессе')
-                                                    <label class="badge badge-warning">В процессе</label>
-                                                @elseif ($application->status === 'завершена')
-                                                    <label class="badge badge-success">Завершена</label>
-                                                @else
-                                                    <label class="badge badge-info">{{ $application->status->name }}</label>
-                                                @endif
-                                            </td>
-                                            <td>
-                                                <a href="{{ route('applications.show', ['id' => $application->id]) }}" class="btn btn-primary">Посмотреть</a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+     <div class="main-panel">
+        <div class="content-wrapper">
+          <div class="row">  
+            
         </div>
     </div>
 </div>
 
-
-
-
-
+  
   <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
@@ -292,6 +242,9 @@ h6 {
   <script src="{{ 'assets/js/typeahead.js' }} "></script>
   <script src="{{ 'assets/js/select2.js' }} "></script>
 
-</body>
 
-</html>
+
+  <!-- End custom js for this page-->
+  </body>
+
+  </html

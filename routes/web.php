@@ -38,6 +38,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/applicationsandaddresses/{id}/edit', 'App\Http\Controllers\ShowApplicationAndAddressesController@edit')->name('applicationsandaddresses.edit');
     Route::put('/applicationsandaddresses/{id}', 'App\Http\Controllers\ShowApplicationAndAddressesController@update')->name('updateappandaddress.update');
     Route::get('/testforapplicationandaddress', 'App\Http\Controllers\TestAppAddress@index')->name('testforapplicationandaddress.index');
+    Route::get('/operatorshedule', 'App\Http\Controllers\OperatorSheduleController@index')->name('operatorshedule.index');
+    Route::get('/logisticshedule', 'App\Http\Controllers\LogisticSheduleController@index')->name('logisticshedule.index');
+    
 
     Route::get('/metrolog', 'App\Http\Controllers\Metrlog@index')
         ->middleware(['auth', 'CheckRoleMiddlware:metrolog, administrator'])

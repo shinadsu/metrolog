@@ -7,11 +7,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>METROLOG</title>
 <!-- plugins:css -->
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/css/selectize.default.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/air-datepicker@2.2.3/dist/css/datepicker.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" />
+
 <link rel="stylesheet" href="{{ 'assets/vendors/feather/feather.css' }}">
 <link rel="stylesheet" href="{{ 'assets/vendors/ti-icons/css/themify-icons.css' }}">
 <link rel="stylesheet" href="{{ 'assets/vendors/css/vendor.bundle.base.css' }}">
@@ -78,6 +81,15 @@ h6 {
   margin-top: 0;
 }
 
+
+
+/* kbd {
+  background: #ddd;
+  border-radius: 0.2em;
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.25);
+  padding-left: 0.2em;
+  padding-right: 0.2em;
+} */
     </style>
 </head>
 
@@ -217,19 +229,73 @@ h6 {
      <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">  
-            
+        <!-- календарь работ операторов -->
+        <div class="col-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                  <h4 class="card-title">Календарь Работ Логистов</h4>
+                  <div id="calendar"></div>
+                </div>
+            </div>
         </div>
+        <!-- конец календаря работ операторов -->
     </div>
 </div>
 
+<script>
+$(document).ready(function () {
+    let logisticsSheduler = @json($events);
+    console.log(logisticsSheduler);
+
+    $('#calendar').fullCalendar({
+        header: {
+            initialView: 'dayGridWeek',
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month, agendaWeek, agendaDay'
+            
+        },
+        events: logisticsSheduler,
+        selectable: true,
+        selectHelper: true,
+        eventRender: function (event, element) {
+            var scheduled = event.is_scheduled ;
+            element.popover({
+                title: event.title || '',
+                content:  'Время начала работы: ' + event.start.format('HH:mm') + '\n' + 'Время окнчания работы: ' + event.end.format('HH:mm') + '\n' + 
+                          '\nВ графике: ' + scheduled + '.',
+                trigger: 'hover',
+                placement: 'top',
+                container: 'body'
+            });
+        },
+        weekends: true,
+        dayRender: function (date, cell) {
+            if (date.day() === 0 || date.day() === 6) {
+                cell.css('background-color', 'Pink');
+            }
+        },
+        locale: 'ru',
+    });
+    
+});
+</script>
+
+
   
-  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/air-datepicker@2.2.3/dist/js/datepicker.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/locale/ru.js"></script>
+  
+
+<!-- FullCalendar JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
 
   <script src="{{ 'assets/vendors/typeahead.js/typeahead.bundle.min.js' }} "></script>
   <script src="{{ 'assets/vendors/select2/select2.min.js' }} "></script>

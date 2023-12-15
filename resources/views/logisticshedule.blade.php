@@ -296,7 +296,6 @@ $(document).ready(function () {
 
 <!-- FullCalendar JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
-
   <script src="{{ 'assets/vendors/typeahead.js/typeahead.bundle.min.js' }} "></script>
   <script src="{{ 'assets/vendors/select2/select2.min.js' }} "></script>
   <script src="{{ 'assets/js/off-canvas.js' }} "></script>

@@ -20,11 +20,8 @@ class LogisticSheduleController extends Controller
                     'is_scheduled' => $logisticsSheduler->is_scheduled,
                 ];
             });
-    
             // return $events
-        
             return view('logisticshedule', ['events' => $events]);
         }
-        
-    
+ 
 }

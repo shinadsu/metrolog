@@ -161,7 +161,8 @@ h6 {
             </a>
             <div class="collapse" id="charts">
               <ul class="nav flex-column sub-menu">
-               
+                 <li class="nav-item"> <a class="nav-link" href="{{ route('operatorshedule.index') }}">График Операторов</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('logisticshedule.index') }}">График Логистов</a></li>
               </ul>
             </div>
           </li>
@@ -206,8 +207,6 @@ h6 {
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="{{ route('userrequisitessettings.index') }}"> Реквезиты </a></li>
                 <li class="nav-item"> <a class="nav-link" href="{{ route('statustransitionsController.index') }}"> Статусы </a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ route('operatorshedule.index') }}">График Операторов</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ route('logisticshedule.index') }}">График Логистов</a></li>
               </ul>
             </div>
           </li>

@@ -599,6 +599,8 @@ h6 {
                         </div>
                     </div>
                 </div>
+
+                
                 <div class="col-lg-12 grid-margin stretch-card">
                     <div class="card">
                         <div class="card-body">
@@ -613,6 +615,7 @@ h6 {
                                             <th>ФИО</th>
                                             <th>Тип оплаты</th>
                                             <th>Статус</th>
+                                            <th></th> <!-- Add an empty column for the "View" button -->
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -635,17 +638,28 @@ h6 {
                                                             {{ $application->status_name }}
                                                         @endif
                                                     </td>
+                                                    <td>
+                                                         <a href="{{ route('operatorapplication.show', ['id' => $application->application_id]) }}" class="btn btn-sm btn-info">Посмотреть</a>
+                                                    </td>
                                                 </tr>
                                             @endif
                                         @endforeach
-                                    </tbody>
+                                    </tbody>    
                                 </table>
                             </div>
                             <div class="d-flex justify-content-center">
                                 {{ $applicationsWithDetails->links() }}
                             </div>
-                        </div>
-                    </div>
+
+                            <script>
+                                function viewApplication(applicationId) {
+                                    // Implement logic to handle the "View" button click, e.g., open a modal or redirect to a detailed view page
+                                    console.log("View button clicked for application ID: " + applicationId);
+                                }
+                            </script>
+
+
+
                 </div>
             </div>
           </div>

@@ -250,7 +250,7 @@ $(document).ready(function () {
     $('#calendar').fullCalendar({
         header: {
             initialView: 'dayGridWeek',
-            left: 'prev,next today',
+            left: 'prev, next, today',
             center: 'title',
             right: 'month, agendaWeek, agendaDay'
             

@@ -101,10 +101,16 @@ class CustomAppController extends Controller
             $fullAddress = $this->buildFullAddress($addressData);
 
         
-            $addressData['full_address'] = $fullAddress;
+            $existingAddress = Address::where('full_address', $fullAddress)->first();
 
-            
-            $address = Address::firstOrCreate($addressData);
+            // Если адрес не найден, создаем новый экземпляр Address
+            if (!$existingAddress) {
+                $addressData['full_address'] = $fullAddress;
+                $address = Address::create($addressData);
+            } else {
+                // Используем существующий адрес
+                $address = $existingAddress;
+            }
 
 
         

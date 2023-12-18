@@ -38,9 +38,20 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/applicationsandaddresses/{id}/edit', 'App\Http\Controllers\ShowApplicationAndAddressesController@edit')->name('applicationsandaddresses.edit');
     Route::put('/applicationsandaddresses/{id}', 'App\Http\Controllers\ShowApplicationAndAddressesController@update')->name('updateappandaddress.update');
     Route::get('/testforapplicationandaddress', 'App\Http\Controllers\TestAppAddress@index')->name('testforapplicationandaddress.index');
+
+    // график работы операторов
     Route::get('/operatorshedule', 'App\Http\Controllers\OperatorSheduleController@index')->name('operatorshedule.index');
-    Route::get('/logisticshedule', 'App\Http\Controllers\LogisticSheduleController@index')->name('logisticshedule.index');
+    Route::get('/operator', 'App\Http\Controllers\OperatorSettingsController@index')->name('OperatorSettings.index');
+    Route::post('/operatorsheduleadd', 'App\Http\Controllers\OperatorSettingsController@store')->name('OperatorSettingsAdd.store');
+
+    // список заявок оператора
     Route::get('/applicationsoperator/{id}', 'App\Http\Controllers\ApplicationOperatorController@show')->name('operatorapplication.show');
+    
+
+    // график работы логистов
+    Route::get('/logistics', 'App\Http\Controllers\LogisticSettingsController@index')->name('logisticshedule.index');
+    Route::get('/logisticshedule', 'App\Http\Controllers\LogisticSheduleController@index')->name('LogisticSettings.index');
+    Route::post('/logisticsheduleAdd', 'App\Http\Controllers\LogisticSettingsController@store')->name('LogisticSettingsAdd.store');
     
 
     Route::get('/metrolog', 'App\Http\Controllers\Metrlog@index')

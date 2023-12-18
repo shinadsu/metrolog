@@ -5,13 +5,15 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Skydash Admin</title>
+  <title>METROLOG</title>
   <!-- plugins:css -->
   <link rel="stylesheet" href="{{ 'assets/vendors/feather/feather.css' }}">
   <link rel="stylesheet" href="{{ 'assets/vendors/ti-icons/css/themify-icons.css' }}">
   <link rel="stylesheet" href="{{ 'assets/vendors/css/vendor.bundle.base.css' }}">
   <!-- endinject -->
   <!-- Plugin css for this page -->
+  <link rel="stylesheet" href="{{ 'assets/vendors/select2/select2.min.css' }}">
+  <link rel="stylesheet" href="{{ 'assets/vendors/select2-bootstrap-theme/select2-bootstrap.min.css' }}">
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="{{ 'assets/css/vertical-layout-light/style.css' }}">
@@ -211,58 +213,94 @@ h6 {
         </ul>
       </nav>
 
-      <!-- partial -->
-      <div class="main-panel">
-        <div class="content-wrapper">
-          <div class="row">
-            <div class="col-lg-6 grid-margin stretch-card">
-              <div class="card">
-              </div>
-            </div>
+<div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <div class="table-responsive">
-                    <table class="table table-striped">
-                      <thead>
-                    <tr>
-                        <th>Субъект РФ</th>
-                        <th>Район</th>
-                        <th>Город</th>
-                        <th>Поселок</th>
-                        <th>Элемент планировочной структуры</th>
-                        <th>Улица</th>
-                        <th>Дом</th>
-                        <th>Квартира</th>
-                        <th>Дата добавления адреса</th>
-                    <!-- Добавьте остальные поля сюда, если у вас есть еще какие-либо поля в таблице addresses -->
-                    </tr>
-                    @foreach($addresses as $address)
-                    <tr>
-                        <td>{{ $address->address }}</td>
-                        <td>{{ $address->addressesArea }}</td>
-                        <td>{{ $address->addressCity }}</td>
-                        <td>{{ $address->addressSettlement }}</td>
-                        <td>{{ $address->addressPlanningStructure }}</td>
-                        <td>{{ $address->addressStreet }}</td>
-                        <td>{{ $address->addressHouse }}</td>
-                        <td>{{ $address->addressApartment }}</td>
-                        <td>{{ $address->created_at }}</td>
-                        
-                        <!-- Добавьте остальные поля сюда, если у вас есть еще какие-либо поля в таблице addresses -->
-                    </tr>
-                    @endforeach
-                      </thead>
-                      <tbody>
- 
-                       
-                      </tbody>
-                    </table>
-                  </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Установка графика работы Логистов</h4>
+                        <form action="{{ route('LogisticSettingsAdd.store') }}" class="form-sample" method="POST">
+                            @csrf
+                            <div class="form-group">
+                                <label for="logist_id">Логист</label>
+                                <select class="form-control" id="logist_id" name="logist_id" required>
+                                    @foreach($logisticSettings as $logisticSetting)
+                                        <option value="{{ $logisticSetting->id }}">{{ $logisticSetting->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="date">Дата</label>
+                                <input type="date" class="form-control" id="date" name="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="start_date">Дата и время начала</label>
+                                <input type="datetime-local" class="form-control" id="start_date" name="start_date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="end_date">Дата и время окончания</label>
+                                <input type="datetime-local" class="form-control" id="end_date" name="end_date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="is_scheduled">В графике</label>
+                                <select class="form-control" id="is_scheduled" name="is_scheduled" required>
+                                    <option value="1" @if(old('is_scheduled') == '1') selected @endif>Да</option>
+                                    <option value="0" @if(old('is_scheduled') == '0') selected @endif>Нет</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="reasonForNot">Причина отсутствия в графике</label>
+                                <textarea class="form-control" id="reasonForNot" name="reasonForNot" rows="3"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary mr-2">Сохранить настройки</button>
+                        </form>
+                    </div>
                 </div>
-              </div>
             </div>
-        <!-- content-wrapper ends -->
+        </div>
+
+        <!-- Данные о реквизитах -->
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">График работы логистов</h4>
+            <div class="table-responsive pt-3">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Логист</th>
+                            <th>Дата</th>
+                            <th>Дата и время начала</th>
+                            <th>Дата и время окончания</th>
+                            <th>В графике</th>
+                            <th>Причина отсутствия в графике</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($logisticSettings as $user)
+                            @foreach($user->logisticShedules as $logisticSetting)
+                                <tr>
+                                    <td>{{ $user->name }}</td>
+                                    <td>{{ $logisticSetting->date }}</td>
+                                    <td>{{ $logisticSetting->start_date }}</td>
+                                    <td>{{ $logisticSetting->end_date }}</td>
+                                    <td>{{ $logisticSetting->is_scheduled == '1' ? 'Да' : 'Нет' }}</td>
+                                    <td>{{ $logisticSetting->reasonForNot }}</td>
+                                </tr>
+                            @endforeach
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+        
         <!-- partial:../../partials/_footer.html -->
 
         <!-- partial -->
@@ -271,6 +309,8 @@ h6 {
     </div>
     <!-- page-body-wrapper ends -->
   </div>
+  <!-- container-scroller -->
+  <!-- plugins:js -->
   <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
@@ -290,6 +330,7 @@ h6 {
   <script src="{{ 'assets/js/typeahead.js' }} "></script>
   <script src="{{ 'assets/js/select2.js' }} "></script>
 
+  <!-- End custom js for this page-->
 </body>
 
 </html>

@@ -43,7 +43,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
-
+    
     /**
      * The attributes that should be cast.
      *
@@ -59,6 +59,14 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-   
+    public function logisticShedules()
+    {
+        return $this->hasMany(logisticsShedule::class, 'logist_id');
+    }
+
+    public function OperatorShedules()
+    {
+        return $this->hasMany(operatorSheduler::class, 'operator_id');
+    }
 
 }

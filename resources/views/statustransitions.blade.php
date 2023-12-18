@@ -80,7 +80,7 @@ h6 {
 </head>
 
 <body>
- <div class="container-scroller">
+  <div class="container-scroller">
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -160,7 +160,7 @@ h6 {
             <div class="collapse" id="charts">
               <ul class="nav flex-column sub-menu">
                  <li class="nav-item"> <a class="nav-link" href="{{ route('operatorshedule.index') }}">График Операторов</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ route('logisticshedule.index') }}">График Логистов</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('LogisticSettings.index') }}">График Логистов</a></li>
               </ul>
             </div>
           </li>
@@ -205,6 +205,8 @@ h6 {
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"> <a class="nav-link" href="{{ route('userrequisitessettings.index') }}"> Реквезиты </a></li>
                 <li class="nav-item"> <a class="nav-link" href="{{ route('statustransitionsController.index') }}"> Статусы </a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('logisticshedule.index') }}"> Наст. График Логист </a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('OperatorSettings.index') }}"> Наст. График Оператор </a></li>
               </ul>
             </div>
           </li>

@@ -26,9 +26,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class CustomAppController extends Controller
-{   
-
-
+{  
 
     public function store(Request $request)
     {   
@@ -85,12 +83,8 @@ class CustomAppController extends Controller
             $productsInfo = json_decode($request->input('productsInfo'), true);
             $applicationData['productsInfo'] = json_encode($productsInfo);
             $applicationData['user_id'] = auth()->user()->id;
-            $application = Application::create($applicationData);
-            
-            
-            
+            $application = Application::create($applicationData);       
 
-        
 
             $addressData = $request->only(
                 'address', 'addressesArea', 'addressCity', 'addressSettlement',
@@ -99,21 +93,10 @@ class CustomAppController extends Controller
             );
 
             $fullAddress = $this->buildFullAddress($addressData);
-
+            $addressData['full_address'] = $fullAddress;
+            $address = Address::firstOrCreate($addressData);
         
-            $existingAddress = Address::where('full_address', $fullAddress)->first();
-
-            // Если адрес не найден, создаем новый экземпляр Address
-            if (!$existingAddress) {
-                $addressData['full_address'] = $fullAddress;
-                $address = Address::create($addressData);
-            } else {
-                // Используем существующий адрес
-                $address = $existingAddress;
-            }
-
-
-        
+            
             $payer = Payer::where('payer_code', $request->input('payer_code'))
                         ->where('actual', $request->input('actual'))
                         ->first();
@@ -170,6 +153,7 @@ class CustomAppController extends Controller
             $addressApplicationData['application_id'] = $application->id;
             $addressApplicationData['address_id'] = $address->id;
             $addressApplication = addressApplication::create($addressApplicationData);
+
 
             $applicationMetrologdata = $request->only('application_id', 'metrolog_id');
             $applicationMetrologdata['application_id'] = $application->id;
@@ -247,11 +231,17 @@ class CustomAppController extends Controller
                                         ->pluck('new_status_id');
 
         $statuses = Statuses::whereIn('id', $allowedStatuses)->get(); 
+        $additionalWork = additionalWork::with('price')->get();
+        $claims = claims::with('price')->get();
+        $plumbingServices = plumbingServices::with('price')->get();
+        $verificationOfCounters = verificationOfСounters::with('price')->get();
+        $specifications = specifications::with('price')->get();
+        $replacements = Replacement::with('price')->get();
 
-        $applicationsWithDetails = DB::table('address_applications')
+        $applicationsWithDetails = DB::table('addresses')
+        ->join('address_applications', 'addresses.id', '=', 'address_applications.address_id')
         ->join('applications', 'address_applications.application_id', '=', 'applications.id')
-        ->join('addresses', 'address_applications.address_id', '=', 'addresses.id')
-        ->leftJoin('address_phone', 'address_applications.address_id', '=', 'address_phone.address_id')
+        ->leftJoin('address_phone', 'addresses.id', '=', 'address_phone.address_id')
         ->leftJoin('phones', 'address_phone.phone_id', '=', 'phones.id')
         ->leftJoin('statuses', 'applications.status_id', '=', 'statuses.id')
         ->leftJoin('users', 'applications.user_id', '=', 'users.id')
@@ -264,21 +254,13 @@ class CustomAppController extends Controller
             'users.name as user_name',
             'applications.user_id as user_id',
             'addresses.full_address as address',
-            'phones.phone_number'
+            DB::raw('GROUP_CONCAT(phones.phone_number) as phone_numbers')
         )
-        ->paginate(10);
+        ->groupBy('address_applications.address_id', 'applications.id')
+        ->paginate(5);
+    
+    
 
-        $additionalWork = additionalWork::with('price')->get();
-
-        $claims = claims::with('price')->get();
-
-        $plumbingServices = plumbingServices::with('price')->get();
-
-        $verificationOfCounters = verificationOfСounters::with('price')->get();
-
-        $specifications = specifications::with('price')->get();
-
-        $replacements = Replacement::with('price')->get();
         
         return view('create', compact('applicationsWithDetails', 'statuses', 'Users', 'request', 'additionalWork', 'claims', 'plumbingServices', 'verificationOfCounters', 'specifications', 'replacements'));
     }

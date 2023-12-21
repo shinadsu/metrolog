@@ -24,12 +24,7 @@
 <link rel="stylesheet" href="{{ 'assets/css/vertical-layout-light/style.css' }}">
 <link rel="shortcut icon" href="images/favicon.png" />
 
-
-  <!-- Include Selectize.js JS -->
-<!-- End plugin css for this page -->
-<!-- inject:css -->
 <link rel="stylesheet" href="{{ 'assets/css/vertical-layout-light/style.css' }}">
-<!-- endinject -->
 <link rel="shortcut icon" href="{{ 'assets/images/favicon.png' }}" />
 <style>
 
@@ -80,16 +75,6 @@ h6 {
   font-weight: 700;
   margin-top: 0;
 }
-
-
-
-/* kbd {
-  background: #ddd;
-  border-radius: 0.2em;
-  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.25);
-  padding-left: 0.2em;
-  padding-right: 0.2em;
-} */
     </style>
 </head>
 
@@ -138,6 +123,7 @@ h6 {
             </a>
           </li>
 
+          
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
               <i class="icon-layout menu-icon"></i>
@@ -152,6 +138,7 @@ h6 {
             </div>
           </li>
 
+
             <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
               <i class="icon-layout menu-icon"></i>
@@ -164,6 +151,7 @@ h6 {
               </ul>
             </div>
           </li>
+
 
           <li class="nav-item">
             <a class="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
@@ -247,14 +235,12 @@ h6 {
 $(document).ready(function () {
     let logisticsSheduler = @json($events);
     console.log(logisticsSheduler);
-
     $('#calendar').fullCalendar({
         header: {
             initialView: 'dayGridWeek',
             left: 'prev, next, today',
-            center: 'title',
-            right: 'month, agendaWeek, agendaDay'
-            
+            center: 'title',  
+            right: 'month'  
         },
         events: logisticsSheduler,
         selectable: true,
@@ -263,7 +249,7 @@ $(document).ready(function () {
             var scheduled = event.is_scheduled ;
             element.popover({
                 title: event.title || '',
-                content:  'Время начала работы: ' + event.start.format('HH:mm') + '\n' + 'Время окнчания работы: ' + event.end.format('HH:mm') + '\n' + 
+                content:  'Время начала работы: ' + event.start.format('DD-MM-YYYY HH:mm') + '\n' + 'Время окнчания работы: ' + event.end.format('DD-MM-YYYY HH:mm') + '\n' + 
                           '\nВ графике: ' + scheduled + '.',
                 trigger: 'hover',
                 placement: 'top',
@@ -278,7 +264,6 @@ $(document).ready(function () {
         },
         locale: 'ru',
     });
-    
 });
 </script>
 

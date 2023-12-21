@@ -261,23 +261,23 @@ h6 {
                             </div>
                             <div class="form-group">
                                 <label for="day_off">Выходные</label>
-                                 <select class="form-control" id="is_working_day" name="is_working_day" required>
-                                    <option value="1" @if(old('is_scheduled') == '1') selected @endif>Да</option>
-                                    <option value="0" @if(old('is_scheduled') == '0') selected @endif>Нет</option>
+                                <select class="form-control" id="day_off" name="day_off" required>
+                                    <option value="1" @if(old('day_off') == '1') selected @endif>Да</option>
+                                    <option value="0" @if(old('day_off') == '0') selected @else selected @endif>Нет</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="sick_leave">Больничный</label>
-                                <select class="form-control" id="is_working_day" name="is_working_day" required>
-                                    <option value="1" @if(old('is_scheduled') == '1') selected @endif>Да</option>
-                                    <option value="0" @if(old('is_scheduled') == '0') selected @endif>Нет</option>
+                                <select class="form-control" id="sick_leave" name="sick_leave" required>
+                                    <option value="1" @if(old('sick_leave') == '1') selected @endif>Да</option>
+                                    <option value="0" @if(old('sick_leave') == '0') selected @else selected @endif>Нет</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="other_leave">Дургая причина</label>
-                                 <select class="form-control" id="is_working_day" name="is_working_day" required>
-                                    <option value="1" @if(old('is_scheduled') == '1') selected @endif>Да</option>
-                                    <option value="0" @if(old('is_scheduled') == '0') selected @endif>Нет</option>
+                                <label for="other_leave">Другая причина</label>
+                                <select class="form-control" id="other_leave" name="other_leave" required>
+                                    <option value="1" @if(old('other_leave') == '1') selected @endif>Да</option>
+                                    <option value="0" @if(old('other_leave') == '0') selected @else selected @endif>Нет</option>
                                 </select>
                             </div>
                             <div class="form-group">

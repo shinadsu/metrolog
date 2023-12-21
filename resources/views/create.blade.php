@@ -120,7 +120,7 @@ h6 {
       <nav class="sidebar sidebar-offcanvas" id="sidebar">
         <ul class="nav">
           <li class="nav-item">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" href="/">
               <i class="icon-grid menu-icon"></i>
               <span class="menu-title">Главная</span>
             </a>
@@ -282,37 +282,40 @@ h6 {
                         <h4 class="card-title">Заполнение адреса</h4>
                         <div class="form-group">
                             <label for="addressInput">Субъект РФ</label> 
-                            <input type="text" class="form-control" id="addressInput" name="addressInput" required> 
-                            <select id="address" class="form-control" name="address" style="display: none;"></select>
+                            <input type="text" class="form-control address-dropdown" id="addressInput" name="addressInput" required> 
+                            <select id="address" class="form-control address-dropdown" name="address" style="display: none;"></select>
                             
                         </div>
                         <div class="form-group">
                             <label for="addressesArea">Административный Район</label>
-                            <select id="addressesArea" class="form-control" name="addressesArea"></select>
+                            <select id="addressesArea" class="form-control address-dropdown" name="addressesArea" data-address-level="2"></select>
                         </div>
                         <div class="form-group">
                             <label for="addressCity">Город</label>
-                            <select id="addressCity" class="form-control" name="addressCity"></select>
+                            <select id="addressCity" class="form-control address-dropdown" name="addressCity" data-address-level="5"></select>
                         </div>
                         <div class="form-group">
                             <label for="addressSettlement">Поселок</label>
-                            <select id="addressSettlement" class="form-control" name="addressSettlement"></select>
+                            <select id="addressSettlement" class="form-control address-dropdown" name="addressSettlement" data-address-level="6"></select>
                         </div>
                         <div class="form-group">
                             <label for="addressPlanningStructure">Элемент планировочной структуры</label>
-                            <select id="addressPlanningStructure" class="form-control" name="addressPlanningStructure"></select>
+                            <select id="addressPlanningStructure" class="form-control address-dropdown" name="addressPlanningStructure" data-address-level="7"></select>
                         </div>
                         <div class="form-group">
                             <label for="addressStreet">Улица</label>
-                            <select id="addressStreet" class="form-control" name="addressStreet"></select>
+                            <select id="addressStreet" class="form-control address-dropdown" name="addressStreet" data-address-level="9"></select>
                         </div>
                         <div class="form-group">
                             <label for="addressHouse">Дом</label>
-                            <select id="addressHouse" class="form-control" name="addressHouse"></select>
+                            <select id="addressHouse" class="form-control address-dropdown" name="addressHouse" data-address-level="10"></select>
                         </div>
                         <div class="form-group">
                             <label for="addressApartment">Квартира</label>
-                            <select id="addressApartment" class="form-control" name="addressApartment"></select>
+                            <select id="addressApartment" class="form-control address-dropdown" name="addressApartment" data-address-level="11"></select>
+                        </div>
+                         <div class="form-group">
+                           <input type="hidden" id="objectGuidField" name="objectGuidField" value="">
                         </div>
                         <button type="button" class="btn btn-danger" id="clearFieldsButton">Очистить поля</button>
                     </div>
@@ -395,7 +398,6 @@ h6 {
                                                 <th>Минус</th>
                                                 <th>Кол.во</th>
                                                 <th style="display: none;">Время</th>
-
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -606,7 +608,6 @@ h6 {
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Информация по моим Заявкам</h4>
-                           
                             <div class="table-responsive">
                                 <table class="table">
                                     <thead>
@@ -645,32 +646,21 @@ h6 {
                                                 </tr>
                                             @endif
                                         @endforeach
-                                    </tbody>    
-                                </table>
-                            </div>
+                                        </tbody>    
+                                    </table>
+                                </div>
                             <div class="d-flex justify-content-center">
-                                {{ $applicationsWithDetails->links() }}
-                            </div>
-
-                            <script>
-                                function viewApplication(applicationId) {
-                                    // Implement logic to handle the "View" button click, e.g., open a modal or redirect to a detailed view page
-                                    console.log("View button clicked for application ID: " + applicationId);
-                                }
-                            </script>
-
-
-
+                        {{ $applicationsWithDetails->links() }}
+                    </div>
                 </div>
             </div>
-          </div>
+        </div>
             <button type="submit" class="btn btn-primary mr-2">Отправить заявку</button>
         </form>
-    </div>
-    
+    </div>    
 </div>
 
-  
+
   <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
@@ -690,6 +680,179 @@ h6 {
   <script src="{{ 'assets/js/typeahead.js' }} "></script>
   <script src="{{ 'assets/js/select2.js' }} "></script>
 
+    <script>
+
+    // расчет времени т общей суммы 
+    let selectedPrices = {};
+    let total = 0;
+    let totalTimes = '00:00:00'; // Total accumulated time
+
+    function updateTotalPrice(operation, index) {
+    event.preventDefault();
+
+    let activeTab = document.querySelector('.tab-pane.active');
+    let selectedItem = activeTab.querySelector('tr[data-id="' + index + '"]');
+    let itemName = selectedItem.querySelector('td:first-child').textContent;
+    let currentPrice = parseFloat(selectedItem.querySelector('.price').textContent);
+    let timeForJob = selectedItem.querySelector('td:last-child').textContent; // Извлечение timeforjob
+
+    // Находим ячейку с количеством для обновления
+    let quantityCell = selectedItem.querySelector('.quantity');
+
+    let existingItem = selectedPrices[itemName];
+
+    // Обновление общего времени для конкретного товара
+    existingItem = existingItem || { quantity: 0, price: 0, timeforjob: '00:00:00' };
+
+    if (operation === 'plus') {
+        existingItem.timeforjob = addTime(existingItem.timeforjob, timeForJob);
+        existingItem.quantity += 1;
+        existingItem.price += currentPrice;
+        total += currentPrice;
+        totalTimes = addTime(totalTimes, timeForJob);
+    } else if (operation === 'minus' && existingItem.quantity > 0) {
+        existingItem.timeforjob = subtractTime(existingItem.timeforjob, timeForJob);
+        existingItem.quantity -= 1;
+        existingItem.price -= currentPrice;
+        total -= currentPrice;
+        totalTimes = subtractTime(totalTimes, timeForJob);
+    }
+
+    total = parseFloat(total.toFixed(2));
+
+    document.getElementById('totalPriceDisplay').textContent = total;
+
+    if (quantityCell) {
+        quantityCell.textContent = existingItem.quantity;
+    } else {
+        console.error('Quantity cell not found for index ' + index);
+    }
+
+    // Обновление скрытого поля с общей стоимостью
+    let totalPriceInput = document.getElementById('totalPriceInput');
+    totalPriceInput.value = total;
+
+    // Обновление скрытого поля с общим временем для каждого товара
+    let productsInfoInput = document.getElementById('productsInfo');
+    selectedPrices[itemName] = existingItem;
+    productsInfoInput.value = JSON.stringify(selectedPrices);
+
+    // Обновление скрытого поля с общим временем
+    let totalTimesInput = document.getElementById('totalTimesInput');
+    totalTimesInput.value = totalTimes;
+
+    // Вывод в консоль выбранных цен и времени
+    console.log('Selected Prices:', selectedPrices);
+    console.log('Total Times:', totalTimes);
+}
+
+
+
+    function addTime(time1, time2) {
+        let [hours1, minutes1, seconds1] = time1.split(':').map(Number);
+        let [hours2, minutes2, seconds2] = time2.split(':').map(Number);
+
+        let totalHours = hours1 + hours2;
+        let totalMinutes = minutes1 + minutes2;
+        let totalSeconds = seconds1 + seconds2;
+
+        // Handle carryovers
+        if (totalSeconds >= 60) {
+            totalMinutes += Math.floor(totalSeconds / 60);
+            totalSeconds %= 60;
+        }
+
+        if (totalMinutes >= 60) {
+            totalHours += Math.floor(totalMinutes / 60);
+            totalMinutes %= 60;
+        }
+
+        // Format the result
+        return `${padZero(totalHours)}:${padZero(totalMinutes)}:${padZero(totalSeconds)}`;
+    }
+
+    function subtractTime(time1, time2) {
+    let [hours1, minutes1, seconds1] = time1.split(':').map(Number);
+    let [hours2, minutes2, seconds2] = time2.split(':').map(Number);
+
+    let totalHours = hours1 - hours2;
+    let totalMinutes = minutes1 - minutes2;
+    let totalSeconds = seconds1 - seconds2;
+
+    // Handle borrow
+    while (totalSeconds < 0) {
+        totalMinutes -= 1;
+        totalSeconds += 60;
+    }
+
+    while (totalMinutes < 0) {
+        totalHours -= 1;
+        totalMinutes += 60;
+    }
+
+    // Ensure non-negative values
+    totalHours = Math.max(0, totalHours);
+    totalMinutes = Math.max(0, totalMinutes);
+    totalSeconds = Math.max(0, totalSeconds);
+
+    // Format the result
+    return `${padZero(totalHours)}:${padZero(totalMinutes)}:${padZero(totalSeconds)}`;
+}
+
+
+    function padZero(number) {
+        return number < 10 ? '0' + number : number;
+    }
+</script>
+
+
+
+
+
+<script>
+    // выбор даты на заявку
+$(document).ready(function() {
+    $('#datepicker').datepicker({
+        language: 'ru', // Устанавливаем язык (например, русский)
+        dateFormat: 'dd.mm.yyyy', // Формат даты
+        autoClose: false, // Закрытие календаря после выбора даты
+        timepicker: true,
+        
+    });
+});
+
+</script>
+
+
+
+<script>
+    // кнопка очистить форму
+    document.getElementById('clearFieldsButton').addEventListener('click', function() 
+    {
+        // Очистка значений полей
+        document.getElementById('addressInput').value = '';
+        
+        // Очистка значений выпадающих списков
+        clearDropdown('address');
+        clearDropdown('addressesArea');
+        clearDropdown('addressCity');
+        clearDropdown('addressSettlement');
+        clearDropdown('addressPlanningStructure');
+        clearDropdown('addressStreet');
+        clearDropdown('addressHouse');
+        clearDropdown('addressApartment');
+
+        // Если поля - это select, их можно очистить так:
+        document.getElementById('addressesArea').selectedIndex = -1;
+    });
+
+    function clearDropdown(id) 
+    {
+        let dropdown = document.getElementById(id);
+        dropdown.innerHTML = '';
+    }
+
+</script>
 
   <script>
     let currentPath = "";
@@ -917,9 +1080,12 @@ addressInput.on('input', function() {
         success: function(response) 
         {
             let addressesDatas = response.addresses;
-            // console.log(addressesDatas);
+            console.log(addressesDatas);
+
+            updateDropdowns(addressesDatas);
+               
+            postNewAddress(currentPath);
             
-            postNewAddress(currentPath)
 
             if (addressesDatas.hasOwnProperty('2')) 
             {   
@@ -1013,6 +1179,8 @@ addressInput.on('input', function() {
 
 
     } 
+
+    
     
     // дебаг функция
     function postNewAddress(currentPath) 
@@ -1057,6 +1225,45 @@ addressInput.on('input', function() {
         // Пример: Передача currentPath в функцию postNewAddress
         postNewAddress(currentPath);
     }
+
+    
+                function updateDropdowns(addressesDatas) {
+                // Проверка, что addressesDatas - это объект
+                if (typeof addressesDatas === 'object') {
+                    for (let key in addressesDatas) {
+                        if (addressesDatas.hasOwnProperty(key) && Array.isArray(addressesDatas[key])) {
+                            let addressesData = addressesDatas[key];
+                            let dropdown = $('select[name="address' + key + '"]');
+
+                            // Очистка выпадающего списка и добавление первого элемента
+                            dropdown.empty();
+                            dropdown.append('<option value="" selected disabled hidden>Выберите ' + key + '</option>');
+
+                            addressesData.forEach(function (address) {
+                                let newOption = new Option(address.full_name, address.full_name, false, false);
+                                $(newOption).data('object-id', address.object_id);
+
+                                dropdown.append(newOption);
+                            });
+
+                            // Сохранение object_guid в скрытом поле для административного района
+                            if (key !== '2' && addressesData.length > 0) {
+                                let objectGuid = addressesData[0].object_guid; // Принимаем, что object_guid доступен в первом элементе массива
+                                $('#objectGuidField').val(objectGuid);
+                                console.log('object_guid for ' + key + ':', objectGuid); // Вывод в консоль
+                            }
+
+                            // Показать обновленный выпадающий список
+                            dropdown.show();
+                        } else {
+                            console.error('Invalid data structure or no addresses for key ' + key + ':', addressesDatas);
+                        }
+                    }
+                } else {
+                    console.error('Invalid data type for addressesDatas:', typeof addressesDatas);
+                }
+            } 
+    
 
 
     function checkLevelOrder(expectedLevel, selectedObjectIndex) 
@@ -1132,199 +1339,12 @@ addressInput.on('input', function() {
     });
 });
 
-
-    function updateDropdowns(addressesData) 
-    {
-        addressesData.forEach(function(item) {
-            let objectLevelId = item.object_level_id;
-            let addresses = item.addresses;
-            let actualDropdownContainer = $('#dropdown-container-' + objectLevelId);
-            actualDropdownContainer.empty();
-
-            addresses.forEach(function(address) {
-                let option = $('<option>').val(address).text(address);
-                actualDropdownContainer.append(option);
-            });
-
-            actualDropdownContainer.show();
-        });
-
-        // Пример передачи currentPath в функцию postNewAddress
-        postNewAddress(currentPath);
-    }
-      
 });
   </script>
 
 
 
-<script>
-    let selectedPrices = {};
-    let total = 0;
-    let totalTimes = '00:00:00'; // Total accumulated time
 
-    function updateTotalPrice(operation, index) {
-    event.preventDefault();
-
-    let activeTab = document.querySelector('.tab-pane.active');
-    let selectedItem = activeTab.querySelector('tr[data-id="' + index + '"]');
-    let itemName = selectedItem.querySelector('td:first-child').textContent;
-    let currentPrice = parseFloat(selectedItem.querySelector('.price').textContent);
-    let timeForJob = selectedItem.querySelector('td:last-child').textContent; // Извлечение timeforjob
-
-    // Находим ячейку с количеством для обновления
-    let quantityCell = selectedItem.querySelector('.quantity');
-
-    let existingItem = selectedPrices[itemName];
-
-    // Обновление общего времени для конкретного товара
-    existingItem = existingItem || { quantity: 0, price: 0, timeforjob: '00:00:00' };
-
-    if (operation === 'plus') {
-        existingItem.timeforjob = addTime(existingItem.timeforjob, timeForJob);
-        existingItem.quantity += 1;
-        existingItem.price += currentPrice;
-        total += currentPrice;
-        totalTimes = addTime(totalTimes, timeForJob);
-    } else if (operation === 'minus' && existingItem.quantity > 0) {
-        existingItem.timeforjob = subtractTime(existingItem.timeforjob, timeForJob);
-        existingItem.quantity -= 1;
-        existingItem.price -= currentPrice;
-        total -= currentPrice;
-        totalTimes = subtractTime(totalTimes, timeForJob);
-    }
-
-    total = parseFloat(total.toFixed(2));
-
-    document.getElementById('totalPriceDisplay').textContent = total;
-
-    if (quantityCell) {
-        quantityCell.textContent = existingItem.quantity;
-    } else {
-        console.error('Quantity cell not found for index ' + index);
-    }
-
-    // Обновление скрытого поля с общей стоимостью
-    let totalPriceInput = document.getElementById('totalPriceInput');
-    totalPriceInput.value = total;
-
-    // Обновление скрытого поля с общим временем для каждого товара
-    let productsInfoInput = document.getElementById('productsInfo');
-    selectedPrices[itemName] = existingItem;
-    productsInfoInput.value = JSON.stringify(selectedPrices);
-
-    // Обновление скрытого поля с общим временем
-    let totalTimesInput = document.getElementById('totalTimesInput');
-    totalTimesInput.value = totalTimes;
-
-    // Вывод в консоль выбранных цен и времени
-    console.log('Selected Prices:', selectedPrices);
-    console.log('Total Times:', totalTimes);
-}
-
-
-
-    function addTime(time1, time2) {
-        let [hours1, minutes1, seconds1] = time1.split(':').map(Number);
-        let [hours2, minutes2, seconds2] = time2.split(':').map(Number);
-
-        let totalHours = hours1 + hours2;
-        let totalMinutes = minutes1 + minutes2;
-        let totalSeconds = seconds1 + seconds2;
-
-        // Handle carryovers
-        if (totalSeconds >= 60) {
-            totalMinutes += Math.floor(totalSeconds / 60);
-            totalSeconds %= 60;
-        }
-
-        if (totalMinutes >= 60) {
-            totalHours += Math.floor(totalMinutes / 60);
-            totalMinutes %= 60;
-        }
-
-        // Format the result
-        return `${padZero(totalHours)}:${padZero(totalMinutes)}:${padZero(totalSeconds)}`;
-    }
-
-    function subtractTime(time1, time2) {
-    let [hours1, minutes1, seconds1] = time1.split(':').map(Number);
-    let [hours2, minutes2, seconds2] = time2.split(':').map(Number);
-
-    let totalHours = hours1 - hours2;
-    let totalMinutes = minutes1 - minutes2;
-    let totalSeconds = seconds1 - seconds2;
-
-    // Handle borrow
-    while (totalSeconds < 0) {
-        totalMinutes -= 1;
-        totalSeconds += 60;
-    }
-
-    while (totalMinutes < 0) {
-        totalHours -= 1;
-        totalMinutes += 60;
-    }
-
-    // Ensure non-negative values
-    totalHours = Math.max(0, totalHours);
-    totalMinutes = Math.max(0, totalMinutes);
-    totalSeconds = Math.max(0, totalSeconds);
-
-    // Format the result
-    return `${padZero(totalHours)}:${padZero(totalMinutes)}:${padZero(totalSeconds)}`;
-}
-
-
-    function padZero(number) {
-        return number < 10 ? '0' + number : number;
-    }
-</script>
-
-
-
-
-
-<script>
-$(document).ready(function() {
-    $('#datepicker').datepicker({
-        language: 'ru', // Устанавливаем язык (например, русский)
-        dateFormat: 'dd.mm.yyyy', // Формат даты
-        autoClose: false, // Закрытие календаря после выбора даты
-        timepicker: true,
-        
-    });
-});
-
-</script>
-
-<script>
-    document.getElementById('clearFieldsButton').addEventListener('click', function() 
-    {
-        // Очистка значений полей
-        document.getElementById('addressInput').value = '';
-        
-        // Очистка значений выпадающих списков
-        clearDropdown('address');
-        clearDropdown('addressesArea');
-        clearDropdown('addressCity');
-        clearDropdown('addressSettlement');
-        clearDropdown('addressPlanningStructure');
-        clearDropdown('addressStreet');
-        clearDropdown('addressHouse');
-        clearDropdown('addressApartment');
-
-        // Если поля - это select, их можно очистить так:
-        document.getElementById('addressesArea').selectedIndex = -1;
-    });
-
-    function clearDropdown(id) 
-    {
-        let dropdown = document.getElementById(id);
-        dropdown.innerHTML = '';
-    }
-
-</script>
 
 
   <!-- End custom js for this page-->

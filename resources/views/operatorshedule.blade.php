@@ -81,15 +81,6 @@ h6 {
   margin-top: 0;
 }
 
-
-
-/* kbd {
-  background: #ddd;
-  border-radius: 0.2em;
-  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.25);
-  padding-left: 0.2em;
-  padding-right: 0.2em;
-} */
     </style>
 </head>
 
@@ -243,6 +234,8 @@ h6 {
     </div>
 </div>
 
+
+
 <script>
 $(document).ready(function () {
     let operatorshedulers = @json($events);
@@ -253,7 +246,7 @@ $(document).ready(function () {
             initialView: 'dayGridWeek',
             left: 'prev,next today',
             center: 'title',
-            right: 'month, agendaWeek, agendaDay'
+            right: 'month, listWeek, timeGridDay'
             
         },
         events: operatorshedulers,
@@ -264,7 +257,7 @@ $(document).ready(function () {
             var outgoing = event.outgoing ;
             element.popover({
                 title: event.title,
-                content:  'Время начала работы: ' + event.start.format('HH:mm') + '\n' + 'Время окнчания работы: ' + event.end.format('HH:mm') + '\n' + 
+                content:  'Время начала работы: ' + event.start.format('DD-MM-YYYY HH:mm') + '\n' + 'Время окнчания работы: ' + event.end.format('DD-MM-YYYY HH:mm') + '\n' + 
                           '\nВходящие: ' + incoming + '.' +
                           '\nИсходящие: ' + outgoing + '.',
                 trigger: 'hover',

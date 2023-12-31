@@ -48,10 +48,12 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/applicationsandaddresses/{id}', 'App\Http\Controllers\ShowApplicationAndAddressesController@update')->name('updateappandaddress.update');
     Route::get('/testforapplicationandaddress', 'App\Http\Controllers\TestAppAddress@index')->name('testforapplicationandaddress.index');
 
+    
     // график работы операторов
     Route::get('/operatorshedule', 'App\Http\Controllers\OperatorSheduleController@index')->name('operatorshedule.index');
     Route::get('/operator', 'App\Http\Controllers\OperatorSettingsController@index')->name('OperatorSettings.index');
     Route::post('/operatorsheduleadd', 'App\Http\Controllers\OperatorSettingsController@store')->name('OperatorSettingsAdd.store');
+
 
     // список заявок оператора
     Route::get('/applicationsoperator/{id}', 'App\Http\Controllers\ApplicationOperatorController@show')->name('operatorapplication.show');
@@ -67,6 +69,7 @@ Route::middleware(['auth'])->group(function () {
         ->middleware(['auth', 'CheckRoleMiddlware:metrolog, administrator'])
         ->name('metrlog.index');
 
+
     Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
     Route::get('/testfias', function () {
         return view('tesfiasapi');
@@ -78,6 +81,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/api/postNewAddress', 'App\Http\Controllers\ApiController@postNewAddress');
 
 });
+
 
 
 Auth::routes();

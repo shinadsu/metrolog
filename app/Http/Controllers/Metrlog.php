@@ -12,15 +12,8 @@ use App\Models\DeviceTypeGuide;
 use App\Models\addressDevice;
 use App\Models\GrsiNumberGuide;
 use App\Models\addressPayer;
-use App\Models\addressApplication;
-use App\Models\applicationMetrolog;
 use App\Models\addressPhone;
-use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 use App\Models\Statuses;
 
 

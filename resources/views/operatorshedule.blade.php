@@ -81,6 +81,24 @@ h6 {
   margin-top: 0;
 }
 
+table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .user {
+      font-weight: bold;
+    }
     </style>
 </head>
 
@@ -222,21 +240,62 @@ h6 {
         <div class="content-wrapper">
           <div class="row">  
         <!-- календарь работ операторов -->
-        <div class="col-12 grid-margin stretch-card">
+        <!-- <div class="col-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Календарь Работ Операторов</h4>
                   <div id="calendar"></div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <!-- конец календаря работ операторов -->
+
+        <!-- тесты -->
+        <table>
+        <thead>
+          <tr>
+            <th></th> <!-- Пустая ячейка в верхнем левом углу -->
+            <?php
+              $currentDate = new DateTime();
+
+              // Устанавливаем локаль на русский
+              setlocale(LC_ALL, 'ru_RU', 'ru_RU.UTF-8', 'ru', 'russian');  
+
+              for ($day = 0; $day < 30; $day++) {
+              $date = $currentDate->modify("+1 day");
+              echo '<th>' . strftime('%B %d', $date->getTimestamp()) . '</th>';
+              }
+                ?>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Манян Даниил Ваграмович</td>
+            <?php
+            for ($day = 0; $day < 30; $day++) {
+              echo '<td></td>'; // Пустые ячейки для каждого дня
+            }
+            ?>
+          </tr>
+          <tr>
+            <td>Попов Евгений Александрович</td>
+            <?php
+            for ($day = 0; $day < 30; $day++) {
+              echo '<td></td>'; // Пустые ячейки для каждого дня
+            }
+            ?>
+          </tr>
+          <!-- Добавьте больше строк для других пользователей, если необходимо -->
+        </tbody>
+      </table>
+        <!-- тесты -->
+
     </div>
 </div>
 
 
 
-<script>
+<!-- <script>
 $(document).ready(function () {
     let operatorshedulers = @json($events);
     console.log(operatorshedulers);
@@ -275,7 +334,7 @@ $(document).ready(function () {
     });
     
 });
-</script>
+</script> -->
 
 
   

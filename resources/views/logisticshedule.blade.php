@@ -29,75 +29,87 @@
   <link rel="stylesheet" href="{{ 'assets/css/vertical-layout-light/style.css' }}">
   <link rel="shortcut icon" href="{{ 'assets/images/favicon.png' }}" />
   <style>
-    html {
-      box-sizing: border-box;
-      font-size: 87.5%;
-    }
+html {
+  box-sizing: border-box;
+  font-size: 87.5%;
+}
 
-    *,
-    *::before,
-    *::after {
-      box-sizing: inherit;
-    }
+*, *::before, *::after {
+  box-sizing: inherit;
+}
 
-    body {
-      font-family: "Open Sans", sans-serif;
-      padding: 1em;
-    }
+body {
+  font-family: "Open Sans", sans-serif;
+  padding: 1em;
+}
 
-    p {
-      margin-top: 0;
-    }
+p {
+  margin-top: 0;
+}
 
-    h1 {
-      font-weight: 700;
-      margin-top: 0;
-    }
+h1 {
+  font-weight: 700;
+  margin-top: 0;
+}
 
-    h2 {
-      font-weight: 700;
-      margin-top: 0;
-    }
+h2 {
+  font-weight: 700;
+  margin-top: 0;
+}
 
-    h3 {
-      font-weight: 700;
-      margin-top: 0;
-    }
+h3 {
+  font-weight: 700;
+  margin-top: 0;
+}
 
-    h4 {
-      font-weight: 700;
-      margin-top: 0;
-    }
+h4 {
+  font-weight: 700;
+  margin-top: 0;
+}
 
-    h5 {
-      font-weight: 700;
-      margin-top: 0;
-    }
+h5 {
+  font-weight: 700;
+  margin-top: 0;
+}
 
-    h6 {
-      font-weight: 700;
-      margin-top: 0;
+h6 {
+  font-weight: 700;
+  margin-top: 0;
+}
+
+.calendar-container {
+        overflow-x: auto;
+        max-width: 100%;
+        margin-bottom: 20px; /* Add some bottom margin for spacing */
     }
 
     table {
-      border-collapse: collapse;
-      width: 100%;
+        border-collapse: collapse;
+        width: 100%;
     }
 
-    th,
-    td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
+    th, td {
+        border: 1px solid #ddd;
+        padding: 16px; /* Adjust the padding value for taller rows */
+        text-align: left;
     }
 
     th {
-      background-color: #f2f2f2;
+        background-color: #f2f2f2;
     }
 
     .user {
-      font-weight: bold;
+        font-weight: bold;
     }
+
+    .date-cell {
+        min-width: 80px; /* Задайте минимальную ширину ячейки */
+        white-space: nowrap; /* Запрет переноса строки внутри ячейки */
+    }
+
+    .text-center {
+    text-align: center;
+}
   </style>
 </head>
 
@@ -247,98 +259,67 @@
 
 
       <div class="main-panel">
-        <div class="content-wrapper">
-          <div class="row">
-            <!-- календарь работ операторов -->
-            <!-- <div class="col-12 grid-margin stretch-card">
-            <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Календарь Работ Операторов</h4>
-                  <div id="calendar"></div>
-                </div>
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="calendar-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <!-- Пустая ячейка в верхнем левом углу -->
+                            @php
+                                $currentDate = clone $originalDate;
+                            @endphp
+                            @for ($day = 0; $day < 30; $day++)
+                                @php
+                                    $date = $currentDate->addDay();
+                                @endphp
+                                <th class="date-cell">
+                                    <div class="date-time-block">
+                                        <div>{{ $date->locale('ru')->format('D') }}</div>
+                                        <div>{{ $date->format('d-m-Y') }}</div>
+                                    </div>
+                                </th>
+                            @endfor
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($users as $user)
+                            <tr>
+                                <td class="user">{{ $user->name }}</td>
+                                @php
+                                    $currentDate = clone $originalDate; // Reset the date for each user
+                                    $currentUserEvents = $events->filter(function ($event) use ($user) {
+                                        return $event['title'] === $user->name;
+                                    });
+                                @endphp
+
+                                @for ($day = 0; $day < 30; $day++)
+                                    @php
+                                        $date = $currentDate->addDay();
+                                        $formattedDate = $date->format('Y-m-d');
+                                        $eventForDate = $currentUserEvents->first(function ($event) use ($formattedDate) {
+                                            return $event['start']->toDateString() === $formattedDate;
+                                        });
+                                        $isScheduledIcon = $eventForDate ? '*' : '';
+                                    @endphp
+
+                                   <td class="text-center">{{ $isScheduledIcon }}</td>
+                                @endfor
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
-        </div> -->
-            <!-- конец календаря работ операторов -->
-
-            <!-- тесты -->
-            <table>
-              <thead>
-                <tr>
-                  <th></th> <!-- Пустая ячейка в верхнем левом углу -->
-                  <?php
-              $currentDate = new DateTime();
-
-              // Устанавливаем локаль на русский
-              setlocale(LC_ALL, 'ru_RU', 'ru_RU.UTF-8', 'ru', 'russian');  
-
-              for ($day = 0; $day < 30; $day++) {
-              $date = $currentDate->modify("+1 day");
-              echo '<th>' . strftime('%B %d', $date->getTimestamp()) . '</th>';
-              }
-                ?>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>Манян Даниил Ваграмович</td>
-                  <?php
-            for ($day = 0; $day < 30; $day++) {
-              echo '<td></td>'; // Пустые ячейки для каждого дня
-            }
-            ?>
-                </tr>
-                <tr>
-                  <td>Попов Евгений Александрович</td>
-                  <?php
-            for ($day = 0; $day < 30; $day++) {
-              echo '<td></td>'; // Пустые ячейки для каждого дня
-            }
-            ?>
-                </tr>
-                <!-- Добавьте больше строк для других пользователей, если необходимо -->
-              </tbody>
-            </table>
-            <!-- тесты -->
-
-          </div>
         </div>
+    </div>
+</div>
 
-        {{--
-        <script>
-          $(document).ready(function () {
-            let logisticsSheduler = @json($events);
-            console.log(logisticsSheduler);
-            $('#calendar').fullCalendar({
-              header: {
-                initialView: 'dayGridWeek',
-                left: 'prev, next, today',
-                center: 'title',
-                right: 'month'
-              },
-              events: logisticsSheduler,
-              selectable: true,
-              selectHelper: true,
-              eventRender: function (event, element) {
-                var scheduled = event.is_scheduled;
-                element.popover({
-                  title: event.title || '',
-                  content: 'Время начала работы: ' + event.start.format('DD-MM-YYYY HH:mm') + '\n' + 'Время окнчания работы: ' + event.end.format('DD-MM-YYYY HH:mm') + '\n' +
-                    '\nВ графике: ' + scheduled + '.',
-                  trigger: 'hover',
-                  placement: 'top',
-                  container: 'body'
-                });
-              },
-              weekends: true,
-              dayRender: function (date, cell) {
-                if (date.day() === 0 || date.day() === 6) {
-                  cell.css('background-color', 'Pink');
-                }
-              },
-              locale: 'ru',
-            });
-          });
-        </script> --}}
+
+
+
+
+
 
 
 

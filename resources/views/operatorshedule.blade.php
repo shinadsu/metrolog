@@ -81,24 +81,39 @@ h6 {
   margin-top: 0;
 }
 
-table {
-      border-collapse: collapse;
-      width: 100%;
+.calendar-container {
+        overflow-x: auto;
+        max-width: 100%;
+        margin-bottom: 20px; /* Add some bottom margin for spacing */
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 100%;
     }
 
     th, td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
+        border: 1px solid #ddd;
+        padding: 16px; /* Adjust the padding value for taller rows */
+        text-align: left;
     }
 
     th {
-      background-color: #f2f2f2;
+        background-color: #f2f2f2;
     }
 
     .user {
-      font-weight: bold;
+        font-weight: bold;
     }
+
+    .date-cell {
+        min-width: 80px; /* Задайте минимальную ширину ячейки */
+        white-space: nowrap; /* Запрет переноса строки внутри ячейки */
+    }
+
+    .text-center {
+    text-align: center;
+}
     </style>
 </head>
 
@@ -236,62 +251,65 @@ table {
         </ul>
       </nav>
 
-     <div class="main-panel">
-        <div class="content-wrapper">
-          <div class="row">  
-        <!-- календарь работ операторов -->
-        <!-- <div class="col-12 grid-margin stretch-card">
-            <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Календарь Работ Операторов</h4>
-                  <div id="calendar"></div>
-                </div>
+      <div class="main-panel">
+    <div class="content-wrapper">
+        <div class="row">
+            <div class="calendar-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th> <!-- Пустая ячейка в верхнем левом углу -->
+                            @php
+                                $currentDate = clone $originalDate;
+                            @endphp
+                            @for ($day = 0; $day < 30; $day++)
+                                @php
+                                    $date = $currentDate->addDay();
+                                @endphp
+                                <th class="date-cell">
+                                    <div class="date-time-block">
+                                        <div>{{ $date->locale('ru')->format('D') }}</div>
+                                        <div>{{ $date->format('d-m-Y') }}</div>
+                                    </div>
+                                </th>
+                            @endfor
+                        </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($users as $user)
+                            <tr>
+                                <td class="user">{{ $user->name }}</td>
+                                @php
+                                    $currentDate = clone $originalDate; // Reset the date for each user
+                                    $currentUserEvents = $events->filter(function ($event) use ($user) {
+                                        return $event['title'] === $user->name;
+                                    });
+                                @endphp
+
+                                @for ($day = 0; $day < 30; $day++)
+                                    @php
+                                        $date = $currentDate->addDay();
+                                        $formattedDate = $date->format('Y-m-d');
+                                        $eventForDate = $currentUserEvents->first(function ($event) use ($formattedDate) {
+                                            return $event['start']->toDateString() === $formattedDate;
+                                        });
+                                        $isScheduledIcon = $eventForDate ? '*' : '';
+                                    @endphp
+
+                                   <td class="text-center">{{ $isScheduledIcon }}</td>
+                                @endfor
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
-        </div> -->
-        <!-- конец календаря работ операторов -->
-
-        <!-- тесты -->
-        <table>
-        <thead>
-          <tr>
-            <th></th> <!-- Пустая ячейка в верхнем левом углу -->
-            <?php
-              $currentDate = new DateTime();
-
-              // Устанавливаем локаль на русский
-              setlocale(LC_ALL, 'ru_RU', 'ru_RU.UTF-8', 'ru', 'russian');  
-
-              for ($day = 0; $day < 30; $day++) {
-              $date = $currentDate->modify("+1 day");
-              echo '<th>' . strftime('%B %d', $date->getTimestamp()) . '</th>';
-              }
-                ?>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Манян Даниил Ваграмович</td>
-            <?php
-            for ($day = 0; $day < 30; $day++) {
-              echo '<td></td>'; // Пустые ячейки для каждого дня
-            }
-            ?>
-          </tr>
-          <tr>
-            <td>Попов Евгений Александрович</td>
-            <?php
-            for ($day = 0; $day < 30; $day++) {
-              echo '<td></td>'; // Пустые ячейки для каждого дня
-            }
-            ?>
-          </tr>
-          <!-- Добавьте больше строк для других пользователей, если необходимо -->
-        </tbody>
-      </table>
-        <!-- тесты -->
-
+        </div>
     </div>
 </div>
+
+
+
+
 
 
 

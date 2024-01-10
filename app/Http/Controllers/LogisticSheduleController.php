@@ -16,7 +16,12 @@ class LogisticSheduleController extends Controller
         $currentDate = Carbon::now();
         $originalDate = clone $currentDate;
         $users = User::where('role_id', 5)->get();
-        $events = logisticsShedule::with('user')->get();
+        $startPeriod = request('startPeriod', $currentDate->toDateString());
+        $daysFilter = request('daysFilter', 30); 
+
+        $events = logisticsShedule::with('user')
+        ->where('start_date', '>=', $startPeriod) // Примените фильтр начиная с указанной даты
+        ->get();
 
         $events = $events->map(function ($logisticsSheduler) {
             $isScheduled = $logisticsSheduler->is_scheduled === 1;
@@ -37,7 +42,7 @@ class LogisticSheduleController extends Controller
         });
         
 
-        return view('logisticshedule', ['events' => $events, 'users' => $users, 'originalDate' => $originalDate]);
+        return view('logisticshedule', ['events' => $events, 'users' => $users, 'originalDate' => $originalDate, 'startPeriod' => $startPeriod, 'daysFilter' => $daysFilter]);
     }
 
     

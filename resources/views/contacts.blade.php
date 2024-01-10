@@ -162,6 +162,7 @@ h6 {
               <ul class="nav flex-column sub-menu">
                  <li class="nav-item"> <a class="nav-link" href="{{ route('operatorshedule.index') }}">График Операторов</a></li>
                 <li class="nav-item"> <a class="nav-link" href="{{ route('LogisticSettings.index') }}">График Логистов</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('metrologShowShedule.index') }}">График Метрологов</a></li>
               </ul>
             </div>
           </li>
@@ -208,6 +209,7 @@ h6 {
                 <li class="nav-item"> <a class="nav-link" href="{{ route('statustransitionsController.index') }}"> Статусы </a></li>
                 <li class="nav-item"> <a class="nav-link" href="{{ route('logisticshedule.index') }}"> Наст. График Логист </a></li>
                 <li class="nav-item"> <a class="nav-link" href="{{ route('OperatorSettings.index') }}"> Наст. График Оператор </a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('MetrologShedule.index') }}"> Наст. График Метролгов </a></li>
               </ul>
             </div>
           </li>

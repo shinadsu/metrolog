@@ -15,33 +15,37 @@ class OperatorSheduleController extends Controller
         $currentDate = Carbon::now();
         $originalDate = clone $currentDate;
         $users = User::where('role_id', 7)->get();
-        $events = OperatorSheduler::with('user')->get();
+        $startPeriod = request('startPeriod', $currentDate->toDateString());
+        $daysFilter = request('daysFilter', 30);
+    
+        $events = OperatorSheduler::with('user')
+            ->where('date_start', '>=', $startPeriod)
+            ->get();
     
         $events = $events->flatMap(function ($operatorsheduler) {
             $isWorkingDay = $operatorsheduler->is_working_day === 1;
             $workingDayIcon = $isWorkingDay ? '*' : '';
-            
-                return [
-                    [
-                        'title' => $operatorsheduler->user->name,
-                        'start' => Carbon::parse($operatorsheduler->date_start)->format('Y-m-d'),   
-                        'end' => Carbon::parse($operatorsheduler->date_end)->format('Y-m-d'),
-                        'incoming' => $operatorsheduler->incoming,
-                        'outgoing' => $operatorsheduler->outgoing,
-                        'working_day_icon' => $workingDayIcon,
-                    ],
-                ];
-            
+    
+            return [
+                [
+                    'title' => $operatorsheduler->user->name,
+                    'start' => Carbon::parse($operatorsheduler->date_start)->format('Y-m-d'),   
+                    'end' => Carbon::parse($operatorsheduler->date_end)->format('Y-m-d'),
+                    'incoming' => $operatorsheduler->incoming,
+                    'outgoing' => $operatorsheduler->outgoing,
+                    'working_day_icon' => $workingDayIcon,
+                ],
+            ];
         });
-
+    
         $events = $events->map(function ($event) {
             $event['start'] = Carbon::parse($event['start']);
             return $event;
         });
-        
     
-        return view('operatorshedule', ['events' => $events, 'users' => $users, 'originalDate' => $originalDate]);
+        return view('operatorshedule', ['events' => $events, 'users' => $users, 'originalDate' => $originalDate, 'startPeriod' => $startPeriod, 'daysFilter' => $daysFilter]);
     }
+    
     
     
 

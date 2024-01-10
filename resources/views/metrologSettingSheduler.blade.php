@@ -221,39 +221,56 @@ h6 {
             <div class="col-lg-12 grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
-                        <h4 class="card-title">Установка графика работы Логистов</h4>
-                        <form action="{{ route('LogisticSettingsAdd.store') }}" class="form-sample" method="POST">
+                        <h4 class="card-title">Установка графика работы Метрологов</h4>
+                        <form action="{{ route('MetrologSheduleStore.store') }}" class="form-sample" method="POST">
                             @csrf
                             <div class="form-group">
-                                <label for="logist_id">Логист</label>
-                                <select class="form-control" id="logist_id" name="logist_id" required>
-                                    @foreach($logisticSettings as $logisticSetting)
-                                        <option value="{{ $logisticSetting->id }}">{{ $logisticSetting->name }}</option>
+                                <label for="metrolog_id">Метролог</label>
+                                <select class="form-control" id="metrolog_id" name="metrolog_id" required>
+                                    @foreach($metrologShedules as $metrologShedule)
+                                        <option value="{{ $metrologShedule->id }}">{{ $metrologShedule->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="date">Дата</label>
-                                <input type="date" class="form-control" id="date" name="date" required>
+                                <label for="shedule_date_start">Дата и время начала</label>
+                                <input type="datetime-local" class="form-control" id="shedule_date_start" name="shedule_date_start" required>
                             </div>
                             <div class="form-group">
-                                <label for="start_date">Дата и время начала</label>
-                                <input type="datetime-local" class="form-control" id="start_date" name="start_date" required>
+                                <label for="shedule_date_end">Дата и время окончания</label>
+                                <input type="datetime-local" class="form-control" id="shedule_date_end" name="shedule_date_end" required>
                             </div>
                             <div class="form-group">
-                                <label for="end_date">Дата и время окончания</label>
-                                <input type="datetime-local" class="form-control" id="end_date" name="end_date" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="is_scheduled">В графике</label>
-                                <select class="form-control" id="is_scheduled" name="is_scheduled" required>
+                                <label for="is_working_day">В графике</label>
+                                <select class="form-control" id="is_working_day" name="is_working_day" required>
                                     <option value="1" @if(old('is_scheduled') == '1') selected @endif>Да</option>
                                     <option value="0" @if(old('is_scheduled') == '0') selected @endif>Нет</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="reasonForNot">Причина отсутствия в графике</label>
-                                <textarea class="form-control" id="reasonForNot" name="reasonForNot" rows="3"></textarea>
+                                <label for="day_off">Выходные</label>
+                                <select class="form-control" id="day_off" name="day_off" required>
+                                    <option value="1" @if(old('day_off') == '1') selected @endif>Да</option>
+                                    <option value="0" @if(old('day_off') == '0') selected @else selected @endif>Нет</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="sick_leave">Больничный</label>
+                                <select class="form-control" id="sick_leave" name="sick_leave" required>
+                                    <option value="1" @if(old('sick_leave') == '1') selected @endif>Да</option>
+                                    <option value="0" @if(old('sick_leave') == '0') selected @else selected @endif>Нет</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="other_leave">Другая причина</label>
+                                <select class="form-control" id="other_leave" name="other_leave" required>
+                                    <option value="1" @if(old('other_leave') == '1') selected @endif>Да</option>
+                                    <option value="0" @if(old('other_leave') == '0') selected @else selected @endif>Нет</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="comment">Комментарий</label>
+                                <textarea class="form-control" id="comment" name="comment" rows="3"></textarea>
                             </div>
                             <button type="submit" class="btn btn-primary mr-2">Сохранить настройки</button>
                         </form>
@@ -263,41 +280,45 @@ h6 {
         </div>
 
         <!-- Данные о реквизитах -->
-<div class="col-lg-12 grid-margin stretch-card">
-    <div class="card">
-        <div class="card-body">
-            <h4 class="card-title">График работы логистов</h4>
-            <div class="table-responsive pt-3">
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Логист</th>
-                            <th>Дата</th>
-                            <th>Дата и время начала</th>
-                            <th>Дата и время окончания</th>
-                            <th>В графике</th>
-                            <th>Причина отсутствия в графике</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($logisticSettings as $user)
-                            @foreach($user->logisticShedules as $logisticSetting)
+        <div class="col-lg-12 grid-margin stretch-card">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">График работы метрологов</h4>
+                    <div class="table-responsive pt-3">
+                        <table class="table table-bordered">
+                            <thead>
                                 <tr>
-                                    <td>{{ $user->name }}</td>
-                                    <td>{{ $logisticSetting->date }}</td>
-                                    <td>{{ $logisticSetting->start_date }}</td>
-                                    <td>{{ $logisticSetting->end_date }}</td>
-                                    <td>{{ $logisticSetting->is_scheduled == '1' ? 'Да' : 'Нет' }}</td>
-                                    <td>{{ $logisticSetting->reasonForNot }}</td>
+                                    <th>Метролог</th>
+                                    <th>Дата и время начала</th>
+                                    <th>Дата и время окончания</th>
+                                    <th>В графике</th>
+                                    <th>Выходные</th>
+                                    <th>Больничный</th>
+                                    <th>Дургая причина</th>
+                                    <th>Комментарий</th>
                                 </tr>
-                            @endforeach
-                        @endforeach
-                    </tbody>
-                </table>
+                            </thead>
+                            <tbody>
+                                @foreach($metrologShedules as $user)
+                                    @foreach($user->OperatorShedules as $OperatorShedule)
+                                        <tr>
+                                            <td>{{ $user->name }}</td>
+                                            <td>{{ $OperatorShedule->date_start }}</td>
+                                            <td>{{ $OperatorShedule->date_end }}</td>
+                                            <td>{{ $OperatorShedule->is_working_day == '1' ? 'Да' : 'Нет' }}</td>
+                                            <td>{{ $OperatorShedule->day_off == '1' ? 'Да' : 'Нет' }}</td>
+                                            <td>{{ $OperatorShedule->sick_leave == '1' ? 'Да' : 'Нет' }}</td>
+                                            <td>{{ $OperatorShedule->other_leave == '1' ? 'Да' : 'Нет' }}</td>
+                                            <td>{{ $OperatorShedule->comment }}</td>
+                                        </tr>
+                                    @endforeach
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
 
 
 

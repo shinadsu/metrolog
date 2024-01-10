@@ -69,4 +69,9 @@ class User extends Authenticatable
         return $this->hasMany(operatorSheduler::class, 'operator_id');
     }
 
+    public function MetrologSheduler()
+    {
+        return $this->hasMany(MetrologSheduler::class, 'metrolog_id');
+    }
+
 }

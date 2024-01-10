@@ -109,7 +109,20 @@ h6 {
 
     .text-center {
     text-align: center;
-}
+    }
+
+    .Sat, .Sun {
+          background-color: #c7a7d1; /* Светло-фиолетовый цвет */
+      }
+
+      .filter-container {
+        display: flex;
+        align-items: center;
+    }
+
+    .filter-container form {
+        margin-right: 10px;
+    }
   </style>
 </head>
 
@@ -200,6 +213,7 @@ h6 {
                     Операторов</a></li>
                 <li class="nav-item"> <a class="nav-link" href="{{ route('LogisticSettings.index') }}">График
                     Логистов</a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('metrologShowShedule.index') }}">График Метрологов</a></li>
               </ul>
             </div>
           </li>
@@ -251,6 +265,7 @@ h6 {
                     Логист </a></li>
                 <li class="nav-item"> <a class="nav-link" href="{{ route('OperatorSettings.index') }}"> Наст. График
                     Оператор </a></li>
+                    <li class="nav-item"> <a class="nav-link" href="{{ route('MetrologShedule.index') }}"> Наст. График Метролгов </a></li>
               </ul>
             </div>
           </li>
@@ -258,45 +273,76 @@ h6 {
       </nav>
 
 
-      <div class="main-panel">
+      @php
+    use Carbon\Carbon;
+
+    $daysOfWeek = [
+        'Wed' => 'Среда',
+        'Thu' => 'Четверг',
+        'Fri' => 'Пятница',
+        'Sat' => 'Суббота',
+        'Sun' => 'Воскресенье',
+        'Mon' => 'Понедельник',
+        'Tue' => 'Вторник',
+    ];
+@endphp
+
+<div class="main-panel">
     <div class="content-wrapper">
         <div class="row">
             <div class="calendar-container">
+                <div class="filter-container">
+                    <form method="get" action="{{ route('LogisticSettings.index') }}">
+                        <label for="startPeriod">Период С:</label>
+                        <input type="date" id="startPeriod" name="startPeriod" value="{{ $startPeriod }}" required>
+                        <button type="submit">Применить</button>
+                    </form>
+
+                    <form method="get" action="{{ route('LogisticSettings.index') }}">
+                        <label for="daysFilter">Дней периода:</label>
+                        <input type="number" id="daysFilter" name="daysFilter" value="{{ $daysFilter ?? 30 }}" min="1">
+                        <button type="submit">Применить</button>
+                    </form>
+                </div>        
                 <table>
                     <thead>
                         <tr>
-                            <th></th>
-                            <!-- Пустая ячейка в верхнем левом углу -->
+                            <th></th> <!-- Пустая ячейка в верхнем левом углу -->
                             @php
-                                $currentDate = clone $originalDate;
+                                $currentDate = Carbon::parse($startPeriod)->startOfDay();
+                                $daysToShow = isset($daysFilter) ? $daysFilter : 30;
                             @endphp
-                            @for ($day = 0; $day < 30; $day++)
+                            @for ($day = 0; $day < $daysToShow; $day++)
                                 @php
-                                    $date = $currentDate->addDay();
+                                    $date = $currentDate->copy()->addDay($day);
+                                    $isSaturday = $date->dayOfWeek == Carbon::SATURDAY;
+                                    $isSunday = $date->dayOfWeek == Carbon::SUNDAY;
                                 @endphp
-                                <th class="date-cell">
+                                <th class="date-cell{{ $isSaturday ? ' Sat' : ($isSunday ? ' Sun' : '') }}">
                                     <div class="date-time-block">
-                                        <div>{{ $date->locale('ru')->format('D') }}</div>
-                                        <div>{{ $date->format('d-m-Y') }}</div>
+                                        <div>{{ $daysOfWeek[$date->format('D')] }}</div>
+                                        <div>{{ $date->format('d.m.Y') }}</div>
                                     </div>
                                 </th>
                             @endfor
+                            <th class="total-cell">Кол-во Смен</th> <!-- Новая ячейка -->
                         </tr>
                     </thead>
                     <tbody>
                         @foreach ($users as $user)
                             <tr>
-                                <td class="user">{{ $user->name }}</td>
+                                <td class="user" style="white-space: nowrap;">{{ $user->name }}</td>
                                 @php
-                                    $currentDate = clone $originalDate; // Reset the date for each user
-                                    $currentUserEvents = $events->filter(function ($event) use ($user) {
-                                        return $event['title'] === $user->name;
+                                    $currentUserEvents = $events->filter(function ($event) use ($user, $startPeriod, $daysToShow) {
+                                        return $event['title'] === $user->name &&
+                                               $event['start'] >= Carbon::parse($startPeriod) &&
+                                               $event['start'] < Carbon::parse($startPeriod)->addDays($daysToShow);
                                     });
                                 @endphp
 
-                                @for ($day = 0; $day < 30; $day++)
+                                @for ($day = 0; $day < $daysToShow; $day++)
                                     @php
-                                        $date = $currentDate->addDay();
+                                        $date = $currentDate->copy()->addDay($day);
                                         $formattedDate = $date->format('Y-m-d');
                                         $eventForDate = $currentUserEvents->first(function ($event) use ($formattedDate) {
                                             return $event['start']->toDateString() === $formattedDate;
@@ -304,10 +350,32 @@ h6 {
                                         $isScheduledIcon = $eventForDate ? '*' : '';
                                     @endphp
 
-                                   <td class="text-center">{{ $isScheduledIcon }}</td>
+                                    <td class="text-center{{ $date->dayOfWeek == Carbon::SATURDAY ? ' saturday' : ($date->dayOfWeek == Carbon::SUNDAY ? ' sunday' : '') }}">{{ $isScheduledIcon }}</td>
                                 @endfor
+
+                                <td class="text-center">{{ $currentUserEvents->count() }}</td> <!-- Новая ячейка -->
                             </tr>
                         @endforeach
+
+                        <tr>
+                            <td class="user">ИТОГИ</td>
+                            @php
+                                $currentDate = Carbon::parse($startPeriod)->startOfDay();
+                            @endphp
+
+                            @for ($day = 0; $day < $daysToShow; $day++)
+                                @php
+                                    $date = $currentDate->copy()->addDay($day);
+                                    $formattedDate = $date->format('Y-m-d');
+                                    $totalWorked = $events->filter(function ($event) use ($formattedDate) {
+                                        return $event['start']->toDateString() === $formattedDate;
+                                    })->count();
+                                @endphp
+                                <td class="text-center">{{ $totalWorked }}</td>
+                            @endfor
+
+                            <td class="text-center">{{ $events->count() }}</td> <!-- Новая ячейка -->
+                        </tr>
                     </tbody>
                 </table>
             </div>

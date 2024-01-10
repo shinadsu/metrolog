@@ -171,6 +171,8 @@
                                         href="{{ route('operatorshedule.index') }}">График Операторов</a></li>
                                 <li class="nav-item"> <a class="nav-link"
                                         href="{{ route('LogisticSettings.index') }}">График Логистов</a></li>
+
+                                        <li class="nav-item"> <a class="nav-link" href="{{ route('metrologShowShedule.index') }}">График Метрологов</a></li>
                             </ul>
                         </div>
                     </li>
@@ -227,6 +229,7 @@
                                         Наст. График Логист </a></li>
                                 <li class="nav-item"> <a class="nav-link" href="{{ route('OperatorSettings.index') }}">
                                         Наст. График Оператор </a></li>
+                                <li class="nav-item"> <a class="nav-link" href="{{ route('MetrologShedule.index') }}"> Наст. График Метролгов </a></li>
                             </ul>
                         </div>
                     </li>

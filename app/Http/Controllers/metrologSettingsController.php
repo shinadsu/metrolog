@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\MetrologSheduler;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -13,17 +12,16 @@ class metrologSettingsController extends Controller
 {
     public function index()
     {   
-        $metrologShedules = User::where('role_id', 2)->with('MetrologSheduler.user')->get();
+        $MetrologShedules = User::where('role_id', 2)->with('MetrologShedules.user')->get();
         
-        return view('metrologSettingSheduler', compact('metrologShedules'));
+        return view('metrologSettingSheduler', compact('MetrologShedules'));
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'metrolog_id' => 'required|integer',
-            'shedule_date_start' => 'required|date_format:Y-m-d\TH:i',
-            'shedule_date_end' => 'required|date_format:Y-m-d\TH:i',
+            'date_start' => 'required|date',
             'is_working_day' => 'nullable',
             'day_off' => 'nullable',
             'sick_leave' => 'nullable',
@@ -44,8 +42,7 @@ class metrologSettingsController extends Controller
             // Создайте новую запись в базе данных
             MetrologSheduler::create([
                 'metrolog_id' => $request->metrolog_id,
-                'shedule_date_start' => $request->shedule_date_start,
-                'shedule_date_end' => $request->shedule_date_end,
+                'date_start' => $request->date_start,
                 'is_working_day' => $request->is_working_day,
                 'day_off' => $request->day_off,
                 'sick_leave' => $request->sick_leave,

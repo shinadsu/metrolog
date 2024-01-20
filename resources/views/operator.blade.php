@@ -22,9 +22,9 @@
   <style>
 
 html {
-  box-sizing: border-box;
-  font-size: 87.5%;
-}
+      box-sizing: border-box;
+       font-size: 75%;
+    }
 
 *, *::before, *::after {
   box-sizing: inherit;
@@ -233,12 +233,8 @@ h6 {
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="date_start">Дата и время начала</label>
-                                <input type="datetime-local" class="form-control" id="date_start" name="date_start" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="date_end">Дата и время окончания</label>
-                                <input type="datetime-local" class="form-control" id="date_end" name="date_end" required>
+                                <label for="date_start">Дата начала</label>
+                                <input type="date" class="form-control" id="date_start" name="date_start" required>
                             </div>
                             <div class="form-group">
                                 <label for="is_working_day">В графике</label>
@@ -303,8 +299,7 @@ h6 {
                             <thead>
                                 <tr>
                                     <th>Оператор</th>
-                                    <th>Дата и время начала</th>
-                                    <th>Дата и время окончания</th>
+                                    <th>Дата начала работы</th>
                                     <th>В графике</th>
                                     <th>Входящие</th>
                                     <th>Исходящие</th>
@@ -320,7 +315,6 @@ h6 {
                                         <tr>
                                             <td>{{ $user->name }}</td>
                                             <td>{{ $OperatorShedule->date_start }}</td>
-                                            <td>{{ $OperatorShedule->date_end }}</td>
                                             <td>{{ $OperatorShedule->is_working_day == '1' ? 'Да' : 'Нет' }}</td>
                                             <td>{{ $OperatorShedule->incoming == '1' ? 'Да' : 'Нет' }}</td>
                                             <td>{{ $OperatorShedule->outgoing == '1' ? 'Да' : 'Нет' }}</td>

@@ -21,9 +21,9 @@
   <style>
 
 html {
-  box-sizing: border-box;
-  font-size: 87.5%;
-}
+      box-sizing: border-box;
+       font-size: 75%;
+    }
 
 *, *::before, *::after {
   box-sizing: inherit;

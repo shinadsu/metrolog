@@ -9,8 +9,10 @@ class MetrologSheduler extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['metrolog_id', 'date_start', 'is_working_day', 'day_off', 'sick_leave', 'other_leave'];
     public function user()
     {
-        return $this->belongsTo(User::class, 'operator_id');
+        return $this->belongsTo(User::class, 'metrolog_id');
     }
+
 }

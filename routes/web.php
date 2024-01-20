@@ -53,7 +53,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/operatorshedule', 'App\Http\Controllers\OperatorSheduleController@index')->name('operatorshedule.index');
     Route::get('/operator', 'App\Http\Controllers\OperatorSettingsController@index')->name('OperatorSettings.index');
     Route::post('/operatorsheduleadd', 'App\Http\Controllers\OperatorSettingsController@store')->name('OperatorSettingsAdd.store');
-
+    Route::post('/updateScheduleOperators', 'App\Http\Controllers\OperatorSheduleController@updateScheduleOperator')->name('updateScheduleOperators.updateScheduleOperator');
 
     // список заявок оператора
     Route::get('/applicationsoperator/{id}', 'App\Http\Controllers\ApplicationOperatorController@show')->name('operatorapplication.show');
@@ -63,12 +63,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/logistics', 'App\Http\Controllers\LogisticSettingsController@index')->name('logisticshedule.index');
     Route::get('/logisticshedule', 'App\Http\Controllers\LogisticSheduleController@index')->name('LogisticSettings.index');
     Route::post('/logisticsheduleAdd', 'App\Http\Controllers\LogisticSettingsController@store')->name('LogisticSettingsAdd.store');
+    Route::post('/updateScheduleLogistic', 'App\Http\Controllers\LogisticSheduleController@updateSchedule')->name('updateScheduleLogistics.updateSchedule');
     
 
     // график работы метрологов
     Route::get('/Metrologs', 'App\Http\Controllers\metrologSettingsController@index')->name('MetrologShedule.index');
     Route::post('/Metrologshedule', 'App\Http\Controllers\metrologSettingsController@store')->name('MetrologSheduleStore.store');
     Route::get('/sheduledMetrolog', 'App\Http\Controllers\metrologShowShedule@index')->name('metrologShowShedule.index');
+    Route::post('/updateScheduleMetrolog', 'App\Http\Controllers\metrologShowShedule@updateScheduleMetrolog')->name('updateScheduleMetrolog.updateScheduleMetrolog');
+
 
     Route::get('/metrolog', 'App\Http\Controllers\Metrlog@index')
         ->middleware(['auth', 'CheckRoleMiddlware:metrolog, administrator'])
@@ -84,6 +87,13 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/api/getAddressItems', 'App\Http\Controllers\ApiController@getAddressItems');
     Route::post('/api/postAddress', 'App\Http\Controllers\ApiController@postAddress');
     Route::post('/api/postNewAddress', 'App\Http\Controllers\ApiController@postNewAddress');
+
+
+    // Работа с картами
+    Route::post('/savePolygon', 'App\Http\Controllers\PolygonController@savePolygon');
+    Route::get('/loadPolygons', 'App\Http\Controllers\PolygonController@loadPolygons');
+    // Работа с картами
+  
 
 });
 

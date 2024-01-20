@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\operatorSheduler;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 
@@ -22,8 +21,7 @@ class OperatorSettingsController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'operator_id' => 'required|integer',
-            'date_start' => 'required|date_format:Y-m-d\TH:i',
-            'date_end' => 'required|date_format:Y-m-d\TH:i',
+            'date_start' => 'required|date',
             'is_working_day' => 'nullable',
             'incoming' => 'nullable',
             'outgoing' => 'nullable',
@@ -47,7 +45,6 @@ class OperatorSettingsController extends Controller
             operatorSheduler::create([
                 'operator_id' => $request->operator_id,
                 'date_start' => $request->date_start,
-                'date_end' => $request->date_end,
                 'is_working_day' => $request->is_working_day,
                 'incoming' => $request->incoming,
                 'outgoing' => $request->outgoing,

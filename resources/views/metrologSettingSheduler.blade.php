@@ -22,9 +22,9 @@
   <style>
 
 html {
-  box-sizing: border-box;
-  font-size: 87.5%;
-}
+      box-sizing: border-box;
+       font-size: 75%;
+    }
 
 *, *::before, *::after {
   box-sizing: inherit;
@@ -227,18 +227,14 @@ h6 {
                             <div class="form-group">
                                 <label for="metrolog_id">Метролог</label>
                                 <select class="form-control" id="metrolog_id" name="metrolog_id" required>
-                                    @foreach($metrologShedules as $metrologShedule)
-                                        <option value="{{ $metrologShedule->id }}">{{ $metrologShedule->name }}</option>
+                                    @foreach($MetrologShedules as $MetrologShedule)
+                                        <option value="{{ $MetrologShedule->id }}">{{ $MetrologShedule->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="shedule_date_start">Дата и время начала</label>
-                                <input type="datetime-local" class="form-control" id="shedule_date_start" name="shedule_date_start" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="shedule_date_end">Дата и время окончания</label>
-                                <input type="datetime-local" class="form-control" id="shedule_date_end" name="shedule_date_end" required>
+                                <label for="date_start">Дата начала</label>
+                                <input type="date" class="form-control" id="date_start" name="date_start" required>
                             </div>
                             <div class="form-group">
                                 <label for="is_working_day">В графике</label>
@@ -289,8 +285,7 @@ h6 {
                             <thead>
                                 <tr>
                                     <th>Метролог</th>
-                                    <th>Дата и время начала</th>
-                                    <th>Дата и время окончания</th>
+                                    <th>Дата начала работы</th>
                                     <th>В графике</th>
                                     <th>Выходные</th>
                                     <th>Больничный</th>
@@ -299,17 +294,16 @@ h6 {
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($metrologShedules as $user)
-                                    @foreach($user->OperatorShedules as $OperatorShedule)
+                                @foreach($MetrologShedules as $user)
+                                    @foreach($user->MetrologShedules as $MetrologShedule)
                                         <tr>
                                             <td>{{ $user->name }}</td>
-                                            <td>{{ $OperatorShedule->date_start }}</td>
-                                            <td>{{ $OperatorShedule->date_end }}</td>
-                                            <td>{{ $OperatorShedule->is_working_day == '1' ? 'Да' : 'Нет' }}</td>
-                                            <td>{{ $OperatorShedule->day_off == '1' ? 'Да' : 'Нет' }}</td>
-                                            <td>{{ $OperatorShedule->sick_leave == '1' ? 'Да' : 'Нет' }}</td>
-                                            <td>{{ $OperatorShedule->other_leave == '1' ? 'Да' : 'Нет' }}</td>
-                                            <td>{{ $OperatorShedule->comment }}</td>
+                                            <td>{{ $MetrologShedule->date_start }}</td>
+                                            <td>{{ $MetrologShedule->is_working_day == '1' ? 'Да' : 'Нет' }}</td>
+                                            <td>{{ $MetrologShedule->day_off == '1' ? 'Да' : 'Нет' }}</td>
+                                            <td>{{ $MetrologShedule->sick_leave == '1' ? 'Да' : 'Нет' }}</td>
+                                            <td>{{ $MetrologShedule->other_leave == '1' ? 'Да' : 'Нет' }}</td>
+                                            <td>{{ $MetrologShedule->comment }}</td>
                                         </tr>
                                     @endforeach
                                 @endforeach

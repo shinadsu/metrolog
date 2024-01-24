@@ -183,18 +183,7 @@ h6 {
           </li>
 
 
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#icons" aria-expanded="false" aria-controls="icons">
-              <i class="icon-contract menu-icon"></i>
-              <span class="menu-title">Контакты</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="icons">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{{ route('contacts.index') }}">Контакты</a></li>
-              </ul>
-            </div>
-          </li>
+          
 
 
           <li class="nav-item">
@@ -204,14 +193,19 @@ h6 {
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="auth">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{{ route('userrequisitessettings.index') }}"> Реквезиты </a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ route('statustransitionsController.index') }}"> Статусы </a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ route('logisticshedule.index') }}"> Наст. График Логист </a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ route('OperatorSettings.index') }}"> Наст. График Оператор </a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ route('MetrologShedule.index') }}"> Наст. График Метролгов </a></li>
-              </ul>
-            </div>
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item"> <a class="nav-link"
+                                        href="{{ route('userrequisitessettings.index') }}"> Реквезиты </a></li>
+                                <li class="nav-item"> <a class="nav-link"
+                                        href="{{ route('statustransitionsController.index') }}"> Статусы </a></li>
+                                <li class="nav-item"> <a class="nav-link" href="{{ route('logisticshedule.index') }}">
+                                        Наст. График Логист </a></li>
+                                <li class="nav-item"> <a class="nav-link" href="{{ route('OperatorSettings.index') }}">
+                                        Наст. График Оператор </a></li>
+                                <li class="nav-item"> <a class="nav-link" href="{{ route('MetrologShedule.index') }}"> Наст. График Метролгов </a></li>
+                                <li class="nav-item"> <a class="nav-link" href="{{ route('addRoleToUser.index') }}"> Установка роли пользователю </a></li>
+                            </ul>
+                        </div>
           </li>
         </ul>
       </nav>

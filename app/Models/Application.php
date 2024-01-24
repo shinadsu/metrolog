@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class Application extends Model
 {
-    protected $fillable = ['fullname', 'user_id', 'status_id', 'source', 'datepicker', 'type_of_payment', 'totalTimesInput', 'totalPriceValue', 'productsInfo'];
+    protected $fillable = ['fullname', 'user_id', 'status_id', 'source', 'dateForApplication', 'selectedPeriod', 'organization', 'type_of_payment', 'totalTimesInput', 'totalPriceValue', 'productsInfo'];
 
     use HasFactory;
 
@@ -30,6 +30,11 @@ class Application extends Model
     public function metrologs()
     {
         return $this->hasMany(applicationMetrolog::class, 'application_id', 'id');
+    }
+
+    public function commentary()
+    {
+        return $this->hasOne(commentary::class, 'application_id');
     }
 
     public function user()

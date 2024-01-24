@@ -92,7 +92,15 @@ Route::middleware(['auth'])->group(function () {
     // Работа с картами
     Route::post('/savePolygon', 'App\Http\Controllers\PolygonController@savePolygon');
     Route::get('/loadPolygons', 'App\Http\Controllers\PolygonController@loadPolygons');
-    // Работа с картами
+
+    // маргрутные листы
+    Route::get('/itinerary', 'App\Http\Controllers\itinerary@index');
+    Route::get('/CreateitineraryList', 'App\Http\Controllers\CreateitineraryList@index')->name('CreateitineraryList.index');
+
+
+    Route::get('/addRoleToUser', 'App\Http\Controllers\addRoleToUserController@index')->name('addRoleToUser.index');
+    Route::post('/addRoleToUser/update', 'App\Http\Controllers\addRoleToUserController@update')->name('addRoleToUser.update');
+
   
 
 });

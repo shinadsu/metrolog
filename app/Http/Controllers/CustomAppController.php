@@ -18,8 +18,11 @@ use App\Models\applicationMetrolog;
 use App\Models\Statuses;
 use App\Models\statustransitions;
 use App\Models\User;
+use App\Models\Periods;
 use App\Models\commentary;
 use App\Models\addressPhone;
+use App\Models\Organization;
+use App\Models\Sourse;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
@@ -78,8 +81,9 @@ class CustomAppController extends Controller
 
 
             $applicationData = $request->only('fullname', 'user_id', 'status_id', 'source', 'type_of_payment', 'totalTimesInput', 'totalPriceValue');
-            $datepicker = \DateTime::createFromFormat('d.m.Y H:i', $request->input('datepicker'));
-            $applicationData['datepicker'] = $datepicker->format('Y-m-d H:i:s'); // Преобразование в нужный формат
+            $applicationData['dateForApplication'] = $request->input('dateForApplication');
+            $applicationData['organization'] = $request->input('organization'); 
+            $applicationData['selectedPeriod'] = $request->input('selectedPeriod'); 
             $productsInfo = json_decode($request->input('productsInfo'), true);
             $applicationData['productsInfo'] = json_encode($productsInfo);
             $applicationData['user_id'] = auth()->user()->id;
@@ -123,31 +127,6 @@ class CustomAppController extends Controller
             ]);
             
             
-            // $brand = BrandGuide::firstOrCreate(['brand_name' => $request->input('brand')]);
-            // $deviceType = DeviceTypeGuide::firstOrCreate(['device_type_name' => $request->input('device_type')]);
-            // $grsiNumber = GrsiNumberGuide::firstOrCreate(['grsi_number_value' => $request->input('grsi_number')]);
-            // $deviceData = $request->only('factory_number', 'release_year', 'modification', 'type');
-            // $scheduledVerificationDate = Carbon::createFromFormat('d.m.Y', $request->input('scheduled_verification_date'))->format('Y-m-d');
-            // $deviceData['scheduled_verification_date'] = $scheduledVerificationDate;
-            // $deviceData['brand_id'] = $brand->id;
-            // $deviceData['device_type_id'] = $deviceType->id;
-            // $deviceData['grsi_number_id'] = $grsiNumber->id;
-            // $deviceData['address_id'] = $address->id;
-            // $device = Device::firstOrCreate($deviceData);
-            
-            
-            // // заполненые сводной таблицы
-            // $addressDevicedata = $request->only('address_id', 'device_id');
-            // $addressDevicedata['address_id'] = $address->id;
-            // $addressDevicedata['device_id'] = $device->id;
-            // $addressDevice = addressDevice::create($addressDevicedata);
-
-
-            // заполненые сводной таблицы
-            // $addressPayerdata = $request->only('address_id', 'payer_id');
-            // $addressPayerdata['address_id'] = $address->id;
-            // $addressPayerdata['payer_id'] = $payer->id;
-            // $addressPayer = addressPayer::create($addressPayerdata);
 
             $addressApplicationData = $request->only('application_id', 'address_id');
             $addressApplicationData['application_id'] = $application->id;
@@ -225,6 +204,10 @@ class CustomAppController extends Controller
         {
            dd('error');
         }
+
+        $periods = Periods::all();
+        $sourse = Sourse::all();
+        $organization = Organization::all();
         $Users = User::where('role_id', 2)->get();    
         $allowedStatuses = statustransitions::where('role_id', $roleId)
                                         ->where('base_status_id', 5)
@@ -262,7 +245,14 @@ class CustomAppController extends Controller
     
 
         
-        return view('create', compact('applicationsWithDetails', 'statuses', 'Users', 'request', 'additionalWork', 'claims', 'plumbingServices', 'verificationOfCounters', 'specifications', 'replacements'));
+        return view('create', compact(
+            'applicationsWithDetails', 
+            'statuses', 'Users', 
+            'request', 'additionalWork', 
+            'claims', 'plumbingServices', 
+            'verificationOfCounters', 
+            'specifications', 'replacements',
+            'periods', 'organization', 'sourse'));
     }
 
 

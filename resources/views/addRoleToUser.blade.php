@@ -5,8 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>METROLOG</title>
-  <!-- plugins:css -->
+  <title>Skydash Admin</title>
   <link rel="stylesheet" href="{{ 'assets/vendors/feather/feather.css' }}">
   <link rel="stylesheet" href="{{ 'assets/vendors/ti-icons/css/themify-icons.css' }}">
   <link rel="stylesheet" href="{{ 'assets/vendors/css/vendor.bundle.base.css' }}">
@@ -19,10 +18,12 @@
   <link rel="stylesheet" href="{{ 'assets/css/vertical-layout-light/style.css' }}">
   <!-- endinject -->
   <link rel="shortcut icon" href="{{ 'assets/images/favicon.png' }}" />
+
+
   <style>
     html {
       box-sizing: border-box;
-       font-size: 75%;
+      font-size: 75%;
     }
 
     *,
@@ -139,7 +140,8 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false"
+              aria-controls="form-elements">
               <i class="icon-layout menu-icon"></i>
               <span class="menu-title">Устройства</span>
               <i class="menu-arrow"></i>
@@ -159,9 +161,12 @@
             </a>
             <div class="collapse" id="charts">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{{ route('operatorshedule.index') }}">График Операторов</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ route('LogisticSettings.index') }}">График Логистов</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ route('metrologShowShedule.index') }}">График Метрологов</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('operatorshedule.index') }}">График
+                    Операторов</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('LogisticSettings.index') }}">График
+                    Логистов</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('metrologShowShedule.index') }}">График
+                    Метрологов</a></li>
               </ul>
             </div>
           </li>
@@ -175,7 +180,8 @@
             </a>
             <div class="collapse" id="tables">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{{ route('applicationsandaddresses.index') }}">Заявки и Адреса</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('applicationsandaddresses.index') }}">Заявки и
+                    Адреса</a></li>
                 <li class="nav-item"> <a class="nav-link" href="{{ route('addresses.index') }}">Адреса</a></li>
               </ul>
             </div>
@@ -192,109 +198,127 @@
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="auth">
-                            <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="{{ route('userrequisitessettings.index') }}"> Реквезиты </a></li>
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="{{ route('statustransitionsController.index') }}"> Статусы </a></li>
-                                <li class="nav-item"> <a class="nav-link" href="{{ route('logisticshedule.index') }}">
-                                        Наст. График Логист </a></li>
-                                <li class="nav-item"> <a class="nav-link" href="{{ route('OperatorSettings.index') }}">
-                                        Наст. График Оператор </a></li>
-                                <li class="nav-item"> <a class="nav-link" href="{{ route('MetrologShedule.index') }}"> Наст. График Метролгов </a></li>
-                                <li class="nav-item"> <a class="nav-link" href="{{ route('addRoleToUser.index') }}"> Установка роли пользователю </a></li>
-                            </ul>
-                        </div>
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{{ route('userrequisitessettings.index') }}"> Реквезиты
+                  </a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('statustransitionsController.index') }}">
+                    Статусы </a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('logisticshedule.index') }}"> Наст. График
+                    Логист </a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('OperatorSettings.index') }}"> Наст. График
+                    Оператор </a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('MetrologShedule.index') }}"> Наст. График
+                    Метролгов </a></li>
+              </ul>
+            </div>
           </li>
         </ul>
       </nav>
-
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-lg-12 grid-margin stretch-card">
+            <div class="col-md-6 grid-margin stretch-card">
               <div class="card">
-                <div class="card-body">
-                  <h4 class="card-title">Установка графика работы Логистов</h4>
-                  <form action="{{ route('LogisticSettingsAdd.store') }}" class="form-sample" method="POST">
-                    @csrf
-                    <div class="form-group">
-                      <label for="logist_id">Логист</label>
-                      <select class="form-control" id="logist_id" name="logist_id" required>
-                        @foreach($logisticSettings as $logisticSetting)
-                        <option value="{{ $logisticSetting->id }}">{{ $logisticSetting->name }}</option>
-                        @endforeach
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <label for="start_date">Дата и время начала</label>
-                      <input type="date" class="form-control" id="start_date" name="start_date" required>
-                    </div>
-                    <div class="form-group">
-                      <label for="is_scheduled">В графике</label>
-                      <select class="form-control" id="is_scheduled" name="is_scheduled" required>
-                        <option value="1" @if(old('is_scheduled')=='1' ) selected @endif>Да</option>
-                        <option value="0" @if(old('is_scheduled')=='0' ) selected @endif>Нет</option>
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <label for="reasonForNot">Причина отсутствия в графике</label>
-                      <textarea class="form-control" id="reasonForNot" name="reasonForNot" rows="3"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary mr-2">Сохранить настройки</button>
-                  </form>
-                </div>
+                  <div class="card-body">
+                      <h4 class="card-title">Добавление роли пользователю</h4>
+                      <form method="post" action="{{ route('addRoleToUser.update') }}">
+                          @csrf
+                          <div class="form-group">
+                              <label for="role">Выберите роль</label>
+                              <select class="form-control" id="role" name="role_id">
+                                  @foreach($roles as $role)
+                                      <option value="{{ $role->id }}">{{ $role->name }}</option>
+                                  @endforeach
+                              </select>
+                          </div>
+
+                          <div class="form-group">
+                              <label for="user">Пользователь без роли</label>
+                              <select class="form-control" id="user" name="user_id">
+                                  @foreach($usersWithoutRole as $user)
+                                      <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                  @endforeach
+                              </select>
+                          </div>
+
+                          <button type="submit" class="btn btn-primary mr-2">Добавить роль</button>
+                      </form>
+                  </div>
               </div>
-            </div>
           </div>
 
-          <!-- Данные о реквизитах -->
-          <div class="col-lg-12 grid-margin stretch-card">
-            <div class="card">
-              <div class="card-body">
-                <h4 class="card-title">График работы логистов</h4>
-                <div class="table-responsive pt-3">
-                  <table class="table table-bordered">
+          <div class="col-md-6 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">Пользователи и их роли</h4>
+            <div class="form-group">
+                <label for="roleFilter">Фильтр по ролям:</label>
+                <select id="roleFilter" class="form-control">
+                    <option value="">Все роли</option>
+                    @foreach ($roles as $role)
+                        <option value="{{ $role->id }}">{{ $role->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
                     <thead>
-                      <tr>
-                        <th>Логист</th>
-                        <th>Дата и время начала</th>
-                        <th>В графике</th>
-                        <th>Причина отсутствия в графике</th>
-                      </tr>
+                        <tr>
+                            <th>#</th>
+                            <th>Имя</th>
+                            <th>Email</th>
+                            <th>Роль</th>
+                        </tr>
                     </thead>
                     <tbody>
-                      @foreach($logisticSettings as $user)
-                      @foreach($user->logisticShedules as $logisticSetting)
-                      <tr>
-                        <td>{{ $user->name }}</td>
-                        <td>{{ $logisticSetting->start_date }}</td>
-                        <td>{{ $logisticSetting->is_scheduled == '1' ? 'Да' : 'Нет' }}</td>
-                        <td>{{ $logisticSetting->reasonForNot }}</td>
-                      </tr>
-                      @endforeach
-                      @endforeach
+                        @foreach ($usersWithRoles as $user)
+                            <tr data-role="{{ $user->role ? $user->role->id : '0' }}">
+                                <td>{{ $user->id }}</td>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->role ? $user->role->name : 'Нет роли' }}</td>
+                            </tr>
+                        @endforeach
                     </tbody>
-                  </table>
-                </div>
-              </div>
+                </table>
             </div>
-          </div>
-
-
-
-
-
-          <!-- partial:../../partials/_footer.html -->
-
-          <!-- partial -->
         </div>
-        <!-- main-panel ends -->
-      </div>
-      <!-- page-body-wrapper ends -->
     </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var roleFilter = document.getElementById('roleFilter');
+        var usersTable = document.querySelector('.table tbody');
+
+        roleFilter.addEventListener('change', function () {
+            var selectedRole = roleFilter.value;
+
+            for (var i = 0; i < usersTable.rows.length; i++) {
+                var row = usersTable.rows[i];
+                var rowRole = row.getAttribute('data-role');
+
+                if (selectedRole === '' || rowRole === selectedRole) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        });
+    });
+</script>
+
+
+
+            
+
+
+
+
+
+
+
+
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
@@ -313,8 +337,3 @@
     <script src="{{ 'assets/js/file-upload.js' }} "></script>
     <script src="{{ 'assets/js/typeahead.js' }} "></script>
     <script src="{{ 'assets/js/select2.js' }} "></script>
-
-    <!-- End custom js for this page-->
-</body>
-
-</html>

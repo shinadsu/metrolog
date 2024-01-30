@@ -294,15 +294,6 @@
                                         <div class="card-body">
                                             <h4 class="card-title">Остальные данные</h4>
                                             <div class="form-group">
-                                                <label for="metrolog_id">Метролог</label>
-                                                <select class="form-control" id="metrolog_id" name="metrolog_id"
-                                                    required>
-                                                    @foreach($Users as $user)
-                                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
                                                 <label for="source">Источник</label>
                                                 <select class="form-control" id="source" name="source" required>
                                                 @foreach($sourse as $sourses)

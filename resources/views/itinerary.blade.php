@@ -22,7 +22,7 @@
   <style>
     html {
       box-sizing: border-box;
-       font-size: 75%;
+      font-size: 75%;
     }
 
     *,
@@ -79,8 +79,9 @@
 } */
   </style>
 </head>
+
 <body>
-<div class="container-scroller">
+  <div class="container-scroller">
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
         <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
@@ -138,7 +139,8 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
+            <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false"
+              aria-controls="form-elements">
               <i class="icon-layout menu-icon"></i>
               <span class="menu-title">Устройства</span>
               <i class="menu-arrow"></i>
@@ -158,9 +160,12 @@
             </a>
             <div class="collapse" id="charts">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{{ route('operatorshedule.index') }}">График Операторов</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ route('LogisticSettings.index') }}">График Логистов</a></li>
-                <li class="nav-item"> <a class="nav-link" href="{{ route('metrologShowShedule.index') }}">График Метрологов</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('operatorshedule.index') }}">График
+                    Операторов</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('LogisticSettings.index') }}">График
+                    Логистов</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('metrologShowShedule.index') }}">График
+                    Метрологов</a></li>
               </ul>
             </div>
           </li>
@@ -174,14 +179,15 @@
             </a>
             <div class="collapse" id="tables">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="{{ route('applicationsandaddresses.index') }}">Заявки и Адреса</a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('applicationsandaddresses.index') }}">Заявки и
+                    Адреса</a></li>
                 <li class="nav-item"> <a class="nav-link" href="{{ route('addresses.index') }}">Адреса</a></li>
               </ul>
             </div>
           </li>
 
 
-          
+
 
 
           <li class="nav-item">
@@ -191,82 +197,103 @@
               <i class="menu-arrow"></i>
             </a>
             <div class="collapse" id="auth">
-                            <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="{{ route('userrequisitessettings.index') }}"> Реквезиты </a></li>
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="{{ route('statustransitionsController.index') }}"> Статусы </a></li>
-                                <li class="nav-item"> <a class="nav-link" href="{{ route('logisticshedule.index') }}">
-                                        Наст. График Логист </a></li>
-                                <li class="nav-item"> <a class="nav-link" href="{{ route('OperatorSettings.index') }}">
-                                        Наст. График Оператор </a></li>
-                                <li class="nav-item"> <a class="nav-link" href="{{ route('MetrologShedule.index') }}"> Наст. График Метролгов </a></li>
-                                <li class="nav-item"> <a class="nav-link" href="{{ route('addRoleToUser.index') }}"> Установка роли пользователю </a></li>
-                            </ul>
-                        </div>
+              <ul class="nav flex-column sub-menu">
+                <li class="nav-item"> <a class="nav-link" href="{{ route('userrequisitessettings.index') }}"> Реквезиты
+                  </a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('statustransitionsController.index') }}">
+                    Статусы </a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('logisticshedule.index') }}">
+                    Наст. График Логист </a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('OperatorSettings.index') }}">
+                    Наст. График Оператор </a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('MetrologShedule.index') }}"> Наст. График
+                    Метролгов </a></li>
+                <li class="nav-item"> <a class="nav-link" href="{{ route('addRoleToUser.index') }}"> Установка роли
+                    пользователю </a></li>
+              </ul>
+            </div>
           </li>
         </ul>
       </nav>
 
       <div class="main-panel">
-    <div class="content-wrapper">
-        <div class="row">
+        <div class="content-wrapper">
+          <div class="row">
             <div class="col-lg-6 grid-margin stretch-card">
-                <div class="card">
-                </div>
+              <div class="card">
+              </div>
             </div>
             <div class="col-lg-12 grid-margin stretch-card">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h4 class="card-title">Мрашрутные листы</h4>
-                           
-                            <button class="btn btn-primary" id="createButton" onclick="window.location.href='{{ route('CreateitineraryList.index') }}'">
-    Создать
-</button>
+              <div class="card">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="card-title">Мрашрутные листы</h4>
 
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Дата</th>
-                                        <th>Номер листа</th>
-                                        <th>Автор</th>
-                                        <th>Метролог</th>
-                                        <th>Дата выполнения</th>
-                                        <th>Кол-во часов</th>
-                                        <th>Районы</th>
-                                        <th>Организация</th>
-                                    </tr>
-                                </thead>
-                                <!-- Your table body goes here -->
-                            </table>
-                        </div>
-                    </div>
+                    <button class="btn btn-primary" id="createButton"
+                      onclick="window.location.href='{{ route('CreateitineraryList.index') }}'">
+                      Создать
+                    </button>
+
+                  </div>
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Дата создания</th>
+                          <th>Номер листа</th>
+                          <th>Автор</th>
+                          <th>Метролог</th>
+                          <th>Дата выполнения</th>
+                          <th>Кол-во часов</th>
+                          <th>Организация</th>
+                        </tr>
+                      </thead>
+                      <!-- Your table body goes here -->
+                      <tbody>
+                        @foreach($routeSheets as $routeSheet)
+                        <tr>
+                          <td>{{ $routeSheet->current_date_time }}</td>
+                          <td>{{ $routeSheet->route_sheet_number }}</td>
+                          <td>{{ $routeSheet->author }}</td>
+                          <td>{{ $routeSheet->metrolog }}</td>
+                          <td>{{ $routeSheet->completion_date }}</td>
+                          <td>{{ $routeSheet->time_input }}</td>
+                          <td>{{ $routeSheet->organization }}</td>
+                          <<td>
+                            <a href="{{ route('route-sheets.viewRouteSheet', ['route_sheet_number' => $routeSheet->route_sheet_number]) }}"
+                              class="btn btn-info">Просмотр</a>
+                            </td>
+                        </tr>
+                        @endforeach
+                      </tbody>
+
+                    </table>
+                  </div>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
-    </div>
-</div>
+      </div>
 
 
 
-    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/air-datepicker@2.2.3/dist/js/datepicker.min.js"></script>
+      <script src="https://code.jquery.com/jquery-3.6.0.js"
+        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
+      <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/air-datepicker@2.2.3/dist/js/datepicker.min.js"></script>
 
-    <script src="{{ 'assets/vendors/typeahead.js/typeahead.bundle.min.js' }} "></script>
-    <script src="{{ 'assets/vendors/select2/select2.min.js' }} "></script>
-    <script src="{{ 'assets/js/off-canvas.js' }} "></script>
-    <script src="{{ 'assets/js/hoverable-collapse.js' }} "></script>
-    <script src="{{ 'assets/js/template.js' }} "></script>
-    <script src="{{ 'assets/js/settings.js' }} "></script>
-    <script src="{{ 'assets/js/todolist.js' }} "></script>
-    <script src="{{ 'assets/js/file-upload.js' }} "></script>
-    <script src="{{ 'assets/js/typeahead.js' }} "></script>
-    <script src="{{ 'assets/js/select2.js' }} "></script>
+      <script src="{{ 'assets/vendors/typeahead.js/typeahead.bundle.min.js' }} "></script>
+      <script src="{{ 'assets/vendors/select2/select2.min.js' }} "></script>
+      <script src="{{ 'assets/js/off-canvas.js' }} "></script>
+      <script src="{{ 'assets/js/hoverable-collapse.js' }} "></script>
+      <script src="{{ 'assets/js/template.js' }} "></script>
+      <script src="{{ 'assets/js/settings.js' }} "></script>
+      <script src="{{ 'assets/js/todolist.js' }} "></script>
+      <script src="{{ 'assets/js/file-upload.js' }} "></script>
+      <script src="{{ 'assets/js/typeahead.js' }} "></script>
+      <script src="{{ 'assets/js/select2.js' }} "></script>

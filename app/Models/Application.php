@@ -8,7 +8,13 @@ use Illuminate\Support\Facades\Auth;
 
 class Application extends Model
 {
-    protected $fillable = ['fullname', 'user_id', 'status_id', 'source', 'dateForApplication', 'selectedPeriod', 'organization', 'type_of_payment', 'totalTimesInput', 'totalPriceValue', 'productsInfo'];
+    protected $fillable = [
+    'fullname', 'user_id', 
+    'status_id', 'source', 
+    'dateForApplication', 'selectedPeriod', 
+    'organization', 'type_of_payment', 
+    'totalTimesInput', 'totalPriceValue', 
+    'productsInfo'];
 
     use HasFactory;
 
@@ -41,5 +47,11 @@ class Application extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function routeSheets()
+    {
+        return $this->belongsToMany(RouteSheet::class, 'route_sheet_applications');
+    }
+    
    
 }

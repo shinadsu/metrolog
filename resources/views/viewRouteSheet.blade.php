@@ -265,9 +265,11 @@
                         <div class="col-md-6 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
-                                    <h4 class="card-title">Маршрутный лист (№<span id="routeSheetNumber"></span>) от
-                                        <span id="currentDateTime"></span>
+                                    <h4 class="card-title">Маршрутный лист (№<span id="routeSheetNumber">{{
+                                            $routeSheet->route_sheet_number }}</span>) от
+                                        <span id="currentDateTime">{{ $routeSheet->current_date_time }}</span>
                                     </h4>
+
                                     <form>
                                         <div class="form-group row">
                                             <label for="authorSelect"
@@ -412,15 +414,27 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-
-
+                                                            @foreach($routeSheet->applications as $key => $application)
+                                                            <tr>
+                                                                <td>{{ $key + 1 }}</td>
+                                                                <td>{{ $application->id }}</td>
+                                                                <td>{{ $application->status->name }}</td>
+                                                                <td>{{ implode(', ',
+                                                                    array_keys(json_decode($application->productsInfo,
+                                                                    true))) }}</td>
+                                                                <td>{{ $routeSheet->metrolog }}</td>
+                                                                <td>{{ $application->selectedPeriod }}</td>
+                                                                <td>{{ $application->dateForApplication }}</td>
+                                                                <td>{{ $application->addresses->first()->full_address ?? '' }}</td>
+                                                                <td>{{ $application->commentary->logistic_commentary }}
+                                                                </td>
+                                                            </tr>
+                                                            @endforeach
                                                         </tbody>
 
                                                     </table>
                                                 </div>
                                             </div>
-
-
 
 
 
@@ -594,30 +608,14 @@
 
 
                                             <script>
-                                                // Дождемся полной загрузки страницы
-                                                document.addEventListener("DOMContentLoaded", function () {
-                                                    // Получаем текущую дату и время
-                                                    var currentDate = new Date();
-                                                    var formattedDate = currentDate.toLocaleString();
-
-                                                    // Вставляем текущую дату и время в соответствующие элементы
-                                                    document.getElementById("currentDateTime").innerText = formattedDate;
-
-                                                    // Генерируем случайный номер маршрутного листа (можете изменить логику генерации)
-                                                    var routeSheetNumber = Math.floor(Math.random() * 1000) + 1; // пример генерации от 1 до 1000
-
-                                                    // Вставляем номер маршрутного листа в соответствующий элемент
-                                                    document.getElementById("routeSheetNumber").innerText = routeSheetNumber;
-                                                });
-                                            </script>
-
-
-                                            <script>
                                                 $(document).ready(function () {
-                                                    // Обрабатываем клик на чекбоксе
-                                                    $('#changeMetrologCheckbox').on('click', function () {
-                                                        // Ваш код обработки события
-                                                    });
+                                                    // Получаем номер маршрутного листа из URL
+                                                    var routeSheetNumber = window.location.pathname.split('/').pop();
+
+                                                    // Устанавливаем номер маршрутного листа в HTML
+                                                    $("#routeSheetNumber").text(routeSheetNumber);
+
+                                                    // Ваш остальной JavaScript код...
                                                 });
                                             </script>
 
@@ -684,38 +682,6 @@
                                                     });
                                                 });
                                             </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -134,10 +134,10 @@ class CustomAppController extends Controller
             $addressApplication = addressApplication::create($addressApplicationData);
 
 
-            $applicationMetrologdata = $request->only('application_id', 'metrolog_id');
-            $applicationMetrologdata['application_id'] = $application->id;
-            $applicationMetrologdata['metrolog_id'] = $request->input('metrolog_id');
-            $applicationMetrolog = applicationMetrolog::create($applicationMetrologdata);
+            // $applicationMetrologdata = $request->only('application_id', 'metrolog_id');
+            // $applicationMetrologdata['application_id'] = $application->id;
+            // $applicationMetrologdata['metrolog_id'] = $request->input('metrolog_id');
+            // $applicationMetrolog = applicationMetrolog::create($applicationMetrologdata);
 
 
             $phone = Phone::firstOrCreate([

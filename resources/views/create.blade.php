@@ -281,7 +281,8 @@
                                                 <select id="organization" name="organization" class="form-control"
                                                     required>
                                                     @foreach($organization as $organizations)
-                                                    <option value="{{ $organizations->name }}">{{ $organizations->name }}
+                                                    <option value="{{ $organizations->name }}">{{ $organizations->name
+                                                        }}
                                                     </option>
                                                     @endforeach
                                                 </select>
@@ -296,7 +297,7 @@
                                             <div class="form-group">
                                                 <label for="source">Источник</label>
                                                 <select class="form-control" id="source" name="source" required>
-                                                @foreach($sourse as $sourses)
+                                                    @foreach($sourse as $sourses)
                                                     <option value="{{ $sourses->name }}">{{ $sourses->name }}</option>
                                                     @endforeach
                                                 </select>
@@ -1025,6 +1026,13 @@
 
             </script>
 
+
+            <script>
+                
+            </script>
+
+
+
             <script>
                 let currentPath = "";
                 let selectedObjectId;
@@ -1048,22 +1056,28 @@
                     addressInput.on('input', function () {
                         let searchValue = $(this).val();
 
-                        $.ajax({
-                            url: '{{ url("/api/getAddressItems") }}',
-                            method: 'post',
-                            success: function (response) {
-                                let fullNames = response.addresses;
-                                updateDropdown(fullNames);
-                            },
-                            error: function (error) {
-                                console.log(error);
-                            },
-                        });
+                        // Проверка, что введено значение для поиска
+                        if (searchValue.length > 0) {
+                            $.ajax({
+                                url: '{{ url("/api/getAddressItems") }}',
+                                method: 'post',
+                                data: { search: searchValue },  // Передача введенного значения для поиска
+                                success: function (response) {
+                                    let fullNames = response.addresses;
+                                    updateDropdown(fullNames);
+                                },
+                                error: function (error) {
+                                    console.log(error);
+                                },
+                            });
+                        } else {
+                            // Если поле ввода пусто, очистите выпадающий список
+                            clearDropdown('address');
+                        }
                     });
 
+                    // ... Остальной код ...
 
-
-                    // получаем object_id для поля "Субъект РФ"
                     function updateDropdown(addresses) {
                         addressDropdown.empty();
 
@@ -1073,14 +1087,13 @@
                             addressDropdown.append(option);
                         });
 
-                        // Clear other address-related dropdowns
+                        // Очистка значений других выпадающих списков
                         clearAddressFields();
 
                         addressDropdown.show();
                     }
 
                     function clearAddressFields() {
-                        // Clear the values of other address-related dropdowns
                         $('#addressesArea, #addressCity, #addressSettlement, #addressPlanningStructure, #addressStreet, #addressHouse, #addressApartment').empty();
                     }
 
@@ -1234,8 +1247,6 @@
 
 
                         function onSelectChange(selectedElement) {
-
-                            // console.log($(this));
                             addressDropdown.hide();
                             $.ajax(
                                 {
@@ -1341,7 +1352,7 @@
 
 
 
-                        // дебаг функция
+
                         function postNewAddress(currentPath) {
                             console.log('Address sent to the server:', currentPath);
                         }

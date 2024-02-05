@@ -64,7 +64,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/logisticshedule', 'App\Http\Controllers\LogisticSheduleController@index')->name('LogisticSettings.index');
     Route::post('/logisticsheduleAdd', 'App\Http\Controllers\LogisticSettingsController@store')->name('LogisticSettingsAdd.store');
     Route::post('/updateScheduleLogistic', 'App\Http\Controllers\LogisticSheduleController@updateSchedule')->name('updateScheduleLogistics.updateSchedule');
-    
+    Route::post('/storeLogistShedule', 'App\Http\Controllers\LogisticSheduleController@storeLogistShedule')->name('updateScheduleLogistics.storeLogistShedule');
 
     // график работы метрологов
     Route::get('/Metrologs', 'App\Http\Controllers\metrologSettingsController@index')->name('MetrologShedule.index');

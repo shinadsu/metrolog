@@ -7,6 +7,9 @@ use App\Models\User;
 use Carbon\Carbon;
 use App\Models\logisticsShedule;
 use Illuminate\Support\Facades\DB;
+use App\Models\ResonsForNotJob;
+use Illuminate\Support\Facades\Validator;
+
 
 class LogisticSheduleController extends Controller
 {
@@ -15,6 +18,8 @@ class LogisticSheduleController extends Controller
     {
         $currentDate = Carbon::now();
         $originalDate = clone $currentDate;
+        $nojob = ResonsForNotJob::all();
+        $nojobReasons = ['Больничный', 'Дежурство', 'Невыход Без объяснения', 'Отпуск', 'По семейным обст-вам', 'Поломка машины', 'Снят с маршрута'];
 
         // Используем отношение для загрузки связанных данных
         $users = User::where('role_id', 5)->with('logisticShedules')->get();
@@ -28,28 +33,37 @@ class LogisticSheduleController extends Controller
                 ->where('start_date', '>=', $startPeriod)
                 ->map(function ($logisticsSheduler) use ($user) {
                     $isScheduled = in_array($logisticsSheduler->is_scheduled, [0, 1]);
-        
+    
                     if ($isScheduled) {
                         $scheduledIcon = $logisticsSheduler->is_scheduled === 1 ? '*' : '';
                     } else {
-                        $scheduledIcon = ''; 
+                        $scheduledIcon = '';
                     }
-        
+    
                     return [
+                        'logist_id' => $logisticsSheduler->logist_id,
                         'title' => $user->name,
                         'uniqIdentefy' => $logisticsSheduler->uniqIdentefy,
                         'start' => Carbon::parse($logisticsSheduler->start_date)->format('Y-m-d'),
+                        'end' => Carbon::parse($logisticsSheduler->end_date)->format('Y-m-d'),
                         'is_scheduled' => $scheduledIcon,
+                        'reasonForNot' => $logisticsSheduler->reasonForNot,
                     ];
                 }) ?? collect();
         });
-        
+
+        $eventsForTotals = $events->filter(function ($event) {
+            return empty($event['reasonForNot']);
+        });
 
         // Преобразовать 'start' в объект Carbon
-        $events = $events->map(function ($event) {
+        $eventsForTotals = $eventsForTotals->map(function ($event) {
             $event['start'] = Carbon::parse($event['start']);
             return $event;
         });
+
+
+        $totalShifts = $eventsForTotals->where('is_scheduled', '*')->count();
 
 
 
@@ -59,6 +73,10 @@ class LogisticSheduleController extends Controller
             'originalDate' => $originalDate,
             'startPeriod' => $startPeriod,
             'daysFilter' => $daysFilter,
+            'notjob' => $nojob,
+            'nojobReasons' => $nojobReasons,
+            'totalShifts' => $totalShifts,
+            'eventsForTotals' => $eventsForTotals
         ]);
     }
 
@@ -104,13 +122,13 @@ class LogisticSheduleController extends Controller
             return response()->json([
                 'success' => true,
                 'data' =>
-                [
-                    'logist_id' => $logist_id,
-                    'uniqIdentefy' => $uniqIdentefy,
-                    'start_date' => $start_date,
-                    'is_scheduled' => $is_scheduled,
-                    'reasonForNot' => $reasonForNot,
-                ],
+                    [
+                        'logist_id' => $logist_id,
+                        'uniqIdentefy' => $uniqIdentefy,
+                        'start_date' => $start_date,
+                        'is_scheduled' => $is_scheduled,
+                        'reasonForNot' => $reasonForNot,
+                    ],
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
@@ -122,4 +140,74 @@ class LogisticSheduleController extends Controller
             ]);
         }
     }
+
+
+    public function storeLogistShedule(Request $request)
+    {
+        // Валидация данных
+        $validator = Validator::make($request->all(), [
+            'logist' => 'required',
+            'reasonForNot' => 'required',
+            'commentary' => 'required',
+            'date_interval' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $logist_id = $request->input('logist');
+        $reasonForNot = $request->input('reasonForNot');
+        $commentary = $request->input('commentary');
+        $date_interval = $request->input('date_interval');
+        $uniqIdentefy = $request->input('uniqIdentefy');
+        $is_scheduled = $request->input('is_scheduled');
+
+        try {
+            DB::beginTransaction();
+
+            // Разбиваем диапазон дат
+            [$start_date, $end_date] = explode(' - ', $date_interval);
+
+            // // Используем Carbon для форматирования даты
+            // $start_date = Carbon::createFromFormat('d.m.Y', $start_date)->toDateString();
+            // $end_date = Carbon::createFromFormat('d.m.Y', $end_date)->toDateString();
+
+            // Создаем новую запись в таблице logistics_shedules
+            logisticsShedule::create([
+                'logist_id' => $logist_id,
+                'reasonForNot' => $reasonForNot,
+                'commentary' => $commentary,
+                'start_date' => $start_date,
+                'end_date' => $end_date,
+                'uniqIdentefy' => $uniqIdentefy,
+                'is_scheduled' => $is_scheduled
+            ]);
+
+            DB::commit();
+
+            // Редирект после успешного сохранения
+            return response()->json([
+                'success' => true,
+                'data' =>
+                    [
+                        'logist_id' => $logist_id,
+                        'uniqIdentefy' => $uniqIdentefy,
+                        'start_date' => $start_date,
+                        'end_date' => $end_date,
+                        'reasonForNot' => $reasonForNot,
+                        'is_scheduled' => $is_scheduled
+                    ],
+            ]);
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollBack();
+
+           
+        }
+    }
+
+
 }

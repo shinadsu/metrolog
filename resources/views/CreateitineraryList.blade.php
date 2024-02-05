@@ -297,54 +297,6 @@
                                         </div>
 
 
-
-                                        <div class="form-group row">
-                                            <label for="timeinput" class="col-sm-3 col-form-label"><strong>Кол-во
-                                                    времени:</strong></label>
-                                            <div class="col-sm-9">
-                                                <input class="form-select input-style" id="timeinput"
-                                                    placeholder="Ведите время формата Ч:М:C">
-                                            </div>
-                                        </div>
-
-
-
-                                        <div class="form-group row">
-                                            <label for="completionDate" class="col-sm-3 col-form-label"><strong>Дата
-                                                    выполнения:</strong></label>
-                                            <div class="col-sm-9">
-                                                <input type="date" class="form-control" id="completionDate"
-                                                    style="max-width: 150px;">
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label for="metrolog"
-                                                class="col-sm-3 col-form-label"><strong>Метролог:</strong></label>
-                                            <div class="col-sm-9">
-                                                <select class="form-select" id="metrolog">
-                                                    <option value="" selected>Show All</option>
-                                                    @foreach($users as $user)
-                                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-
-
-                                        <div class="form-group row">
-                                            <label for="statusSelect" class="col-sm-3 col-form-label"><strong>Статус
-                                                    Заявок:</strong></label>
-                                            <div class="col-sm-9">
-                                                <select class="form-select" id="statusSelect">
-                                                    <option value="" selected>Show All</option>
-                                                    @foreach($status as $statuses)
-                                                    <option value="{{ $statuses->id }}">{{ $statuses->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-
                                         <!-- Горизонтальные кнопки -->
                                         <div class="form-group row" style="margin-top: 10px;">
                                             <div class="col-sm-6">
@@ -363,28 +315,65 @@
                             </div>
                         </div>
 
-                        <div class="col-lg-6 grid-margin stretch-card">
+
+                        <div class="col-md-6 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
+                                    <div class="form-group row">
+                                        <label for="statusSelect" class="col-sm-3 col-form-label"><strong>Статус
+                                                Заявок:</strong></label>
+                                        <div class="col-sm-9">
+                                            <select class="form-select" id="statusSelect">
+                                                <option value="" selected>Show All</option>
+                                                @foreach($status as $statuses)
+                                                <option value="{{ $statuses->id }}">{{ $statuses->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
 
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Район-округ</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                                    <div class="form-group row">
+                                        <label for="metrolog"
+                                            class="col-sm-3 col-form-label"><strong>Метролог:</strong></label>
+                                        <div class="col-sm-9">
+                                            <select class="form-select" id="metrolog">
+                                                <option value="" selected>Show All</option>
+                                                @foreach($users as $user)
+                                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
 
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Значение района 1</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+
+                                        <div class="form-group row">
+                                            <label for="timeinput" class="col-sm-3 col-form-label"><strong>Кол-во времени:</strong></label>
+                                            <div class="col-sm-9">
+                                                <input class="form-select input-style" id="timeinput" placeholder="Введите время формата Ч:М:C" value="">
+                                            </div>
+                                        </div>
+
+
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Регион</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+
+
+
 
 
 
@@ -431,30 +420,6 @@
 
 
 
-                                            <!-- <script>
-                                                $(document).ready(function () {
-                                                    // Обработчик события для кнопки "Добавить"
-                                                    $("#addButton").on("click", function () {
-                                                        // Генерация новой записи (пример)
-                                                        var newRowHtml = '<tr><td>New</td><td>Record</td><td>...</td></tr>';
-
-                                                        // Вставляем новую запись в таблицу
-                                                        $("#applicationsTable tbody").append(newRowHtml);
-
-                                                        // Автоматический переход к вводу "Заявка наряд"
-                                                        $("#fillButton").trigger("click");
-                                                    });
-
-                                                    // Обработчик события для кнопки "Заполнить"
-                                                    $("#fillButton").on("click", function () {
-                                                        // Ваш текущий код обработки кнопки "Заполнить"
-                                                        // ...
-                                                    });
-                                                });
-
-                                            </script> -->
-
-
 
 
 
@@ -467,7 +432,7 @@
                                                         if (existingDropdown.length) {
                                                             existingDropdown.empty().append('<option value=""></option>');
                                                             for (var i = 0; i < data.length; i++) {
-                                                                existingDropdown.append('<option value="' + data[i].id + '">' + data[i].id + '</option>');
+                                                                existingDropdown.append('<option value="' + data[i].id + '" data-time="' + data[i].timeForApplication + '">' + data[i].id + '</option>');
                                                             }
                                                         } else {
                                                             $(selector).next('select').remove();
@@ -475,49 +440,23 @@
                                                             var dropdownList = $('<select class="form-control"></select>').append('<option value=""></option>');
 
                                                             for (var i = 0; i < data.length; i++) {
-                                                                dropdownList.append('<option value="' + data[i].id + '">' + data[i].id + '</option>');
+                                                                dropdownList.append('<option value="' + data[i].id + '" data-time="' + data[i].timeForApplication + '">' + data[i].id + '</option>');
                                                             }
 
                                                             dropdownList.insertAfter(selector);
 
                                                             dropdownList.on("change", function () {
                                                                 var selectedValue = $(this).val();
-                                                                $(selector).text(selectedValue);
+                                                                var selectedOption = $(this).find('option:selected');
+                                                                var timeForApplication = selectedOption.data('time');
+                                                                
+                                                                if (selectedValue !== "") {
+                                                                    setTimeInputValue(timeForApplication);
+                                                                    $(selector).text(selectedValue).trigger("change");
+                                                                }
                                                                 dropdownList.remove();
-                                                                $(selector).trigger("change");
                                                             });
                                                         }
-                                                    }
-
-                                                    function fetchDataForId(inputValue, row) {
-                                                        console.log('Fetching data for ID:', inputValue);
-                                                        return $.ajax({
-                                                            url: 'http://case.sknewlife.ru/getApplicationById/' + inputValue,
-                                                            type: 'GET',
-                                                            dataType: 'json'
-                                                        }).done(function (response) {
-                                                            console.log('AJAX Response:', response);
-                                                            if (response.success) {
-                                                                if (row && row.find) {
-                                                                    row.find('.for-status, .for-job, .for-interval, .for-planeDate, .for-address, .for-logistCommentary').text('');
-
-                                                                    addDropdownList(row.find('.for-id'), response.data);
-
-                                                                    row.find('.for-status').text(response.data[0].status_name);
-
-                                                                    var productsInfoText = response.data[0].productsInfo ? response.data[0].productsInfo.join(', ') : '';
-                                                                    row.find('.for-job').text(productsInfoText);
-
-                                                                    row.find('.for-interval').text(response.data[0].selectedPeriod);
-                                                                    row.find('.for-planeDate').text(response.data[0].dateForApplication);
-                                                                    row.find('.for-address').text(response.data[0].address);
-                                                                    row.find('.for-logistCommentary').text(response.data[0].logistic_commentary);
-
-                                                                }
-                                                            }
-                                                        }).fail(function () {
-                                                            console.error('AJAX Error');
-                                                        });
                                                     }
 
                                                     function handleIdInputChange() {
@@ -526,8 +465,27 @@
 
                                                         if (inputValue !== '') {
                                                             var row = $(this).closest('tr');
-                                                            fetchDataForId(inputValue, row).done(function (response) {
-                                                                if (response.success) {
+                                                            fetchDataForIdAndPopulateFields(inputValue, row);
+                                                        } else {
+                                                            // Если поле ID пусто, очищаем соответствующие ячейки
+                                                            clearFields(row);
+                                                        }
+                                                    }
+
+                                                    function fetchDataForIdAndPopulateFields(inputValue, row) 
+                                                    {
+                                                        console.log('Fetching data for ID:', inputValue);
+                                                        return $.ajax({
+                                                            url: 'http://case.sknewlife.ru/getApplicationById/' + inputValue,
+                                                            type: 'GET',
+                                                            dataType: 'json'
+                                                        }).done(function (response) 
+                                                        {
+                                                            console.log('AJAX Response:', response);
+                                                            if (response.success) 
+                                                            {
+                                                                if (row && row.find) 
+                                                                {
                                                                     row.find('.for-status, .for-job, .for-interval, .for-planeDate, .for-address, .for-logistCommentary').text('');
 
                                                                     addDropdownList(row.find('.for-id'), response.data);
@@ -541,16 +499,81 @@
                                                                     row.find('.for-planeDate').text(response.data[0].dateForApplication);
                                                                     row.find('.for-address').text(response.data[0].address);
                                                                     row.find('.for-logistCommentary').text(response.data[0].logistic_commentary);
-
+                                                                    
+                                                                    
                                                                 }
-                                                            }).fail(function () {
-                                                                console.error('AJAX Error');
-                                                            });
+                                                            }
+                                                        }).fail(function () {
+                                                            console.error('AJAX Error');
+                                                        });
+                                                    }
+
+                                                    function clearFields(row) {
+                                                        // Очищаем соответствующие ячейки
+                                                        row.find('.for-id + select').remove();
+                                                        row.find('.for-status, .for-job, .for-interval, .for-planeDate, .for-address, .for-logistCommentary').text('');
+
+                                                        // Очищаем также поле времени
+                                                        setTimeInputValue('', row);
+                                                    }
+
+                                                    function setTimeInputValue(value) {
+                                                        var timeInputField = $('#timeinput');
+                                                        console.log('пися попа кака', timeInputField);
+
+                                                        // Проверьте, не является ли значение пустым
+                                                        if (value !== undefined) {
+                                                            // Получите текущее значение поля
+                                                            var currentValue = timeInputField.val();
+
+                                                            // Проверьте, не является ли текущее значение пустым
+                                                            if (currentValue !== undefined && currentValue !== '') {
+                                                                // Сложите текущее значение и новое значение времени
+                                                                var newValue = addTime(currentValue, value);
+                                                                // Установите новое значение в поле
+                                                                timeInputField.val(newValue);
+                                                                console.log('Updated value:', timeInputField.val());
+                                                            } else {
+                                                                // Если текущее значение пусто, установите новое значение в поле
+                                                                timeInputField.val(value);
+                                                                console.log('Updated value:', timeInputField.val());
+                                                            }
                                                         } else {
-                                                            row.find('.for-id + select').remove();
-                                                            row.find('.for-status, .for-job, .for-interval, .for-planeDate, .for-logistCommentary').text('');
+                                                            console.error('Value is undefined or empty.');
                                                         }
                                                     }
+
+
+                                                        function addTime(time1, time2) {
+                                                            // Разбейте время на часы, минуты и секунды
+                                                            var [hours1, minutes1, seconds1] = time1.split(':').map(Number);
+                                                            var [hours2, minutes2, seconds2] = time2.split(':').map(Number);
+
+                                                            // Сложите значения часов, минут и секунд
+                                                            var sumHours = hours1 + hours2;
+                                                            var sumMinutes = minutes1 + minutes2;
+                                                            var sumSeconds = seconds1 + seconds2;
+
+                                                            // Проверьте и скорректируйте переполнения
+                                                            if (sumSeconds >= 60) {
+                                                                sumSeconds -= 60;
+                                                                sumMinutes++;
+                                                            }
+                                                            if (sumMinutes >= 60) {
+                                                                sumMinutes -= 60;
+                                                                sumHours++;
+                                                            }
+
+                                                            // Форматируйте результат обратно в строку
+                                                            var result = padZero(sumHours) + ':' + padZero(sumMinutes) + ':' + padZero(sumSeconds);
+                                                            return result;
+                                                        }
+
+                                                        function padZero(number) {
+                                                            // Добавьте ведущий ноль, если число меньше 10
+                                                            return number < 10 ? '0' + number : '' + number;
+                                                        }
+
 
                                                     function addRow() {
                                                         var newRow = $("<tr>");
@@ -588,7 +611,16 @@
 
 
 
-
+                                                <script>
+                                                    // Ограничение на формат времени
+                                                    $('#timeinput').on('input', function () {
+                                                        var inputValue = $(this).val();
+                                                        if (!/^\d{1,2}:\d{1,2}:\d{1,2}$/.test(inputValue)) {
+                                                            // Очистить поле, если формат не соответствует Ч:М:C
+                                                            $(this).val('');
+                                                        }
+                                                    });
+                                                </script>
 
 
 

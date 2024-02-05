@@ -63,6 +63,7 @@ class CreateitineraryList extends Controller
                     'selectedPeriod' => $application->selectedPeriod,
                     'dateForApplication' => $application->dateForApplication,
                     'logistic_commentary' => $commentary ? $commentary->logistic_commentary : null,
+                    'timeForApplication' => $application->totalTimesInput,
                     'address' => $addresses->pluck('full_address'), // Предполагается, что у Address есть поле full_address
                     // Добавьте другие поля, если они есть
                 ];

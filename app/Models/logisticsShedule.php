@@ -10,7 +10,7 @@ class logisticsShedule extends Model
     use HasFactory;
 
 
-    protected $fillable = ['logist_id', 'uniqIdentefy', 'start_date', 'is_scheduled', 'reasonForNot'];
+    protected $fillable = ['logist_id', 'uniqIdentefy', 'start_date', 'end_date', 'is_scheduled', 'reasonForNot', 'commentary'];
     
     public function user()
     {

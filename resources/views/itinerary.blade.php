@@ -219,21 +219,13 @@
       <div class="main-panel">
         <div class="content-wrapper">
           <div class="row">
-            <div class="col-lg-6 grid-margin stretch-card">
-              <div class="card">
-              </div>
-            </div>
             <div class="col-lg-12 grid-margin stretch-card">
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 class="card-title">Мрашрутные листы</h4>
-
                     <button class="btn btn-primary" id="createButton"
-                      onclick="window.location.href='{{ route('CreateitineraryList.index') }}'">
-                      Создать
-                    </button>
-
+                      onclick="window.location.href='{{ route('CreateitineraryList.index') }}'">Создать</button>
                   </div>
                   <div class="table-responsive">
                     <table class="table table-striped">
@@ -248,7 +240,6 @@
                           <th>Организация</th>
                         </tr>
                       </thead>
-                      <!-- Your table body goes here -->
                       <tbody>
                         @foreach($routeSheets as $routeSheet)
                         <tr>
@@ -259,14 +250,12 @@
                           <td>{{ $routeSheet->completion_date }}</td>
                           <td>{{ $routeSheet->time_input }}</td>
                           <td>{{ $routeSheet->organization }}</td>
-                          <<td>
-                            <a href="{{ route('route-sheets.viewRouteSheet', ['route_sheet_number' => $routeSheet->route_sheet_number]) }}"
-                              class="btn btn-info">Просмотр</a>
+                          <td>
+                            <a href="{{ route('route-sheets.viewRouteSheet', ['route_sheet_number' => $routeSheet->route_sheet_number]) }}" class="btn btn-info">Просмотр</a>
                             </td>
                         </tr>
                         @endforeach
                       </tbody>
-
                     </table>
                   </div>
                 </div>

@@ -99,6 +99,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/getApplicationById/{id}', 'App\Http\Controllers\CreateitineraryList@getApplicationById')->name('CreateitineraryList.getApplicationById');
     Route::post('/create-route-sheet', 'App\Http\Controllers\RouteSheetController@createRouteSheet');
     Route::get('/route-sheets/{route_sheet_number}', 'App\Http\Controllers\RouteSheetController@viewRouteSheet')->name('route-sheets.viewRouteSheet');
+    Route::get('/getAllApplicationsWithFilters', 'App\Http\Controllers\CreateitineraryList@getAllApplicationsWithFilters')->name('getAllApplicationsWithFilters.getAllApplicationsWithFilters');
+
 
 
     Route::get('/addRoleToUser', 'App\Http\Controllers\addRoleToUserController@index')->name('addRoleToUser.index');

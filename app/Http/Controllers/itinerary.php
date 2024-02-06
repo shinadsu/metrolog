@@ -31,6 +31,7 @@ class itinerary extends Controller
         return User::where('role_id', 2)->get();
     }
 
+    
     public function getStatuses()
     {
         return Statuses::all();

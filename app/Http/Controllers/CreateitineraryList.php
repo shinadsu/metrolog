@@ -15,26 +15,35 @@ class CreateitineraryList extends Controller
         $users = $this->getUsersWithRoleIdTwo();
         $status = $this->getStatuses();
         $organization = $this->getOrganization();
-        $applications = Application::with(['status', 'metrologs.metrolog', 'addresses'])->get();
+        $applications = $this->getAllApplicationsWithOtherModels();
 
+        $currentUserName = auth()->user()->name;
 
         return view('CreateitineraryList', [
             'applications' => $applications,
             'users' => $users,
             'status' => $status,
-            'organization' => $organization
+            'organization' => $organization,
+            'currentUserName' => $currentUserName,
         ]);
     }
 
-    public function getUsersWithRoleIdTwo()
+
+    public function getAllApplicationsWithFilters() 
     {
-        return User::where('role_id', 2)->get();
+        $applications = $this->getAllApplicationsWithOtherModels();
+        return response()->json(['success' => true, 'data' => $applications]);
     }
 
-    public function getStatuses()
+   
+
+    public function getAllApplicationsWithOtherModels()
     {
-        return Statuses::all();
+        $applications = Application::with(['status', 'metrologs.metrolog', 'addresses', 'commentary'])->get();
+        return $applications;
     }
+
+    
 
     public function getApplicationById($id)
     {
@@ -80,5 +89,15 @@ class CreateitineraryList extends Controller
     public function getOrganization()
     {
         return Organization::all();
+    }
+
+    public function getUsersWithRoleIdTwo()
+    {
+        return User::where('role_id', 2)->get();
+    }
+
+    public function getStatuses()
+    {
+        return Statuses::all();
     }
 }

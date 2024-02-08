@@ -16,10 +16,10 @@ class RouteSheetController extends Controller
     public function createRouteSheet(Request $request)
     {
         $routeSheetData = $request->input('routeSheetData');
-        $authorName = $request->input('authorName');
+        $authorName = auth()->user()->name;
         $organizationName = $request->input('organizationName');
         $timeInput = $request->input('timeInput');
-        $completionDate = $request->input('completionDate');
+        $dateForApplication = $request->input('dateForApplication');
         $metrologName = $request->input('metrologName');
         $statusName = $request->input('statusName');
         $routeSheetNumber = $request->input('routeSheetNumber');
@@ -31,7 +31,7 @@ class RouteSheetController extends Controller
             'author' => $authorName,
             'organization' => $organizationName,
             'time_input' => $timeInput,
-            'completion_date' => $completionDate,
+            'completion_date' => $dateForApplication,
             'metrolog' => $metrologName,
             'status' => $statusName
         ]);

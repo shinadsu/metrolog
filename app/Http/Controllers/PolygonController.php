@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use App\Models\Polygons;
+use App\Models\Address;
+use Illuminate\Support\Facades\DB;
 
 class PolygonController extends Controller
 {
@@ -39,7 +41,6 @@ class PolygonController extends Controller
     }
 
 
-
     public function loadPolygons()
     {
         try {
@@ -54,6 +55,7 @@ class PolygonController extends Controller
                 $polygonsData[] = [
                     'id' => $polygon->id,
                     'coordinates' => $polygon->coordinates,
+                    'name' => $polygon->name
                 ];
             }
 
@@ -65,6 +67,33 @@ class PolygonController extends Controller
         }
     }
 
+    public function getCoordinatesFromAddress(Request $request)
+    {
+        $addresses = DB::table('addresses')
+            ->select('id', 'full_address', 'latitude', 'longitude')
+            ->get();
+
+        return response()->json($addresses);
+    }
+
+    public function updateAddressRegion(Request $request)
+    {
+        $addressId = $request->input('address_id');
+        $newRegion = $request->input('new_region');
+
+        // Проверяем, существует ли адрес с указанным ID
+        $address = Address::find($addressId);
+
+        if (!$address) {
+            return response()->json(['error' => 'Address not found.'], 404);
+        }
+
+        // Обновляем регион у адреса
+        $address->region = $newRegion;
+        $address->save();
+
+        return response()->json(['message' => 'Address region updated successfully.']);
+    }
 
 
     public function updatePolygon(Request $request)

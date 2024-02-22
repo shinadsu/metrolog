@@ -94,6 +94,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/loadPolygons', 'App\Http\Controllers\PolygonController@loadPolygons');
     Route::post('/updatePolygon', 'App\Http\Controllers\PolygonController@updatePolygon');
     Route::post('/deletePolygon', 'App\Http\Controllers\PolygonController@deletePolygon');
+    Route::get('/getCoordsForAddress', 'App\Http\Controllers\PolygonController@getCoordinatesFromAddress');
+    Route::post('/updateAddressRegion', 'App\Http\Controllers\PolygonController@updateAddressRegion');
    
 
     // маргрутные листы
@@ -103,7 +105,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/create-route-sheet', 'App\Http\Controllers\RouteSheetController@createRouteSheet');
     Route::get('/route-sheets/{route_sheet_number}', 'App\Http\Controllers\RouteSheetController@viewRouteSheet')->name('route-sheets.viewRouteSheet');
     Route::get('/getAllApplicationsWithFilters', 'App\Http\Controllers\CreateitineraryList@getAllApplicationsWithFilters')->name('getAllApplicationsWithFilters.getAllApplicationsWithFilters');
-
 
 
     Route::get('/addRoleToUser', 'App\Http\Controllers\addRoleToUserController@index')->name('addRoleToUser.index');

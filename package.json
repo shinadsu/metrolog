@@ -19,6 +19,7 @@
         "@fullcalendar/resource": "^6.1.10",
         "@fullcalendar/resource-timeline": "^6.1.10",
         "@googlemaps/js-api-loader": "^1.16.2",
+        "@turf/turf": "^6.5.0",
         "fullcalendar": "^6.1.10",
         "fullcalendar-scheduler": "^6.1.10",
         "lodash": "^4.17.21",

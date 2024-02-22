@@ -338,6 +338,8 @@ document.getElementById('logout-form').submit();">
                                         </div>
                                     </div>
 
+                                    
+
 
                                     <div class="form-group row">
                                         <label for="dateForApplication" class="col-sm-3 col-form-label" required>Дата
@@ -345,7 +347,7 @@ document.getElementById('logout-form').submit();">
                                         <div class="col-sm-9">
                                             <input type="date" name="dateForApplication" class="form-select input-style"
                                                 id="dateForApplication" required>
-                                        </div>  
+                                        </div>
                                     </div>
 
 
@@ -416,7 +418,7 @@ document.getElementById('logout-form').submit();">
                                                         </thead>
                                                         <tbody>
 
-                                                       
+
                                                         </tbody>
 
                                                     </table>

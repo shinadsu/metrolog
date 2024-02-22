@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Statuses;
 use App\Models\Organization;
 
+
 class CreateitineraryList extends Controller
 {
     public function index(Request $request)
@@ -42,6 +43,8 @@ class CreateitineraryList extends Controller
         $applications = Application::with(['status', 'metrologs.metrolog', 'addresses', 'commentary'])->get();
         return $applications;
     }
+
+    
 
     
 

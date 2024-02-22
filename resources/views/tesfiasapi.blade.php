@@ -11,8 +11,6 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <style>
-  </style>
 </head>
 
 <body>
@@ -23,9 +21,14 @@
 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
 <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+<script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+<script src="https://unpkg.com/@turf/turf@latest"></script>
+
+
 
 <script>
-  function getPolygonCoordinates(polygon) {
+  function getPolygonCoordinates(polygon) 
+  {
     if (!polygon || !polygon.getLatLngs) {
       return null;
     }
@@ -35,7 +38,7 @@
 
   var map = L.map('map').setView([55.751244, 37.618423], 10);
   L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+    attribution: '&copy; <a href="https://osm.org/copyright"></a>'
   }).addTo(map);
 
 
@@ -74,19 +77,9 @@
       savePolygonToDatabase(layer, coordinates);
     } else {
       console.log('Это не полигон, не обрабатываем.');
-      console.log(type);
+      // console.log(type);
     }
   });
-
-  var markers = [
-      { lat: 42.990031, lon: 132.40649, title: "Маркер 1" },
-    ];
-   
-  
-
-    markers.forEach(function (marker) {
-      L.marker([marker.lat, marker.lon]).addTo(map).bindPopup(marker.title);
-    });
 
 
   map.on("draw:deleted", function (e) {
@@ -101,7 +94,7 @@
                 if (classList.startsWith('polygon-id-')) {
                     // Выделяем id из класса
                     var polygonId = parseInt(classList.replace('polygon-id-', ''), 10);
-                    console.log(polygonId);
+                    // console.log(polygonId);
 
                     // Теперь у вас есть id полигона, который можно использовать для удаления из базы данных
                     deletePolygonFromDatabase(polygonId);
@@ -111,6 +104,7 @@
         });
     }
 });
+
 
   // Функция для сравнения двух массивов
   function arraysEqual(arr1, arr2) {
@@ -127,7 +121,7 @@
     // Проверяем, есть ли загруженные полигоны
     if (loadedPolygons.length > 0) {
       // Массив для хранения обновленных координат
-      console.log(loadedPolygons);
+      // console.log(loadedPolygons);
       var updatedPolygons = [];
 
       // Итерируем по всем загруженным полигонам
@@ -171,7 +165,8 @@
 
 
 
-  function savePolygonToDatabase(layer, coordinates) {
+  function savePolygonToDatabase(layer, coordinates) 
+  {
     // Отправляем AJAX-запрос на сервер для сохранения координат в базу данных
     $.ajax({
       url: 'http://case.sknewlife.ru/savePolygon',
@@ -193,54 +188,238 @@
     });
   }
 
-  var loadedPolygons = [];
+let loadedPolygons = [];
+let polygonCoords = [];
 
-  // Функция для загрузки данных полигона с сервера
-  function loadPolygons() 
-  {
-      $.ajax({
-          url: 'http://case.sknewlife.ru/loadPolygons',
-          method: 'GET',
-          success: function (response) {
-              // Очищаем массив перед загрузкой новых полигонов
-              loadedPolygons = [];
+// Функция для загрузки данных полигона с сервера
+function loadPolygons() {
 
-              // Обработка полученных данных полигонов
-              response.forEach(function (polygonData) {
-                  // Создание полигона на карте
-                  var polygon = L.polygon(polygonData.coordinates, { color: 'red' }).addTo(map);
+    $.ajax({
+        url: 'http://case.sknewlife.ru/loadPolygons',
+        method: 'GET',
+        success: function (response) {
+            response.forEach(function (polygonData) {
+                var color;
 
-                  // Добавление полигона в группу
-                  drawnFeatures.addLayer(polygon);
+                switch (polygonData.id) {
+                  case 157:
+                      color = 'grey';
+                      break;
+                    case 165:
+                        color = 'orange';
+                        break;
+                    case 166:
+                    case 183:
+                        color = 'purple';
+                        break;
+                    case 167:
+                        color = 'lemonchiffon'; // Лимоновый
+                        break;
+                    case 168:
+                    case 185:
+                        color = 'red';
+                        break;
+                    case 174:
+                        color = 'azure';
+                        break;
+                    case 173:
+                        color = 'lemonchiffon'; // Люминитовый (тот же цвет, что и лимоновый)
+                        break;
+                    case 175:
+                    case 176:
+                    case 177:
+                    case 178:
+                    case 179:
+                    case 180:
+                    case 181:
+                        color = 'diamond'; // Брилиантовый
+                        break;
+                    case 182:
+                        color = 'green';
+                        break;
+                    case 184:
+                        color = 'moonstone'; // Лунный
+                        break;
+                    default:
+                        color = 'red'; // По умолчанию красный цвет
+                }
 
-                  // Добавление полигона в массив
-                  loadedPolygons.push({
-                      id: polygonData.id,
-                      polygon: polygon
-                  });
+                var polygon = L.polygon(polygonData.coordinates, { color: color }).addTo(map);
 
-                  // Получение пути полигона
-                  var path = polygon._path;
+                drawnFeatures.addLayer(polygon);
 
-                  // Добавление id как отдельного класса к элементу <path>
-                  path.classList.add('polygon-id-' + polygonData.id);
-              });
+                loadedPolygons.push({
+                    id: polygonData.id,
+                    polygon: polygon,
+                    coords: polygonData.coordinates
+                });
 
-              console.log('Polygons loaded successfully', response);
-          },
-          error: function (error) {
-              console.error('Failed to load polygons:', error.responseJSON.error);
-          }
-      });
-  }
+                polygonCoords.push({
+                    id: polygonData.id,
+                    polygon: polygon,
+                    coords: polygonData.coordinates
+                });
+
+
+                var path = polygon._path;
+                path.classList.add('polygon-id-' + polygonData.id);
+
+                polygon.bindPopup(polygonData.name);
+            });
+
+            // console.log('Polygons loaded successfully', response);
+
+              // Преобразование в JSON с функцией замены
+            //   var polygonsJSON = JSON.stringify(polygonCoords, function(key, value) {
+            //     if (key === 'polygon') {
+            //         return undefined;  // Исключаем поле 'polygon'
+            //     }
+            //     return value;
+            // });
+
+           fetchData(response);
+            
+        },
+        error: function (error) {
+            console.error('Failed to load polygons:', error.responseJSON.error);
+        }
+    });
+}
+
+// Загрузка полигонов
+loadPolygons();
+
+
 
   
 
+  function fetchData(data) {
+    $.ajax({
+        url: '/getCoordsForAddress', // Укажите путь к вашему контроллеру
+        type: 'GET',
+        dataType: 'json',
+        success: function (response) {
+            
 
-  // Вызов функции загрузки полигонов при загрузке страницы или при необходимости
-  loadPolygons();
+            response.forEach(function (address) {
+                var lat = parseFloat(address.latitude);
+                var lng = parseFloat(address.longitude);
+
+                if (!isNaN(lat) && !isNaN(lng)) {
+                    // Создаем маркер с попапом
+                    var marker = L.marker([lat, lng]).addTo(map)
+                        .bindPopup('<b>' + address.full_address + '</b>');
+     
+                    // Проверяем, в каком полигоне находится адрес
+                    var inPolygon = checkAddressInPolygons(address, data);
+
+                    // Добавляем какой-то визуальный индикатор
+                    if (inPolygon) {
+                        marker.setIcon(L.icon({
+                            iconUrl: 'http://leafletjs.com/docs/images/leaf-green.png',
+                            iconSize: [25, 41],
+                            iconAnchor: [12, 41],
+                            popupAnchor: [1, -34],
+                            shadowSize: [41, 41]
+                        }));
+                    }
+                }
+            });
+        },
+        error: function (error) {
+            console.log(error);
+        }
+    });
+}
 
 
+
+
+
+// Функция для проверки, находится ли точка в полигоне
+function checkAddressInPolygons(address, data) {
+    var addressCoords = [parseFloat(address.latitude), parseFloat(address.longitude)];
+   
+
+    for (var key in data) {
+        if (data.hasOwnProperty(key)) {
+            var polygon = data[key].coordinates;
+
+            if (polygon.length > 0) {
+                var isInside = isPointInPolygon(addressCoords, polygon);
+
+                if (isInside) {
+                    console.log(`Address ${address.id} is inside Polygon ${data[key].id} and his name is ${data[key].name}`);
+                    
+                    // Отправляем данные на сервер
+                    updateAddressRegion(address.id, data[key].name);
+                } else {
+                    console.error(`Address ${address.id} is outside Polygon ${data[key].id}`);
+                }
+            } else {
+                console.error(`Empty polygon for Address ${address.id}`);
+            }
+        }
+    }
+
+    return false;
+}
+
+
+// Функция для проверки, находится ли точка в полигоне
+function isPointInPolygon(point, polygon) 
+{
+    var lat = point[0];
+    var lng = point[1];
+
+    var vertices = polygon.length;
+    var intersections = 0;
+
+    for (var i = 0; i < vertices; i++) {
+        var vertex1 = polygon[i];
+        var vertex2 = polygon[(i + 1) % vertices];
+
+        if (
+            (vertex1.lng < lng && vertex2.lng >= lng || vertex2.lng < lng && vertex1.lng >= lng) &&
+            (vertex1.lat + (lng - vertex1.lng) / (vertex2.lng - vertex1.lng) * (vertex2.lat - vertex1.lat) < lat)
+        ) {
+            intersections++;
+        }
+    }
+
+    return intersections % 2 !== 0;
+}
+
+
+
+
+function updateAddressRegion(addressId, regionName) {
+    // Отправляем AJAX-запрос на сервер для обновления поля "region" в таблице адресов
+    $.ajax({
+        url: '/updateAddressRegion',
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        data: {
+            address_id: addressId,  // Используйте 'address_id' вместо 'id'
+            new_region: regionName
+        },
+        success: function (response) {
+            console.log(response.message);
+        },
+        error: function (error) {
+            if (error.responseJSON && error.responseJSON.error) {
+                console.error('Не удалось обновить регион адреса:', error.responseJSON.error);
+            } else {
+                console.error('Не удалось обновить регион адреса. Подробности ошибки:', error);
+            }
+        }
+    });
+}
+
+
+  
   function deletePolygonFromDatabase(polygonId) {
     $.ajax({
       url: 'http://case.sknewlife.ru/deletePolygon',
@@ -261,6 +440,15 @@
       }
     });
   }
+
+ 
+  // Загружаем полигоны при запуске страницы
+  loadPolygons();
+
+// Загружаем данные адресов при запуске страницы
+  fetchData();
+
+
 
   function getCookie(name) {
     const cookies = document.cookie.split(';');

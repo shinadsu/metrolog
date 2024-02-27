@@ -358,6 +358,9 @@
 
                                                 <button type="button" id="createRouteSheetButton"
                                                     class="btn btn-success">Создать маршрутный лист</button>
+                                                
+                                                    <button type="button" id="showOnMapButton"
+                                                    class="btn btn-success">Показать н карте</button>     
                                             </div>
                                         </div>
                                 </div>
@@ -437,41 +440,9 @@
                                             </div>
 
 
-
-
-
-
                                             <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-
-
-                                            <!-- <script>
-                                                $(document).ready(function () {
-                                                    // Обработчик события для кнопки "Добавить"
-                                                    $("#addButton").on("click", function () {
-                                                        // Генерация новой записи (пример)
-                                                        var newRowHtml = '<tr><td>New</td><td>Record</td><td>...</td></tr>';
-
-                                                        // Вставляем новую запись в таблицу
-                                                        $("#applicationsTable tbody").append(newRowHtml);
-
-                                                        // Автоматический переход к вводу "Заявка наряд"
-                                                        $("#fillButton").trigger("click");
-                                                    });
-
-                                                    // Обработчик события для кнопки "Заполнить"
-                                                    $("#fillButton").on("click", function () {
-                                                        // Ваш текущий код обработки кнопки "Заполнить"
-                                                        // ...
-                                                    });
-                                                });
-
-                                            </script> -->
-
-
-
-
-
+                                       
                                             <!-- Добавленный код: скрипт для поиска по ID -->
                                             <script>
                                                 $(document).ready(function () {
@@ -502,6 +473,9 @@
                                                             });
                                                         }
                                                     }
+                                                
+                                                    
+                                                  
 
                                                     function fetchDataForId(inputValue, row) {
                                                         console.log('Fetching data for ID:', inputValue);
@@ -571,7 +545,11 @@
                                                         var rowCount = $('#applicationsTable tbody tr').length + 1;
                                                         newRow.append('<td>' + rowCount + '</td>');
 
-                                                        var cellClasses = ['for-id', 'for-status', 'for-job', 'for-metrolog', 'for-interval', 'for-planeDate', 'for-address', 'for-logistCommentary'];
+                                                        var cellClasses = [
+                                                        'for-id', 'for-status', 
+                                                        'for-job', 'for-metrolog', 
+                                                        'for-interval', 'for-planeDate', 
+                                                        'for-address', 'for-logistCommentary'];
 
                                                         for (var i = 0; i < cellClasses.length; i++) {
                                                             newRow.append('<td contenteditable="true" class="' + cellClasses[i] + '"></td>');
@@ -602,9 +580,39 @@
 
 
 
+                                            <script>
+                                                $(document).ready(function () {
+                                                    $("#showOnMapButton").on("click", function () {
+                                                        // Получаем все id из таблицы
+                                                        var applicationIds = [];
+                                                        var csrfToken = '{{ csrf_token() }}'; // Получаем CSRF-токен для запросов
+                                                        $("#applicationsTable tbody tr").each(function () {
+                                                            var applicationId = $(this).find("td:nth-child(2)").text();
+                                                            applicationIds.push(applicationId);
+                                                        });
 
-
-
+                                                        
+                                                        // Отправляем AJAX-запрос
+                                                        $.ajax({
+                                                            type: "POST",
+                                                            url: "http://case.sknewlife.ru/showOnMap", // Замените на реальный путь к методу контроллера
+                                                            data: { applicationIds: applicationIds },
+                                                            headers: {
+                                                                'X-CSRF-TOKEN': csrfToken,
+                                                            },
+                                                            success: function (response) {
+                                                                console.log("Успешно отправлено на сервер:", response);
+                                                                window.open('http://case.sknewlife.ru/testfias', '_blank');
+                                                            },
+                                                            error: function (error) {
+                                                                console.error("Ошибка при отправке на сервер:", error);
+                                                                // Обработайте ошибку здесь
+                                                            }
+                                                            
+                                                        });
+                                                    });
+                                                });
+                                            </script>   
 
 
                                             <script>
@@ -618,14 +626,6 @@
                                                     // Ваш остальной JavaScript код...
                                                 });
                                             </script>
-
-
-
-
-
-
-
-
 
 
                                             <script>

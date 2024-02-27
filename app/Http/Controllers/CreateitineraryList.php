@@ -7,7 +7,7 @@ use App\Models\Application;
 use App\Models\User;
 use App\Models\Statuses;
 use App\Models\Organization;
-
+use App\Models\Regions;
 
 class CreateitineraryList extends Controller
 {
@@ -17,18 +17,21 @@ class CreateitineraryList extends Controller
         $status = $this->getStatuses();
         $organization = $this->getOrganization();
         $applications = $this->getAllApplicationsWithOtherModels();
+        $region = $this->getAllRegions();
 
         $currentUserName = auth()->user()->name;
 
-        return view('CreateitineraryList', [
+        return view('CreateitineraryList', 
+        [
             'applications' => $applications,
             'users' => $users,
             'status' => $status,
             'organization' => $organization,
             'currentUserName' => $currentUserName,
+            'region' => $region,
         ]);
     }
-
+    
 
     public function getAllApplicationsWithFilters() 
     {
@@ -45,7 +48,12 @@ class CreateitineraryList extends Controller
     }
 
     
-
+    public function getAllRegions() 
+    {
+        // получение списка всех регионов
+        $regions = Regions::all();
+        return $regions;
+    }
     
 
     public function getApplicationById($id)

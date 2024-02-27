@@ -96,6 +96,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/deletePolygon', 'App\Http\Controllers\PolygonController@deletePolygon');
     Route::get('/getCoordsForAddress', 'App\Http\Controllers\PolygonController@getCoordinatesFromAddress');
     Route::post('/updateAddressRegion', 'App\Http\Controllers\PolygonController@updateAddressRegion');
+    Route::post('/showOnMap', 'App\Http\Controllers\PolygonController@showOnMap');
+    Route::get('/getAddressesInfo', 'App\Http\Controllers\PolygonController@getAddressesInfo');
    
 
     // маргрутные листы

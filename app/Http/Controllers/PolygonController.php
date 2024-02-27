@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use App\Models\Polygons;
 use App\Models\Address;
+use App\Models\addressApplication;
 use Illuminate\Support\Facades\DB;
 
 class PolygonController extends Controller
@@ -40,6 +41,53 @@ class PolygonController extends Controller
         }
     }
 
+    public function showOnMap(Request $request)
+    {
+        $applicationIds = $request->input('applicationIds');
+        $addressIds = [];
+    
+        foreach ($applicationIds as $applicationId) {
+            $addressApplication = AddressApplication::where('application_id', $applicationId)->first();
+    
+            if ($addressApplication) {
+                $addressIds[] = $addressApplication->address_id;
+            }
+        }
+    
+        return $addressIds;
+    }
+
+    public function getAddressesInfo(Request $request)
+    {
+        $addressIds = $this->showOnMap($request);
+
+        $response = [];
+
+        foreach ($addressIds as $addressId) {
+            $address = Address::find($addressId);
+
+            if ($address) {
+                $response[] = [
+                    'id' => $address->id,
+                    'full_address' => $address->full_address,
+                    'latitude' => $address->latitude,
+                    'longitude' => $address->longitude,
+                ];
+            }
+        }
+
+        return response()->json($response);
+    }
+
+    public function getCoordinatesFromAddress(Request $request)
+    {
+        $addresses = DB::table('addresses')
+            ->select('id', 'full_address', 'latitude', 'longitude')
+            ->get();
+
+        return response()->json($addresses);
+    }
+
 
     public function loadPolygons()
     {
@@ -67,14 +115,7 @@ class PolygonController extends Controller
         }
     }
 
-    public function getCoordinatesFromAddress(Request $request)
-    {
-        $addresses = DB::table('addresses')
-            ->select('id', 'full_address', 'latitude', 'longitude')
-            ->get();
-
-        return response()->json($addresses);
-    }
+    
 
     public function updateAddressRegion(Request $request)
     {

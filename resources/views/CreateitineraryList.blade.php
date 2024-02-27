@@ -15,8 +15,7 @@
     <!-- <link rel="stylesheet" href="{{ 'assets/vendors/select2/select2.min.css' }}">
 <link rel="stylesheet" href="{{ 'assets/vendors/select2-bootstrap-theme/select2-bootstrap.min.css' }}"> -->
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
-        integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
 
     <!-- JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
@@ -25,6 +24,7 @@
     <!-- End plugin css for this page -->
     <!-- inject:css -->
     <link rel="stylesheet" href="{{ 'assets/css/vertical-layout-light/style.css' }}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
     <!-- endinject -->
     <link rel="shortcut icon" href="{{ 'assets/images/favicon.png' }}" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -314,6 +314,9 @@ document.getElementById('logout-form').submit();">
 
                                                 <button type="button" id="createRouteSheetButton"
                                                     class="btn btn-success">Создать маршрутный лист</button>
+
+                                                    <button type="button" id="createRouteSheetButton"
+                                                    class="btn btn-success">Показать н карте</button>
                                             </div>
                                         </div>
                                 </div>
@@ -367,29 +370,35 @@ document.getElementById('logout-form').submit();">
                                             </select>
                                         </div>
                                     </div>
-
-
-
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered">
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Регион</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                            </tbody>
-                                        </table>
-                                    </div>
                                 </div>
                             </div>
                         </div>
 
 
 
-
+                        <div class="col-12 grid-margin stretch-card">
+                            <div class="card">
+                                <div class="card-body">
+                                <h4 class="card-title">Округа</h4>
+                                        <table class="table table-bordered" id="regionsTable">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Регион</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($region as $index => $regionItem)
+                                            <tr>
+                                                <td>{{ $index + 1 }}</td>
+                                                <td>{{ $regionItem->name }}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                        </table>
+                                </div>
+                            </div>
+                            </div>
 
 
 
@@ -426,7 +435,20 @@ document.getElementById('logout-form').submit();">
                                             </div>
 
 
+                                            
+
+
                                             <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+                                          
+                                            <script>
+                                                // Initialize DataTables with a page length of 3 (showing only 3 rows)
+                                                $(document).ready(function() {
+                                                    $('#regionsTable').DataTable({
+                                                        "paging": true, // Enable or disable pagination
+                                                        "pageLength": 3, // Set the number of rows per page
+                                                    });
+                                                });
+                                            </script>
 
 
                                             <!-- Добавленный код: скрипт для поиска по ID -->
@@ -951,14 +973,7 @@ document.getElementById('logout-form').submit();">
                                             </script>
 
 
-                                            <script>
-                                                $(document).ready(function () {
-                                                    // Обрабатываем клик на чекбоксе
-                                                    $('#changeMetrologCheckbox').on('click', function () {
-                                                        // Ваш код обработки события
-                                                    });
-                                                });
-                                            </script>
+                                           
 
 
                                             <script>
@@ -1024,6 +1039,15 @@ document.getElementById('logout-form').submit();">
                                                 });
                                             </script>
 
+                                             <script>
+                                                $(document).ready(function () {
+                                                    // Обрабатываем клик на чекбоксе
+                                                    $('#changeMetrologCheckbox').on('click', function () {
+                                                        // Ваш код обработки события
+                                                    });
+                                                });
+                                            </script>
+
 
 
 
@@ -1041,6 +1065,7 @@ document.getElementById('logout-form').submit();">
                                                 src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
                                             <script
                                                 src="https://cdn.jsdelivr.net/npm/air-datepicker@2.2.3/dist/js/datepicker.min.js"></script>
+                                                <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
 
                                             <script
                                                 src="{{ 'assets/vendors/typeahead.js/typeahead.bundle.min.js' }} "></script>

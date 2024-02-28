@@ -49,7 +49,7 @@ class RouteSheetController extends Controller
     }
 
     public function viewRouteSheet($route_sheet_number)
-    {   
+    {
         $users = $this->getUsersWithRoleIdTwo();
         $status = $this->getStatuses();
         $organization = $this->getOrganization();

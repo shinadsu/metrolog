@@ -266,7 +266,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h4 class="card-title">Маршрутный лист (№<span id="routeSheetNumber">{{
-                                            $routeSheet->route_sheet_number }}</span>) от
+    $routeSheet->route_sheet_number }}</span>) от
                                         <span id="currentDateTime">{{ $routeSheet->current_date_time }}</span>
                                     </h4>
 
@@ -359,8 +359,8 @@
                                                 <button type="button" id="createRouteSheetButton"
                                                     class="btn btn-success">Создать маршрутный лист</button>
                                                 
-                                                    <button type="button" id="showOnMapButton"
-                                                    class="btn btn-success">Показать н карте</button>     
+                                                    <button type="button" id="showOnMapButton" class="btn btn-success" data-show-on-map="true">Показать на карте</button>
+
                                             </div>
                                         </div>
                                 </div>
@@ -422,9 +422,15 @@
                                                                 <td>{{ $key + 1 }}</td>
                                                                 <td>{{ $application->id }}</td>
                                                                 <td>{{ $application->status->name }}</td>
-                                                                <td>{{ implode(', ',
-                                                                    array_keys(json_decode($application->productsInfo,
-                                                                    true))) }}</td>
+                                                                <td>{{ implode(
+                                                                                ', ',
+                                                                                array_keys(
+                                                                                    json_decode(
+                                                                                        $application->productsInfo,
+                                                                                        true
+                                                                                    )
+                                                                                )
+                                                                            ) }}</td>
                                                                 <td>{{ $routeSheet->metrolog }}</td>
                                                                 <td>{{ $application->selectedPeriod }}</td>
                                                                 <td>{{ $application->dateForApplication }}</td>
@@ -579,7 +585,6 @@
                                             </script>
 
 
-
                                             <script>
                                                 $(document).ready(function () {
                                                     $("#showOnMapButton").on("click", function () {
@@ -591,28 +596,35 @@
                                                             applicationIds.push(applicationId);
                                                         });
 
-                                                        
+                                                        console.log(applicationIds);
                                                         // Отправляем AJAX-запрос
                                                         $.ajax({
                                                             type: "POST",
-                                                            url: "http://case.sknewlife.ru/showOnMap", // Замените на реальный путь к методу контроллера
-                                                            data: { applicationIds: applicationIds },
+                                                            url: "http://case.sknewlife.ru/postAddressStructureForMap",
+                                                            data: { applicationIds: applicationIds }, // Обратите внимание на JSON.stringify
                                                             headers: {
                                                                 'X-CSRF-TOKEN': csrfToken,
                                                             },
                                                             success: function (response) {
                                                                 console.log("Успешно отправлено на сервер:", response);
-                                                                window.open('http://case.sknewlife.ru/testfias', '_blank');
+
+                                                                // Добавляем информацию о нажатии кнопки в localStorage
+                                                                localStorage.setItem('showOnMapButtonClicked', 'true');
+                                                                localStorage.setItem('showOnMapData', JSON.stringify(response));
+                                                                // console.log(response);
+
+                                                                // Открываем новое окно после успешного выполнения
+                                                                window.open('http://case.sknewlife.ru/routesmap', '_blank');
                                                             },
                                                             error: function (error) {
                                                                 console.error("Ошибка при отправке на сервер:", error);
+                                                            
                                                                 // Обработайте ошибку здесь
                                                             }
-                                                            
                                                         });
                                                     });
                                                 });
-                                            </script>   
+                                            </script>
 
 
                                             <script>

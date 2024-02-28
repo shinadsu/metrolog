@@ -23,7 +23,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/order', 'App\Http\Controllers\OrderController@index')->name('order.index');
     Route::get('/InfoAboutWorkers', 'App\Http\Controllers\InfoAboutMetrologController@index')->name('InfoAboutWorkers.index');
 
-    
+
     Route::get('/create', 'App\Http\Controllers\CustomAppController@index')->name('create.index');
     Route::post('/create', 'App\Http\Controllers\CustomAppController@store')->name('create.store');
     Route::get('/addresses', 'App\Http\Controllers\ShowAddressController@index')->name('addresses.index');
@@ -48,7 +48,7 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/applicationsandaddresses/{id}', 'App\Http\Controllers\ShowApplicationAndAddressesController@update')->name('updateappandaddress.update');
     Route::get('/testforapplicationandaddress', 'App\Http\Controllers\TestAppAddress@index')->name('testforapplicationandaddress.index');
 
-    
+
     // график работы операторов
     Route::get('/operatorshedule', 'App\Http\Controllers\OperatorSheduleController@index')->name('operatorshedule.index');
     Route::get('/operator', 'App\Http\Controllers\OperatorSettingsController@index')->name('OperatorSettings.index');
@@ -57,7 +57,7 @@ Route::middleware(['auth'])->group(function () {
 
     // список заявок оператора
     Route::get('/applicationsoperator/{id}', 'App\Http\Controllers\ApplicationOperatorController@show')->name('operatorapplication.show');
-    
+
 
     // график работы логистов
     Route::get('/logistics', 'App\Http\Controllers\LogisticSettingsController@index')->name('logisticshedule.index');
@@ -82,8 +82,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/testfias', function () {
         return view('tesfiasapi');
     })->name('fias');
+    Route::get('/routesmap', 'App\Http\Controllers\RouteForSingleController@index')->name('/routersForRoute');
 
-    
+
     Route::post('/api/getAddressItems', 'App\Http\Controllers\ApiController@getAddressItems');
     Route::post('/api/postAddress', 'App\Http\Controllers\ApiController@postAddress');
     Route::post('/api/postNewAddress', 'App\Http\Controllers\ApiController@postNewAddress');
@@ -96,9 +97,11 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/deletePolygon', 'App\Http\Controllers\PolygonController@deletePolygon');
     Route::get('/getCoordsForAddress', 'App\Http\Controllers\PolygonController@getCoordinatesFromAddress');
     Route::post('/updateAddressRegion', 'App\Http\Controllers\PolygonController@updateAddressRegion');
-    Route::post('/showOnMap', 'App\Http\Controllers\PolygonController@showOnMap');
+    // Route::post('/getAddressesInfo', 'App\Http\Controllers\PolygonController@getAddressesInfo');
     Route::get('/getAddressesInfo', 'App\Http\Controllers\PolygonController@getAddressesInfo');
-   
+
+
+    Route::post('/postAddressStructureForMap', 'App\Http\Controllers\RouteForSingleController@postAddressStructureForMap');
 
     // маргрутные листы
     Route::get('/itinerary', 'App\Http\Controllers\itinerary@index');
@@ -112,7 +115,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/addRoleToUser', 'App\Http\Controllers\addRoleToUserController@index')->name('addRoleToUser.index');
     Route::post('/addRoleToUser/update', 'App\Http\Controllers\addRoleToUserController@update')->name('addRoleToUser.update');
 
-  
+
 
 });
 

@@ -41,32 +41,31 @@ class PolygonController extends Controller
         }
     }
 
-    public function showOnMap(Request $request)
-    {
-        $applicationIds = $request->input('applicationIds');
-        $addressIds = [];
-    
-        foreach ($applicationIds as $applicationId) {
-            $addressApplication = AddressApplication::where('application_id', $applicationId)->first();
-    
-            if ($addressApplication) {
-                $addressIds[] = $addressApplication->address_id;
-            }
-        }
-    
-        return $addressIds;
-    }
-
     public function getAddressesInfo(Request $request)
     {
-        $addressIds = $this->showOnMap($request);
+        $applicationIds = $request->input('applicationIds');
+        // dd($applicationIds);
+
+        // Проверка на null и массив
+        if (empty($applicationIds)) {
+            return response()->json(['error' => 'null'], 400);
+        }
 
         $response = [];
 
-        foreach ($addressIds as $addressId) {
-            $address = Address::find($addressId);
+        foreach ($applicationIds as $applicationId) {
+            $addressApplication = AddressApplication::where('application_id', $applicationId)->first();
 
-            if ($address) {
+            // Проверка на null
+            if ($addressApplication) {
+                $address = Address::find($addressApplication->address_id);
+
+                // Проверка на null после запроса к базе данных
+                if ($address === null) {
+                    \Log::error('Address with id ' . $addressApplication->address_id . ' not found in the database.');
+                    continue; // Пропускаем текущую итерацию цикла
+                }
+
                 $response[] = [
                     'id' => $address->id,
                     'full_address' => $address->full_address,
@@ -76,8 +75,18 @@ class PolygonController extends Controller
             }
         }
 
+        // dd($response);
+
+        // Добавим проверку, если массив $response пустой
+        if (empty($response)) {
+            return response()->json(['error' => 'No matching addresses found'], 404);
+        }
+
         return response()->json($response);
     }
+
+
+
 
     public function getCoordinatesFromAddress(Request $request)
     {
@@ -115,7 +124,7 @@ class PolygonController extends Controller
         }
     }
 
-    
+
 
     public function updateAddressRegion(Request $request)
     {
@@ -141,27 +150,27 @@ class PolygonController extends Controller
     {
         try {
             $polygons = $request->input('polygons');
-    
+
             // Преобразуем JSON-строку в массив
             $polygonsArray = json_decode($polygons, true);
-    
+
             // Проверяем, что полигоны являются валидными данными
             if (!is_array($polygonsArray)) {
                 throw new \InvalidArgumentException('Invalid polygons format');
             }
-    
+
             foreach ($polygonsArray as $polygonData) {
                 $polygonId = $polygonData['id'];
                 $coordinates = $polygonData['coordinates'];
-    
+
                 // Проверяем, что координаты являются валидными данными
                 if (!is_array($coordinates)) {
                     throw new \InvalidArgumentException('Invalid coordinates format');
                 }
-    
+
                 // Проверяем, существует ли полигон с указанным ID
                 $polygon = Polygons::find($polygonId);
-    
+
                 if ($polygon) {
                     // Если полигон существует, обновим его координаты
                     $polygon->update([
@@ -171,14 +180,14 @@ class PolygonController extends Controller
                     // Если полигон не существует, вы можете выбрать другие действия, например, создать новый полигон
                 }
             }
-    
+
             return response()->json(['message' => 'Polygons updated successfully']);
         } catch (\Exception $e) {
             // Обработка других исключений
             return response()->json(['error' => $e->getMessage()]);
         }
     }
-    
+
 
     public function deletePolygon(Request $request)
     {

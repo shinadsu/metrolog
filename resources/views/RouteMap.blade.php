@@ -176,21 +176,10 @@
           </thead>
           <tbody>
             <tr>
-              <td>1</td>
-              <td><input type="checkbox"></td>
-              <td>123</td>
-              <td>Регламент 1</td>
-              <td>Интервал 1</td>
-              <td>Адрес 1, который может быть достаточно большим и создавать горизонтальный скролл</td>
-              <td>комментарий</td>
+            
             </tr>
             <tr>
-              <td>2</td>
-              <td><input type="checkbox"></td>
-              <td>456</td>
-              <td>Регламент 2</td>
-              <td>Интервал 2</td>
-              <td>Адрес 2, который может быть достаточно большим и создавать горизонтальный скролл</td>
+             
             </tr>
           </tbody>
         </table>
@@ -208,6 +197,8 @@ var currentId = 1; // Начальное значение id
 var currentPolygon;
 var selectedLines = [];
 var polyline;
+let loadedPolygons = [];
+let polygonCoords = [];
 
 function getPolygonCoordinates(polygon) {
   if (!polygon || !polygon.getLatLngs) {
@@ -364,145 +355,220 @@ function savePolygonToDatabase(layer, coordinates) {
   });
 }
 
-let loadedPolygons = [];
-let polygonCoords = [];
+$(document).ready(function () {
+    // Проверяем, была ли нажата кнопка "Показать на карте"
+    var showOnMapButtonClicked = localStorage.getItem('showOnMapButtonClicked');
+    var totalHours = 0;
 
-// Функция для загрузки данных полигона с сервера
-function loadPolygons() {
+    if (showOnMapButtonClicked === 'true') {
+        // Передаем данные из localStorage в функцию
+        var data = JSON.parse(localStorage.getItem('showOnMapData'));
+        var secondAjaxData = JSON.parse(localStorage.getItem('secondAjaxData'));
 
-  $.ajax({
-    url: 'http://case.sknewlife.ru/loadPolygons',
-    method: 'GET',
-    success: function (response) {
-      response.forEach(function (polygonData) {
-        var color;
+        // Загружаем полигоны
+        loadPolygons()
+            .then(function (polygons) {
+                // Вызываем функцию showOnMap с данными обоих запросов и полигонами
+                showOnMap(data, polygons);
 
-        switch (polygonData.id) {
-          case 157:
-            color = 'grey';
-            break;
-          case 165:
-            color = 'orange';
-            break;
-          case 166:
-          case 183:
-            color = 'purple';
-            break;
-          case 167:
-            color = 'lemonchiffon'; // Лимоновый
-            break;
-          case 168:
-          case 185:
-            color = 'red';
-            break;
-          case 174:
-            color = 'azure';
-            break;
-          case 173:
-            color = 'lemonchiffon'; // Люминитовый (тот же цвет, что и лимоновый)
-            break;
-          case 175:
-          case 176:
-          case 177:
-          case 178:
-          case 179:
-          case 180:
-          case 195:
-            color = 'blue'; // Брилиантовый
-            break;
-          case 182:
-            color = 'green';
-            break;
-          case 184:
-            color = 'moonstone'; // Лунный
-            break;
-          default:
-            color = 'red'; // По умолчанию красный цвет
-        }
+                // Остальной код для отображения таблицы и сброса информации
+                secondAjaxData.forEach(function (item, index) {
+                    // Создаем строку таблицы
+                    var row = '<tr>' +
+                        '<td>' + (index + 1) + '</td>' +
+                        '<td><input type="checkbox" id="checkbox' + index + '"></td>' +
+                        '<td>' + item.applicationId + '</td>' +
+                        '<td>' + item.totalTimesInput + '</td>' +
+                        '<td>' + item.selectedPeriod + '</td>' +
+                        '<td>' + item.fullAddress + '</td>' +
+                        '<td></td>' + // Поле "Комментарий логисту" пустое
+                        '</tr>';
 
-        var polygon = L.polygon(polygonData.coordinates, { color: color }).addTo(map);
+                    // Добавляем строку в tbody таблицы
+                    $('table tbody').append(row);
 
-        drawnFeatures.addLayer(polygon);
+                    // Суммируем часы (предполагается, что totalTimesInput в формате HH:mm:ss)
+                    var hoursMinutesSeconds = item.totalTimesInput.split(':');
+                    totalHours += parseInt(hoursMinutesSeconds[0]) * 3600 + parseInt(hoursMinutesSeconds[1]) * 60 + parseInt(hoursMinutesSeconds[2]);
+                });
 
-        loadedPolygons.push({
-          id: polygonData.id,
-          polygon: polygon,
-          coords: polygonData.coordinates
-        });
+                // Отображаем общее количество часов в поле "Кол-во часов"
+                $('#hours').val(formatTime(totalHours));
 
-        polygonCoords.push({
-          id: polygonData.id,
-          polygon: polygon,
-          coords: polygonData.coordinates
-        });
-
-
-        var path = polygon._path;
-        path.classList.add('polygon-id-' + polygonData.id);
-
-        polygon.bindPopup(polygonData.name);
-      });
-
-
-    //   fetchData(response);
-
-    },
-    error: function (error) {
-      console.error('Failed to load polygons:', error.responseJSON.error);
+                // Сбрасываем информацию о нажатии кнопки
+                localStorage.setItem('showOnMapButtonClicked', 'false');
+                localStorage.removeItem('showOnMapData'); // Опционально, чтобы не хранить лишнюю информацию
+                localStorage.removeItem('secondAjaxData'); // Опционально, чтобы не хранить лишнюю информацию
+            })
+            .catch(function (error) {
+                console.error('Failed to load polygons:', error);
+            });
     }
-  });
-}
-
-$(document).ready(function () 
-{
-// Проверяем, была ли нажата кнопка "Показать на карте"
-  var showOnMapButtonClicked = localStorage.getItem('showOnMapButtonClicked');
-
-  if (showOnMapButtonClicked === 'true') {
-      // Передаем данные из localStorage в функцию
-      var data = JSON.parse(localStorage.getItem('showOnMapData'));
-      // console.log(data);
-      console.log(data);
-      showOnMap(data);
-
-      // Сбрасываем информацию о нажатии кнопки
-      localStorage.setItem('showOnMapButtonClicked', 'false');
-      localStorage.removeItem('showOnMapData'); // Опционально, чтобы не хранить лишнюю информацию
-  }
 });
 
-function showOnMap(data) {
-  data.forEach(function (address) {
-      var lat = parseFloat(address.latitude);
-      var lng = parseFloat(address.longitude);
+function loadPolygons() {
+    return new Promise(function (resolve, reject) {
+        $.ajax({
+            url: 'http://case.sknewlife.ru/loadPolygons',
+            method: 'GET',
+            success: function (response) {
+                var loadedPolygons = [];
 
-      if (!isNaN(lat) && !isNaN(lng)) {
-         
-          var marker = L.marker([lat, lng]).addTo(map)
-              .bindPopup('<b>' + address.full_address + '</b>');
+                response.forEach(function (polygonData) {
+                  var color;
 
-        //   marker.on('click', onMarkerClick);
-      }
-  });
+                  switch (polygonData.id) {
+                      case 157:
+                        color = 'grey';
+                        break;
+                      case 165:
+                        color = 'orange';
+                        break;
+                      case 166:
+                      case 183:
+                        color = 'purple';
+                        break;
+                      case 167:
+                        color = 'lemonchiffon'; // Лимоновый
+                        break;
+                      case 168:
+                      case 185:
+                        color = 'red';
+                        break;
+                      case 174:
+                        color = 'azure';
+                        break;
+                      case 173:
+                        color = 'lemonchiffon'; // Люминитовый (тот же цвет, что и лимоновый)
+                        break;
+                      case 175:
+                      case 176:
+                      case 177:
+                      case 178:
+                      case 179:
+                      case 180:
+                      case 195:
+                        color = 'blue'; // Брилиантовый
+                        break;
+                      case 182:
+                        color = 'green';
+                        break;
+                      case 184:
+                        color = 'moonstone'; // Лунный
+                        break;
+                      default:
+                        color = 'red'; // По умолчанию красный цвет
+                    }
+
+                    var polygon = L.polygon(polygonData.coordinates, { color: color }).addTo(map);
+                    loadedPolygons.push({
+                        id: polygonData.id,
+                        name: polygonData.name,
+                        coordinates: polygonData.coordinates
+                    });
+
+                    var path = polygon._path;
+                    path.classList.add('polygon-id-' + polygonData.id);
+
+                    polygon.bindPopup(polygonData.name);
+                });
+
+                // Разрешаем обещание с данными о полигонах
+                resolve(loadedPolygons);
+            },
+            error: function (error) {
+                // Отклоняем обещание с ошибкой
+                reject(error.responseJSON.error);
+            }
+        });
+    });
+}
+
+// Определите функцию showOnMap с двумя параметрами: data и polygons
+function showOnMap(data, polygons) {
+    data.forEach(function (address) {
+        var lat = parseFloat(address.latitude);
+        var lng = parseFloat(address.longitude);
+
+        if (!isNaN(lat) && !isNaN(lng)) {
+            var marker = L.marker([lat, lng]).addTo(map)
+                .bindPopup('<b>' + address.full_address + '</b>');
+
+            var inPolygon = checkAddressInPolygons(address, polygons);
+
+            marker.on('click', onMarkerClick);
+        }
+    });
 }
 
 
 
-function checkAddressInPolygons(address, data) {
+
+// Функция форматирования времени
+function formatTime(seconds) {
+    var hours = Math.floor(seconds / 3600);
+    var minutes = Math.floor((seconds % 3600) / 60);
+    var formattedTime = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
+    return formattedTime;
+}
+
+
+
+
+function onMarkerClick(event) {
+    var marker = event.target;
+
+    // Проверяем, есть ли уже маркер в списке выбранных
+    var index = selectedMarkers.indexOf(marker);
+
+    if (index === -1) {
+        // Если маркера нет в списке, добавляем его
+        selectedMarkers.push(marker);
+
+        // Здесь можно добавить логику, связанную с выбором маркера
+    } else {
+        // Если маркер уже выбран, удаляем его из списка
+        selectedMarkers.splice(index, 1);
+
+        // Здесь можно добавить логику, связанную с отменой выбора маркера
+    }
+
+    // Перерисовываем polyline с новыми выбранными маркерами
+    updatePolyline();
+}
+
+function updatePolyline() {
+    // Если уже есть polyline на карте, удаляем его
+    if (polyline) {
+        map.removeLayer(polyline);
+    }
+
+    // Создаем новый polyline с координатами выбранных маркеров
+    var polylineCoords = selectedMarkers.map(function (marker) {
+        return marker.getLatLng();
+    });
+
+    // Добавляем новый polyline на карту
+    polyline = L.polyline(polylineCoords, {color: 'blue'}).addTo(map);
+}
+
+
+
+function checkAddressInPolygons(address, polygons) {
   var addressCoords = [parseFloat(address.latitude), parseFloat(address.longitude)];
 
-  for (var key in data) {
-    if (data.hasOwnProperty(key)) {
-      var polygon = data[key].coordinates;
+  for (var key in polygons) {
+    if (polygons.hasOwnProperty(key)) {
+      var polygon = polygons[key].coordinates;
 
       if (polygon.length > 0) {
         var isInside = isPointInPolygon(addressCoords, polygon);
 
         if (isInside) {
-          console.log(`Address ${address.id} is inside Polygon ${data[key].id} and his name is ${data[key].name}`);
+          console.log(`Address ${address.id} is inside Polygon ${polygons[key].id} and his name is ${polygons[key].name}`);
 
           // Отправляем данные на сервер
-          updateAddressRegion(address.id, data[key].name);
+          updateAddressRegion(address.id, polygons[key].name);
         } else {
           // console.error(`Address ${address.id} is outside Polygon ${data[key].id}`);
         }
@@ -588,13 +654,6 @@ function deletePolygonFromDatabase(polygonId) {
     }
   });
 }
-
-
-// Загружаем полигоны при запуске страницы
-loadPolygons();
-
-// Загружаем данные адресов при запуске страницы
-// fetchData();
 
 
 

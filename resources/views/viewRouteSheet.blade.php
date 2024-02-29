@@ -391,9 +391,6 @@
                             </div>
                         </div>
 
-
-
-
                         <div class="col-12 grid-margin stretch-card">
                             <div class="card">
                                 <div class="card-body">
@@ -585,7 +582,7 @@
                                             </script>
 
 
-                                            <script>
+                                        <script>
                                                 $(document).ready(function () {
                                                     $("#showOnMapButton").on("click", function () {
                                                         // Получаем все id из таблицы
@@ -597,34 +594,59 @@
                                                         });
 
                                                         console.log(applicationIds);
-                                                        // Отправляем AJAX-запрос
+
+                                                        // Отправляем AJAX-запрос для первой части данных
                                                         $.ajax({
                                                             type: "POST",
                                                             url: "http://case.sknewlife.ru/postAddressStructureForMap",
-                                                            data: { applicationIds: applicationIds }, // Обратите внимание на JSON.stringify
+                                                            data: { applicationIds: applicationIds },
                                                             headers: {
                                                                 'X-CSRF-TOKEN': csrfToken,
                                                             },
                                                             success: function (response) {
                                                                 console.log("Успешно отправлено на сервер:", response);
 
-                                                                // Добавляем информацию о нажатии кнопки в localStorage
+                                                                // Сохраняем данные в localStorage
                                                                 localStorage.setItem('showOnMapButtonClicked', 'true');
                                                                 localStorage.setItem('showOnMapData', JSON.stringify(response));
-                                                                // console.log(response);
+
+                                                                console.log(response);
 
                                                                 // Открываем новое окно после успешного выполнения
                                                                 window.open('http://case.sknewlife.ru/routesmap', '_blank');
+
+                                                                // Отправляем второй AJAX-запрос
+                                                                $.ajax({
+                                                                    type: "POST",
+                                                                    url: "http://case.sknewlife.ru/postApplicationsIds",
+                                                                    data: { applicationIds: applicationIds },
+                                                                    headers: {
+                                                                        'X-CSRF-TOKEN': csrfToken,
+                                                                    },
+                                                                    success: function (secondResponse) {
+                                                                        console.log("Второй AJAX-запрос успешно выполнен:", secondResponse);
+                                                                        
+                                                                        // Сохраняем данные в localStorage
+                                                                        localStorage.setItem('secondAjaxData', JSON.stringify(secondResponse));
+
+                                                                        // Вызываем функцию showOnMap с данными обоих запросов
+                                                                        
+                                                                    },
+                                                                    error: function (secondError) {
+                                                                        console.error("Ошибка при выполнении второго AJAX-запроса:", secondError);
+                                                                        // Обработайте ошибку второго запроса здесь
+                                                                    }
+                                                                });
                                                             },
                                                             error: function (error) {
                                                                 console.error("Ошибка при отправке на сервер:", error);
-                                                            
-                                                                // Обработайте ошибку здесь
+                                                                // Обработайте ошибку первого запроса здесь
                                                             }
                                                         });
                                                     });
                                                 });
-                                            </script>
+                                        </script>
+
 
 
                                             <script>

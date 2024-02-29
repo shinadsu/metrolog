@@ -474,35 +474,7 @@
         }
     });
 
-    function showOnMap(data) {
-        data.forEach(function (address) {
-            var lat = parseFloat(address.latitude);
-            var lng = parseFloat(address.longitude);
-
-            if (!isNaN(lat) && !isNaN(lng)) {
-                // Создаем маркер с попапом
-                var marker = L.marker([lat, lng]).addTo(map)
-                    .bindPopup('<b>' + address.full_address + '</b>');
-
-                // Проверяем, в каком полигоне находится адрес
-                // var inPolygon = checkAddressInPolygons(address, data);
-                // console.log(address);
-
-                marker.on('click', onMarkerClick);
-
-                // Добавляем какой-то визуальный индикатор
-                // if (inPolygon) {
-                //     marker.setIcon(L.icon({
-                //         iconUrl: 'http://leafletjs.com/docs/images/leaf-green.png',
-                //         iconSize: [25, 41],
-                //         iconAnchor: [12, 41],
-                //         popupAnchor: [1, -34],
-                //         shadowSize: [41, 41]
-                //     }));
-                // }
-            }
-        });
-    }
+   
 
 
       function fetchData(data) {
@@ -520,6 +492,8 @@
                 // Создаем маркер с попапом
                 var marker = L.marker([lat, lng]).addTo(map)
                   .bindPopup('<b>' + address.full_address + '</b>');
+                  console.log(address);
+                  console.log(data);
 
                 // Проверяем, в каком полигоне находится адрес
                 var inPolygon = checkAddressInPolygons(address, data);

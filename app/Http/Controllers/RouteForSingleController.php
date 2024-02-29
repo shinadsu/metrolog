@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
-use App\Models\Polygons;
 use App\Models\Address;
+use App\Models\Application;
 use App\Models\addressApplication;
 use Illuminate\Support\Facades\DB;
+
 
 class RouteForSingleController extends Controller
 {
@@ -54,6 +54,8 @@ class RouteForSingleController extends Controller
             ]);
         }
 
+        
+
         return response()->json(['error' => 'AddressApplication not found'], 404);
     }
 
@@ -82,8 +84,65 @@ class RouteForSingleController extends Controller
         return response()->json($response);
     }
 
+    
+
+  
+
+  
+    
+        public function postApplicationsIds(Request $request)
+        {
+            $applicationIds = $request->input('applicationIds');
+    
+            // Проверка на null и массив
+            if (empty($applicationIds)) {
+                return response()->json(['error' => 'applicationIds is empty'], 400);
+            }
+    
+            $response = [];
+    
+            foreach ($applicationIds as $applicationId) {
+                $addressApplications = DB::table('address_applications')
+                    ->where('application_id', $applicationId)
+                    ->join('addresses', 'address_applications.address_id', '=', 'addresses.id')
+                    ->join('applications', 'address_applications.application_id', '=', 'applications.id')
+                    ->select(
+                        'addresses.full_address',
+                        'applications.id as applicationId',
+                        'applications.totalTimesInput',
+                        'applications.selectedPeriod'
+                        // Дополните другие поля, которые вам нужны
+                    )
+                    ->get();
+    
+                foreach ($addressApplications as $addressApplication) {
+                    $response[] = [
+                        'applicationId' => $addressApplication->applicationId,
+                        'fullAddress' => $addressApplication->full_address,
+                        'totalTimesInput' => $addressApplication->totalTimesInput,
+                        'selectedPeriod' => $addressApplication->selectedPeriod,
+                        // Дополните другие поля, которые вам нужны
+                    ];
+                }
+            }
+    
+            // Добавим проверку, если массив $response пустой
+            if (empty($response)) {
+                return response()->json(['error' => 'No matching addresses found'], 404);
+            }
+    
+            return response()->json($response);
+        }
+    }
+
+    
 
 
 
 
-}
+
+
+
+
+
+

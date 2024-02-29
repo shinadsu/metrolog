@@ -108,8 +108,10 @@ class PolygonController extends Controller
             $polygonsData = [];
 
             // Пройдитесь по каждому полигону и добавьте данные в массив
-            foreach ($polygons as $polygon) {
-                $polygonsData[] = [
+            foreach ($polygons as $polygon) 
+            {
+                $polygonsData[] = 
+                [
                     'id' => $polygon->id,
                     'coordinates' => $polygon->coordinates,
                     'name' => $polygon->name
@@ -118,7 +120,9 @@ class PolygonController extends Controller
 
             // Верните данные в формате JSON
             return response()->json($polygonsData);
-        } catch (\Exception $e) {
+        } 
+        catch (\Exception $e) 
+        {
             // Обработка исключений
             return response()->json(['error' => 'Failed to load polygons'], 500);
         }

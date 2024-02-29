@@ -500,7 +500,8 @@ document.getElementById('logout-form').submit();">
                                                         }
                                                     }
 
-                                                    function fetchDataForIdAndPopulateFields(inputValue, row) {
+                                                    function fetchDataForIdAndPopulateFields(inputValue, row) 
+                                                    {
                                                         console.log('Fetching data for ID:', inputValue);
                                                         return $.ajax({
                                                             url: 'http://case.sknewlife.ru/getApplicationById/' + inputValue,
@@ -734,7 +735,8 @@ document.getElementById('logout-form').submit();">
 
 
                                                 // Функция для добавления строк в таблицу
-                                                function addRows(application) {
+                                                function addRows(application) 
+                                                {
                                                     var newRow = $("<tr>");
                                                     var rowCount = $('#applicationsTable tbody tr').length + 1;
 
@@ -790,7 +792,8 @@ document.getElementById('logout-form').submit();">
                                                 }
 
                                                 // Обработчик события клика по кнопке fillButton
-                                                $("#fillButton").on("click", function () {
+                                                $("#fillButton").on("click", function () 
+                                                {
                                                     // Обновляем значение переменной selectedOrganization при изменении выбора в фильтре
                                                     selectedOrganization = $("#organizationSelect").val();
 
@@ -827,24 +830,28 @@ document.getElementById('logout-form').submit();">
                                                 });
 
                                                 // Обработчик события изменения выбранной организации в фильтре
-                                                $("#organizationSelect").on("change", function () {
+                                                $("#organizationSelect").on("change", function () 
+                                                {
                                                     // Обновляем значение переменной selectedOrganization при изменении выбора в фильтре
                                                     selectedOrganization = $(this).val();
                                                 });
 
                                                 // Обработчик события изменения выбранной даты в фильтре
-                                                $("#dateForApplication").on("change", function () {
+                                                $("#dateForApplication").on("change", function () 
+                                                {
                                                     // Обновляем значение переменной selectedDate при изменении выбора в фильтре даты
                                                     selectedDate = $(this).val() ? formatDateForFilter($(this).val()) : "";
                                                 });
 
                                                 // Обработчик события изменения выбранного статуса в фильтре
-                                                $("#statusSelect").on("change", function () {
+                                                $("#statusSelect").on("change", function () 
+                                                {
                                                     // Обновляем значение переменной selectedStatus при изменении выбора в фильтре статуса
                                                     selectedStatus = $(this).val();
                                                 });
 
-                                                function addTime(time1, time2) {
+                                                function addTime(time1, time2) 
+                                                {
                                                     // Разбейте время на часы, минуты и секунды
                                                     var [hours1, minutes1, seconds1] = time1.split(':').map(Number);
                                                     var [hours2, minutes2, seconds2] = time2.split(':').map(Number);
@@ -871,12 +878,14 @@ document.getElementById('logout-form').submit();">
                                                     return result;
                                                 }
 
-                                                function padZero(value) {
+                                                function padZero(value) 
+                                                {
                                                     return value < 10 ? '0' + value : '' + value;
                                                 }
 
 
-                                                function subtractTime(time1, time2) {
+                                                function subtractTime(time1, time2) 
+                                                {
                                                     var datetime1 = new Date('1970-01-01T' + time1 + 'Z');
                                                     var datetime2 = new Date('1970-01-01T' + time2 + 'Z');
 
@@ -893,7 +902,8 @@ document.getElementById('logout-form').submit();">
                                                     return formattedResult;
                                                 }
 
-                                                function formatTime(hours, minutes, seconds) {
+                                                function formatTime(hours, minutes, seconds) 
+                                                {
                                                     // Добавляем нули перед числами < 10
                                                     var formattedHours = ('0' + hours).slice(-2);
                                                     var formattedMinutes = ('0' + minutes).slice(-2);

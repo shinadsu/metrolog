@@ -102,6 +102,8 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::post('/postAddressStructureForMap', 'App\Http\Controllers\RouteForSingleController@postAddressStructureForMap');
+    Route::post('/postApplicationsIds', 'App\Http\Controllers\RouteForSingleController@postApplicationsIds');
+    Route::get('/postAddressStructureForMap', 'App\Http\Controllers\RouteForSingleController@postAddressStructureForMap');
 
     // маргрутные листы
     Route::get('/itinerary', 'App\Http\Controllers\itinerary@index');

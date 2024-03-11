@@ -12,19 +12,19 @@ class itinerary extends Controller
 {
     public function index()
     {
-        // Fetch data from the route_sheets table
+        // Получение данных из таблицы route_sheets с пагинацией
         $users = $this->getUsersWithRoleIdTwo();
         $status = $this->getStatuses();
-        $routeSheets = RouteSheet::all();
+        $routeSheets = RouteSheet::paginate(10); // Укажите необходимое количество записей на странице
 
-        // Pass the data to the view
-        return view('itinerary', 
-        [
-        'routeSheets' => $routeSheets, 
-        'users' => $users,
-        'status' => $status
+        // Передача данных в представление
+        return view('itinerary', [
+            'routeSheets' => $routeSheets,
+            'users' => $users,
+            'status' => $status
         ]);
     }
+
 
     public function getUsersWithRoleIdTwo()
     {
@@ -35,5 +35,19 @@ class itinerary extends Controller
     public function getStatuses()
     {
         return Statuses::all();
+    }
+
+    public function search(Request $request)
+    {   
+        
+        $routeSheets = RouteSheet::where('route_sheet_number', 'like', '%' . $request->input('routeSheetNumber') . '%')->paginate(10);
+        $users = $this->getUsersWithRoleIdTwo();
+        $status = $this->getStatuses();
+
+        return view('itinerary', [
+            'routeSheets' => $routeSheets,
+            'users' => $users,
+            'status' => $status
+        ]);
     }
 }

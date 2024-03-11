@@ -217,53 +217,72 @@
       </nav>
 
       <div class="main-panel">
-        <div class="content-wrapper">
-          <div class="row">
+    <div class="content-wrapper">
+        <div class="row">
             <div class="col-lg-12 grid-margin stretch-card">
-              <div class="card">
-                <div class="card-body">
-                  <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="card-title">Мрашрутные листы</h4>
-                    <button class="btn btn-primary" id="createButton"
-                      onclick="window.location.href='{{ route('CreateitineraryList.index') }}'">Создать</button>
-                  </div>
-                  <div class="table-responsive">
-                    <table class="table table-striped">
-                      <thead>
-                        <tr>
-                          <th>Дата создания</th>
-                          <th>Номер листа</th>
-                          <th>Автор</th>
-                          <th>Метролог</th>
-                          <th>Дата выполнения</th>
-                          <th>Кол-во часов</th>
-                          <th>Организация</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        @foreach($routeSheets as $routeSheet)
-                        <tr>
-                          <td>{{ $routeSheet->current_date_time }}</td>
-                          <td>{{ $routeSheet->route_sheet_number }}</td>
-                          <td>{{ $routeSheet->author }}</td>
-                          <td>{{ $routeSheet->metrolog }}</td>
-                          <td>{{ $routeSheet->completion_date }}</td>
-                          <td>{{ $routeSheet->time_input }}</td>
-                          <td>{{ $routeSheet->organization }}</td>
-                          <td>
-                            <a href="{{ route('route-sheets.viewRouteSheet', ['route_sheet_number' => $routeSheet->route_sheet_number]) }}" class="btn btn-info">Просмотр</a>
-                            </td>
-                        </tr>
-                        @endforeach
-                      </tbody>
-                    </table>
-                  </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h4 class="card-title">Мрашрутные листы</h4>
+                            <button class="btn btn-primary" id="createButton"
+                                onclick="window.location.href='{{ route('CreateitineraryList.index') }}'">Создать</button>
+                        </div>
+                        
+                        <!-- Блок с поиском -->
+                        <form action="{{ route('your_search_route') }}" method="GET" class="mb-3">
+                            <div class="form-group">
+                                <label for="routeSheetNumber">Номер листа:</label>
+                                <input type="text" class="form-control" id="routeSheetNumber" name="routeSheetNumber" placeholder="Поиск по номеру листа">
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <button type="submit" class="btn btn-primary">Искать</button>
+                                <a href="{{ route('fullList') }}" class="btn btn-secondary">Сбросить поиск</a>
+                            </div>
+                        </form>
+
+                        
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Дата создания</th>
+                                        <th>Номер листа</th>
+                                        <th>Автор</th>
+                                        <th>Метролог</th>
+                                        <th>Дата выполнения</th>
+                                        <th>Кол-во часов</th>
+                                        <th>Организация</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($routeSheets as $routeSheet)
+                                    <tr>
+                                        <td>{{ $routeSheet->current_date_time }}</td>
+                                        <td>{{ $routeSheet->route_sheet_number }}</td>
+                                        <td>{{ $routeSheet->author }}</td>
+                                        <td>{{ $routeSheet->metrolog }}</td>
+                                        <td>{{ $routeSheet->completion_date }}</td>
+                                        <td>{{ $routeSheet->time_input }}</td>
+                                        <td>{{ $routeSheet->organization }}</td>
+                                        <td>
+                                            <a href="{{ route('route-sheets.viewRouteSheet', ['route_sheet_number' => $routeSheet->route_sheet_number]) }}" class="btn btn-info">Просмотр</a>
+                                        </td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="d-flex justify-content-center mt-4">
+                            {{ $routeSheets->links() }}
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-      </div>
+    </div>
+</div>
+
 
 
 

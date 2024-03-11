@@ -58,6 +58,7 @@ class CreateitineraryList extends Controller
 
     public function getApplicationById($id)
     {
+        
         $foundApplications = Application::where('id', 'like', $id . '%')->get();
 
         // Проверяем, найдены ли заявки с указанным ID

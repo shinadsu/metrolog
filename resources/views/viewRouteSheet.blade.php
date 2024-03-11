@@ -7,28 +7,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>METROLOG</title>
     <!-- plugins:css -->
-    <link rel="stylesheet" href="{{ 'assets/vendors/feather/feather.css' }}">
+    <!-- <link rel="stylesheet" href="{{ 'assets/vendors/feather/feather.css' }}">
     <link rel="stylesheet" href="{{ 'assets/vendors/ti-icons/css/themify-icons.css' }}">
-    <link rel="stylesheet" href="{{ 'assets/vendors/css/vendor.bundle.base.css' }}">
-    <!-- endinject -->
-    <!-- Plugin css for this page -->
-    <!-- <link rel="stylesheet" href="{{ 'assets/vendors/select2/select2.min.css' }}">
-    <link rel="stylesheet" href="{{ 'assets/vendors/select2-bootstrap-theme/select2-bootstrap.min.css' }}"> -->
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css"
-        integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
-
-    <!-- JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8"
-        crossorigin="anonymous"></script>
-    <!-- End plugin css for this page -->
-    <!-- inject:css -->
-    <link rel="stylesheet" href="{{ 'assets/css/vertical-layout-light/style.css' }}">
-    <!-- endinject -->
-    <link rel="shortcut icon" href="{{ 'assets/images/favicon.png' }}" />
+    <link rel="stylesheet" href="{{ 'assets/vendors/css/vendor.bundle.base.css' }}"> -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- <link rel="stylesheet" href="{{ 'assets/css/vertical-layout-light/style.css' }}"> -->
+    <!-- <link rel="shortcut icon" href="{{ 'assets/images/favicon.png' }}" /> -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <script src="https://unpkg.com/@turf/turf@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js"></script>
+    <script src="https://unpkg.com/leaflet-extra-markers/dist/js/leaflet.extra-markers.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css" />
+    <!-- <script src="{{ 'assets/vendors/typeahead.js/typeahead.bundle.min.js' }} "></script>
+    <script src="{{ 'assets/vendors/select2/select2.min.js' }} "></script>
+    <script src="{{ 'assets/js/off-canvas.js' }} "></script>
+    <script src="{{ 'assets/js/hoverable-collapse.js' }} "></script>
+    <script src="{{ 'assets/js/template.js' }} "></script>
+    <script src="{{ 'assets/js/settings.js' }} "></script>
+    <script src="{{ 'assets/js/todolist.js' }} "></script>
+    <script src="{{ 'assets/js/file-upload.js' }} "></script>
+    <script src="{{ 'assets/js/typeahead.js' }} "></script>
+    <script src="{{ 'assets/js/select2.js' }} "></script> -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <style>
+
+
         html {
             box-sizing: border-box;
             font-size: 75%;
@@ -78,6 +90,8 @@
             font-weight: 700;
             margin-top: 0;
         }
+
+
 
 
         .form-select {
@@ -157,8 +171,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false"
-                            aria-controls="ui-basic">
+                        <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
                             <i class="icon-layout menu-icon"></i>
                             <span class="menu-title">Заявки</span>
                             <i class="menu-arrow"></i>
@@ -174,8 +187,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false"
-                            aria-controls="form-elements">
+                        <a class="nav-link" data-toggle="collapse" href="#form-elements" aria-expanded="false" aria-controls="form-elements">
                             <i class="icon-layout menu-icon"></i>
                             <span class="menu-title">Устройства</span>
                             <i class="menu-arrow"></i>
@@ -189,38 +201,31 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false"
-                            aria-controls="charts">
+                        <a class="nav-link" data-toggle="collapse" href="#charts" aria-expanded="false" aria-controls="charts">
                             <i class="icon-bar-graph menu-icon"></i>
                             <span class="menu-title">Графики Работ</span>
                             <i class="menu-arrow"></i>
                         </a>
                         <div class="collapse" id="charts">
                             <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="{{ route('operatorshedule.index') }}">График Операторов</a></li>
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="{{ route('LogisticSettings.index') }}">График Логистов</a></li>
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="{{ route('metrologShowShedule.index') }}">График Метрологов</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="{{ route('operatorshedule.index') }}">График Операторов</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="{{ route('LogisticSettings.index') }}">График Логистов</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="{{ route('metrologShowShedule.index') }}">График Метрологов</a></li>
                             </ul>
                         </div>
                     </li>
 
 
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#tables" aria-expanded="false"
-                            aria-controls="tables">
+                        <a class="nav-link" data-toggle="collapse" href="#tables" aria-expanded="false" aria-controls="tables">
                             <i class="icon-grid-2 menu-icon"></i>
                             <span class="menu-title">Инфо. Адреса</span>
                             <i class="menu-arrow"></i>
                         </a>
                         <div class="collapse" id="tables">
                             <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="{{ route('applicationsandaddresses.index') }}">Заявки и Адреса</a></li>
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="{{ route('addresses.index') }}">Адреса</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="{{ route('applicationsandaddresses.index') }}">Заявки и Адреса</a></li>
+                                <li class="nav-item"> <a class="nav-link" href="{{ route('addresses.index') }}">Адреса</a></li>
                             </ul>
                         </div>
                     </li>
@@ -230,18 +235,15 @@
 
 
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false"
-                            aria-controls="auth">
+                        <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
                             <i class="icon-head menu-icon"></i>
                             <span class="menu-title">Админка</span>
                             <i class="menu-arrow"></i>
                         </a>
                         <div class="collapse" id="auth">
                             <ul class="nav flex-column sub-menu">
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="{{ route('userrequisitessettings.index') }}"> Реквезиты </a></li>
-                                <li class="nav-item"> <a class="nav-link"
-                                        href="{{ route('statustransitionsController.index') }}"> Статусы </a></li>
+                                <li class="nav-item"> <a class="nav-link" href="{{ route('userrequisitessettings.index') }}"> Реквезиты </a></li>
+                                <li class="nav-item"> <a class="nav-link" href="{{ route('statustransitionsController.index') }}"> Статусы </a></li>
                                 <li class="nav-item"> <a class="nav-link" href="{{ route('logisticshedule.index') }}">
                                         Наст. График Логист </a></li>
                                 <li class="nav-item"> <a class="nav-link" href="{{ route('OperatorSettings.index') }}">
@@ -272,8 +274,7 @@
 
                                     <form>
                                         <div class="form-group row">
-                                            <label for="authorSelect"
-                                                class="col-sm-3 col-form-label"><strong>Автор:</strong></label>
+                                            <label for="authorSelect" class="col-sm-3 col-form-label"><strong>Автор:</strong></label>
                                             <div class="col-sm-9">
                                                 <select class="form-select" id="authorSelect">
                                                     <option value="" selected>Show All</option>
@@ -285,8 +286,7 @@
                                         </div>
 
                                         <div class="form-group row">
-                                            <label for="organizationSelect"
-                                                class="col-sm-3 col-form-label"><strong>Организация:</strong></label>
+                                            <label for="organizationSelect" class="col-sm-3 col-form-label"><strong>Организация:</strong></label>
                                             <div class="col-sm-9">
                                                 <select class="form-select" id="organizationSelect">
                                                     <option value="" selected>Show All</option>
@@ -304,8 +304,7 @@
                                             <label for="timeinput" class="col-sm-3 col-form-label"><strong>Кол-во
                                                     времени:</strong></label>
                                             <div class="col-sm-9">
-                                                <input class="form-select input-style" id="timeinput"
-                                                    placeholder="Ведите время формата Ч:М:C">
+                                                <input class="form-select input-style" id="timeinput" placeholder="Ведите время формата Ч:М:C">
                                             </div>
                                         </div>
 
@@ -315,14 +314,12 @@
                                             <label for="completionDate" class="col-sm-3 col-form-label"><strong>Дата
                                                     выполнения:</strong></label>
                                             <div class="col-sm-9">
-                                                <input type="date" class="form-control" id="completionDate"
-                                                    style="max-width: 150px;">
+                                                <input type="date" class="form-control" id="completionDate" style="max-width: 150px;">
                                             </div>
                                         </div>
 
                                         <div class="form-group row">
-                                            <label for="metrolog"
-                                                class="col-sm-3 col-form-label"><strong>Метролог:</strong></label>
+                                            <label for="metrolog" class="col-sm-3 col-form-label"><strong>Метролог:</strong></label>
                                             <div class="col-sm-9">
                                                 <select class="form-select" id="metrolog">
                                                     <option value="" selected>Show All</option>
@@ -347,19 +344,18 @@
                                             </div>
                                         </div>
 
+
+
                                         <!-- Горизонтальные кнопки -->
                                         <div class="form-group row" style="margin-top: 10px;">
                                             <div class="col-sm-6">
-                                                <button type="button" class="btn btn-primary"
-                                                    id="fillButton">Заполнить</button>
+                                                <button type="button" class="btn btn-primary" id="fillButton">Заполнить</button>
 
-                                                <button type="button" id="addButton"
-                                                    class="btn btn-success">Добавить</button>
+                                                <button type="button" id="addButton" class="btn btn-success">Добавить</button>
 
-                                                <button type="button" id="createRouteSheetButton"
-                                                    class="btn btn-success">Создать маршрутный лист</button>
-                                                
-                                                    <button type="button" id="showOnMapButton" class="btn btn-success" data-show-on-map="true">Показать на карте</button>
+                                                <button type="button" id="createRouteSheetButton" class="btn btn-success">Создать маршрутный лист</button>
+
+                                                <button type="button" id="showOnMapButton" class="btn btn-success">Показать на карте</button>
 
                                             </div>
                                         </div>
@@ -395,8 +391,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="tab-content">
-                                        <div class="tab-pane fade show active" id="dop" role="tabpanel"
-                                            aria-labelledby="dopTab" data-category="additionalWork">
+                                        <div class="tab-pane fade show active" id="dop" role="tabpanel" aria-labelledby="dopTab" data-category="additionalWork">
                                             <div style="max-height: 400px; overflow-y: auto;">
                                                 <div class="table-responsive pt-3">
                                                     <table class="table table-bordered" id="applicationsTable">
@@ -445,10 +440,9 @@
 
                                             <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
-                                       
-                                            <!-- Добавленный код: скрипт для поиска по ID -->
+
                                             <script>
-                                                $(document).ready(function () {
+                                                $(document).ready(function() {
                                                     function addDropdownList(selector, data) {
                                                         var existingDropdown = $(selector).next('.form-control');
 
@@ -468,7 +462,7 @@
 
                                                             dropdownList.insertAfter(selector);
 
-                                                            dropdownList.on("change", function () {
+                                                            dropdownList.on("change", function() {
                                                                 var selectedValue = $(this).val();
                                                                 $(selector).text(selectedValue);
                                                                 dropdownList.remove();
@@ -476,22 +470,22 @@
                                                             });
                                                         }
                                                     }
-                                                
-                                                    
-                                                  
+
+
+
 
                                                     function fetchDataForId(inputValue, row) {
-                                                        console.log('Fetching data for ID:', inputValue);
+
                                                         return $.ajax({
                                                             url: 'http://case.sknewlife.ru/getApplicationById/' + inputValue,
                                                             type: 'GET',
                                                             dataType: 'json'
-                                                        }).done(function (response) {
+                                                        }).done(function(response) {
                                                             console.log('AJAX Response:', response);
                                                             if (response.success) {
                                                                 if (row && row.find) {
                                                                     row.find('.for-status, .for-job, .for-interval, .for-planeDate, .for-address, .for-logistCommentary').text('');
-
+                                                                    console.log('Fetching data for ID:', inputValue);
                                                                     addDropdownList(row.find('.for-id'), response.data);
 
                                                                     row.find('.for-status').text(response.data[0].status_name);
@@ -506,7 +500,7 @@
 
                                                                 }
                                                             }
-                                                        }).fail(function () {
+                                                        }).fail(function() {
                                                             console.error('AJAX Error');
                                                         });
                                                     }
@@ -517,10 +511,10 @@
 
                                                         if (inputValue !== '') {
                                                             var row = $(this).closest('tr');
-                                                            fetchDataForId(inputValue, row).done(function (response) {
+                                                            fetchDataForId(inputValue, row).done(function(response) {
                                                                 if (response.success) {
                                                                     row.find('.for-status, .for-job, .for-interval, .for-planeDate, .for-address, .for-logistCommentary').text('');
-
+                                                                    console.log('Fetching data for ID:', inputValue);
                                                                     addDropdownList(row.find('.for-id'), response.data);
 
                                                                     row.find('.for-status').text(response.data[0].status_name);
@@ -534,7 +528,7 @@
                                                                     row.find('.for-logistCommentary').text(response.data[0].logistic_commentary);
 
                                                                 }
-                                                            }).fail(function () {
+                                                            }).fail(function() {
                                                                 console.error('AJAX Error');
                                                             });
                                                         } else {
@@ -549,17 +543,18 @@
                                                         newRow.append('<td>' + rowCount + '</td>');
 
                                                         var cellClasses = [
-                                                        'for-id', 'for-status', 
-                                                        'for-job', 'for-metrolog', 
-                                                        'for-interval', 'for-planeDate', 
-                                                        'for-address', 'for-logistCommentary'];
+                                                            'for-id', 'for-status',
+                                                            'for-job', 'for-metrolog',
+                                                            'for-interval', 'for-planeDate',
+                                                            'for-address', 'for-logistCommentary'
+                                                        ];
 
                                                         for (var i = 0; i < cellClasses.length; i++) {
                                                             newRow.append('<td contenteditable="true" class="' + cellClasses[i] + '"></td>');
 
                                                             if (i === 0) {
                                                                 newRow.find('.for-id').on("input", handleIdInputChange);
-                                                                newRow.find('.for-id').on("change", function () {
+                                                                newRow.find('.for-id').on("change", function() {
                                                                     // Добавьте код для обработки события изменения значения, если это необходимо
                                                                 });
                                                             }
@@ -569,11 +564,11 @@
                                                         console.log('Новая строка добавлена. Всего строк:', rowCount);
                                                     }
 
-                                                    $("#addButton").on("click", function () {
+                                                    $("#addButton").on("click", function() {
                                                         addRow();
                                                     });
 
-                                                    $("#applicationsTable tbody").on("blur", "td[contenteditable='true']", function () {
+                                                    $("#applicationsTable tbody").on("blur", "td[contenteditable='true']", function() {
                                                         var rowIndex = $(this).closest("tr").index();
                                                         var colIndex = $(this).index();
                                                         var newText = $(this).text();
@@ -582,7 +577,7 @@
                                             </script>
 
 
-                                        <script>
+                                            <script>
                                                 $(document).ready(function () {
                                                     $("#showOnMapButton").on("click", function () {
                                                         // Получаем все id из таблицы
@@ -592,7 +587,8 @@
                                                             var applicationId = $(this).find("td:nth-child(2)").text();
                                                             applicationIds.push(applicationId);
                                                         });
-
+                                                        var currentPageId = extractIdFromCurrentPage();
+                                                        
                                                         console.log(applicationIds);
 
                                                         // Отправляем AJAX-запрос для первой части данных
@@ -606,11 +602,11 @@
                                                             success: function (response) {
                                                                 console.log("Успешно отправлено на сервер:", response);
 
-                                                                // Сохраняем данные в localStorage
-                                                                localStorage.setItem('showOnMapButtonClicked', 'true');
-                                                                localStorage.setItem('showOnMapData', JSON.stringify(response));
+                                                                // // Сохраняем данные в localStorage
+                                                                // localStorage.setItem('showOnMapButtonClicked', 'true');
+                                                                // localStorage.setItem('showOnMapData', JSON.stringify(response));
 
-                                                                console.log(response);
+                                                                // console.log(response);
 
                                                                 // Открываем новое окно после успешного выполнения
                                                                 window.open('http://case.sknewlife.ru/routesmap', '_blank');
@@ -623,13 +619,14 @@
                                                                     headers: {
                                                                         'X-CSRF-TOKEN': csrfToken,
                                                                     },
-                                                                    success: function (secondResponse) {
+                                                                    success: function (secondResponse) 
+                                                                    {
                                                                         console.log("Второй AJAX-запрос успешно выполнен:", secondResponse);
                                                                         
                                                                         // Сохраняем данные в localStorage
                                                                         localStorage.setItem('secondAjaxData', JSON.stringify(secondResponse));
-
-                                                                        // Вызываем функцию showOnMap с данными обоих запросов
+                                                                        localStorage.setItem('currentPageId', currentPageId);
+                                                                //         // Вызываем функцию showOnMap с данными обоих запросов
                                                                         
                                                                     },
                                                                     error: function (secondError) {
@@ -645,10 +642,25 @@
                                                         });
                                                     });
                                                 });
+
+                                                function extractIdFromCurrentPage() {
+                                                    var url = window.location.href;
+                                                    var match = url.match(/\/route-sheets\/(\d+)/);
+
+                                                    if (match && match[1]) {
+                                                        return match[1];
+                                                    } else {
+                                                        console.error('Не удалось извлечь id из текущей страницы');
+                                                        return null;
+                                                    }
+                                                }
+
                                         </script>
 
 
 
+
+                                            <!-- 
                                             <script>
                                                 $(document).ready(function () {
                                                     // Получаем номер маршрутного листа из URL
@@ -659,11 +671,11 @@
 
                                                     // Ваш остальной JavaScript код...
                                                 });
-                                            </script>
+                                            </script> -->
 
 
                                             <script>
-                                                $("#createRouteSheetButton").on("click", function () {
+                                                $("#createRouteSheetButton").on("click", function() {
                                                     // Получаем номер маршрутного листа и текущую дату/время из DOM
                                                     var csrfToken = '{{ csrf_token() }}'; // Получаем CSRF-токен для запросов
                                                     var routeSheetNumber = $("#routeSheetNumber").text().trim();
@@ -679,7 +691,7 @@
 
                                                     // Собираем данные из таблицы с заявками
                                                     var routeSheetData = [];
-                                                    $("#applicationsTable tbody tr").each(function () {
+                                                    $("#applicationsTable tbody tr").each(function() {
                                                         var rowData = {
                                                             requestId: $(this).find('.for-id').text(),
                                                             // Другие данные заявки
@@ -706,44 +718,13 @@
                                                             metrologName: metrologName,
                                                             statusName: statusName
                                                         }),
-                                                        success: function (response) {
+                                                        success: function(response) {
                                                             console.log('Маршрутный лист создан успешно:', response);
                                                             $("#applicationsTable tbody").empty();
                                                         },
-                                                        error: function (error) {
+                                                        error: function(error) {
                                                             console.error('Ошибка при создании маршрутного листа:', error);
                                                         }
                                                     });
                                                 });
                                             </script>
-
-
-
-
-
-                                            <script src="https://code.jquery.com/jquery-3.6.0.js"
-                                                integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
-                                                crossorigin="anonymous"></script>
-                                            <script
-                                                src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-                                            <script
-                                                src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.13.3/js/standalone/selectize.min.js"></script>
-                                            <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-                                            <script
-                                                src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-                                            <script
-                                                src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-                                            <script
-                                                src="https://cdn.jsdelivr.net/npm/air-datepicker@2.2.3/dist/js/datepicker.min.js"></script>
-
-                                            <script
-                                                src="{{ 'assets/vendors/typeahead.js/typeahead.bundle.min.js' }} "></script>
-                                            <script src="{{ 'assets/vendors/select2/select2.min.js' }} "></script>
-                                            <script src="{{ 'assets/js/off-canvas.js' }} "></script>
-                                            <script src="{{ 'assets/js/hoverable-collapse.js' }} "></script>
-                                            <script src="{{ 'assets/js/template.js' }} "></script>
-                                            <script src="{{ 'assets/js/settings.js' }} "></script>
-                                            <script src="{{ 'assets/js/todolist.js' }} "></script>
-                                            <script src="{{ 'assets/js/file-upload.js' }} "></script>
-                                            <script src="{{ 'assets/js/typeahead.js' }} "></script>
-                                            <script src="{{ 'assets/js/select2.js' }} "></script>

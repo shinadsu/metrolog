@@ -10,6 +10,7 @@ use App\Models\Application;
 use App\Models\User;
 use App\Models\Statuses;
 use App\Models\Organization;
+use App\Models\RouteSheetApplications;
 
 class RouteSheetController extends Controller
 {
@@ -48,19 +49,64 @@ class RouteSheetController extends Controller
         return response()->json(['success' => true, 'message' => 'Маршрутный лист успешно создан']);
     }
 
+    // public function viewRouteSheet($route_sheet_number)
+    // {
+        
+    //     $users = $this->getUsersWithRoleIdTwo();
+    //     $status = $this->getStatuses();
+    //     $organization = $this->getOrganization();
+    //     $routeSheet = RouteSheet::where('route_sheet_number', $route_sheet_number)->first();
+    //     // Здесь вы можете передать данные в вид и отобразить страницу просмотра
+    //     return view('viewRouteSheet', [
+    //         'routeSheet' => $routeSheet,
+    //         'users' => $users,
+    //         'status' => $status,
+    //         'organization' => $organization
+    //     ]);
+    // }
+
     public function viewRouteSheet($route_sheet_number)
-    {
+    {   
+
         $users = $this->getUsersWithRoleIdTwo();
         $status = $this->getStatuses();
         $organization = $this->getOrganization();
+
+
+        // Шаг 1: Получаем id из таблицы RouteSheet по номеру страницы
         $routeSheet = RouteSheet::where('route_sheet_number', $route_sheet_number)->first();
-        // Здесь вы можете передать данные в вид и отобразить страницу просмотра
-        return view('viewRouteSheet', [
-            'routeSheet' => $routeSheet,
-            'users' => $users,
-            'status' => $status,
-            'organization' => $organization
-        ]);
+
+        // dd($routeSheet);
+
+        if ($routeSheet) {
+            // Шаг 2: Получаем route_sheet_id из таблицы RouteSheetApplications для указанного route_sheet_id
+            $applications = RouteSheetApplications::where('route_sheet_id', $routeSheet->id)->get();
+            // dd($applications);
+            // Шаг 3: Получаем данные по application_id из таблицы Application
+            $applicationData = [];
+            foreach ($applications as $application) 
+            {
+                $applicationDetails = Application::find($application->application_id);
+                if ($applicationDetails) 
+                {
+                    $applicationData[] = $applicationDetails;
+                }
+            }
+
+            // dd($applicationData);
+
+            // Здесь вы можете передать данные в вид и отобразить страницу просмотра
+            return view('viewRouteSheet', [
+                'routeSheet' => $routeSheet,
+                'applications' => $applicationData,
+                'organization' => $organization, 
+                'status' => $status,
+                'users' => $users,
+            ]);
+        } else {
+            // Если не найден route_sheet_id для указанного номера страницы
+            return response()->json(['success' => false, 'message' => 'RouteSheet not found for the specified page number']);
+        }
     }
 
     public function getUsersWithRoleIdTwo()

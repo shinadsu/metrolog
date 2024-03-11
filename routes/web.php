@@ -57,6 +57,7 @@ Route::middleware(['auth'])->group(function () {
 
     // список заявок оператора
     Route::get('/applicationsoperator/{id}', 'App\Http\Controllers\ApplicationOperatorController@show')->name('operatorapplication.show');
+    Route::get('/loadApplicationdDataFromDB', 'App\Http\Controllers\RouteForSingleController@loadApplicationdDataFromDB');
 
 
     // график работы логистов
@@ -71,6 +72,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/Metrologshedule', 'App\Http\Controllers\metrologSettingsController@store')->name('MetrologSheduleStore.store');
     Route::get('/sheduledMetrolog', 'App\Http\Controllers\metrologShowShedule@index')->name('metrologShowShedule.index');
     Route::post('/updateScheduleMetrolog', 'App\Http\Controllers\metrologShowShedule@updateScheduleMetrolog')->name('updateScheduleMetrolog.updateScheduleMetrolog');
+    Route::get('/your_search_route', 'App\Http\Controllers\itinerary@search')->name('your_search_route');
 
 
     Route::get('/metrolog', 'App\Http\Controllers\Metrlog@index')
@@ -79,9 +81,9 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('/home', 'App\Http\Controllers\HomeController@index')->name('home');
-    Route::get('/testfias', function () {
+    Route::get('/map', function () {
         return view('tesfiasapi');
-    })->name('fias');
+    })->name('map');
     Route::get('/routesmap', 'App\Http\Controllers\RouteForSingleController@index')->name('/routersForRoute');
 
 
@@ -104,9 +106,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/postAddressStructureForMap', 'App\Http\Controllers\RouteForSingleController@postAddressStructureForMap');
     Route::post('/postApplicationsIds', 'App\Http\Controllers\RouteForSingleController@postApplicationsIds');
     Route::get('/postAddressStructureForMap', 'App\Http\Controllers\RouteForSingleController@postAddressStructureForMap');
+    Route::post('/handleOrder', 'App\Http\Controllers\RouteForSingleController@handleOrder');
+    Route::post('/savePolyline', 'App\Http\Controllers\RouteForSingleController@savePolyline');
+    Route::get('/loadPolylinesToMap', 'App\Http\Controllers\RouteForSingleController@loadPolylinesToMap');
 
     // маргрутные листы
-    Route::get('/itinerary', 'App\Http\Controllers\itinerary@index');
+    Route::get('/itinerary', 'App\Http\Controllers\itinerary@index')->name('fullList');
     Route::get('/CreateitineraryList', 'App\Http\Controllers\CreateitineraryList@index')->name('CreateitineraryList.index');
     Route::get('/getApplicationById/{id}', 'App\Http\Controllers\CreateitineraryList@getApplicationById')->name('CreateitineraryList.getApplicationById');
     Route::post('/create-route-sheet', 'App\Http\Controllers\RouteSheetController@createRouteSheet');
@@ -117,11 +122,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/addRoleToUser', 'App\Http\Controllers\addRoleToUserController@index')->name('addRoleToUser.index');
     Route::post('/addRoleToUser/update', 'App\Http\Controllers\addRoleToUserController@update')->name('addRoleToUser.update');
 
-
+    Route::post('/updateTableData', 'App\Http\Controllers\RouteForSingleController@updateTableData');
+    
 
 });
 
 
 
 Auth::routes();
-
